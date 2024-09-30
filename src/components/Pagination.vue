@@ -11,9 +11,9 @@ const props = defineProps<{
     <div class="flex justify-center mt-6 mb-2">
         <button :class="[
             props.page !== 0
-                ? 'bg-pink-500 hover:bg-pink-700'
-                : 'bg-gray-300 hover:bg-gray-700',
-            'text-white font-bold py-2 px-4 rounded',
+                ? 'bg-accent-500 hover:bg-accent-700'
+                : 'bg-gray-300 hover:bg-gray-400',
+            'text-white dark:text-black font-bold py-2 px-4 rounded',
         ]" :disabled="props.page === 0" @click="props.prev()">
             Previous
         </button>
@@ -22,9 +22,9 @@ const props = defineProps<{
         </p>
         <button :class="[
             props.page <= props.pages
-                ? 'bg-pink-500 hover:bg-pink-700'
+                ? 'bg-accent-500 hover:bg-accent-600'
                 : 'bg-gray-300 hover:bg-gray-700',
-            'text-white font-bold py-2 px-4 rounded',
+            'text-white dark:text-black font-bold py-2 px-4 rounded',
         ]" :disabled="props.page >= props.pages" @click="props.next()">
             Next
         </button>

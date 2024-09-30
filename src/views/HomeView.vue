@@ -16,7 +16,7 @@ const server = useServerStore();
             <div v-else>
                 <Title title="Konarr Home" />
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
                     <div class="bg-white shadow-md rounded-md p-4 text-center">
                         <h2 class="text-lg font-semibold">Projects</h2>
                         <p class="text-sm text-gray-500">Summary of the projects</p>
@@ -38,7 +38,7 @@ const server = useServerStore();
                         </div>
                     </div>
 
-                    <div class="bg-white shadow-md rounded-md p-4 text-center">
+                    <div class="bg-white shadow-md rounded-md p-4 text-center pb-6">
                         <h2 class="text-lg font-semibold">
                             Dependencies
                         </h2>
@@ -52,12 +52,12 @@ const server = useServerStore();
                         </div>
                     </div>
 
-                    <div class="bg-white shadow-md rounded-md p-4 text-center">
+                    <div class="bg-white shadow-md rounded-md p-4 pb-6 text-center">
                         <h2 class="text-lg font-semibold">
                             Security
                         </h2>
                         <p v-if="server.security" class="text-sm text-gray-500">Summary of the Security Alerts</p>
-                        <p v-else class="text-sm text-gray-500">Feature Disabled</p>
+                        <p v-else class="text-sm text-gray-500">Feature Coming Soon...</p>
                         <div v-if="server.security" class="grid-cols-3 gap-4 mt-6">
                             <!-- Count of security alerts -->
                             <div class="flex items center justify-between mt-4 px-6">

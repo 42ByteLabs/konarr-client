@@ -2,6 +2,10 @@
 import { onMounted, computed, onUpdated } from "vue";
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiGraph, mdiPencil, mdiDelete } from "@mdi/js";
+import MarkdownIt from "markdown-it";
+import DOMPurify from "dompurify";
+
+const md = new MarkdownIt();
 
 import type { KonarrProject } from "@/types";
 
@@ -43,6 +47,11 @@ let title = computed(() => {
     return project.value.title || project.value.name;
 });
 
+const description = computed(() => {
+    const result = md.render(project.value.description || "");
+    return DOMPurify.sanitize(result);
+});
+
 let container_sha = computed(() => {
     // Truncate the container sha to 12 characters
     if (project.value.snapshot !== undefined && project.value.snapshot.metadata['container.sha'] !== undefined) {
@@ -66,7 +75,12 @@ let container_sha = computed(() => {
                     <div class="flex flex-col items-center pb-6">
                         <ProjectIcon :type="project.type" size="64" />
 
-                        <Title :title="title" :description="project.description" />
+                        <h2 class="text-4xl">
+                            {{ title }}
+                        </h2>
+                        <div v-if="description" v-html="description"
+                            class="text-center text-gray-600 dark:text-black text-sm my-2">
+                        </div>
 
                         <div v-if="project.type === 'Container' && project.snapshot">
                             <ProjectInfo :value="project.snapshot.metadata['container.image']" />

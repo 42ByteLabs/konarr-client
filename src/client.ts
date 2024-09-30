@@ -1,6 +1,7 @@
 import axios from "axios";
 
-export const SERVER_BASE_URL = "/api";
+export const SERVER_BASE_URL = "http://localhost:8000/api";
+// export const SERVER_BASE_URL = "/api";
 
 let api = axios.create({
     // Setting in the vite.config.ts

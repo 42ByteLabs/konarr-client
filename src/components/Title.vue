@@ -26,14 +26,13 @@ const description = computed(() => {
 
 <template>
     <div class="mt-8 mb-4">
-        <h1 class="text-4xl text-center pr-5">
+        <h1 class="text-4xl text-center pr-5 dark:text-white">
             {{ title }}
         </h1>
-
-        <div v-if="description" v-html="description" class="text-center text-gray-500 text-sm my-2"></div>
-
-        <h2 v-if="subtitle" class="text-2xl text-center mb-4">
+        <h2 v-if="subtitle" class="text-2xl text-center mb-4 dark:text-white">
             {{ subtitle }}
         </h2>
+        <div v-if="description" v-html="description" class="text-center text-gray-500 dark:text-white text-sm my-2">
+        </div>
     </div>
 </template>

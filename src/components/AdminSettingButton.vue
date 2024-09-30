@@ -12,13 +12,17 @@ const props = defineProps<{
     disabled?: boolean;
 }>();
 
+const current = computed(() => {
+    return router.currentRoute.value.name == props.link;
+});
+
 </script>
 
 <template>
     <div>
         <router-link v-if="!props.disabled" :to="{ name: props.link }"
-            :class="[current ? 'bg-pink-100 hover:bg-pink-200' : 'bg-gray-100 hover:bg-pink-200', 'flex items-left justify-between w-full p-2 rounded-lg mt-4 pl-6']">
-            <span :class="[current ? 'text-gray-500' : 'text-gray-700']" class="flex items-center">
+            :class="[current ? 'bg-accent-500 hover:bg-accent-400' : 'bg-gray-100 hover:bg-accent-200', 'flex items-left justify-between w-full p-2 rounded-lg mt-4 pl-6']">
+            <span :class="[current ? 'text-black' : 'text-gray-700']" class="flex items-center">
                 <strong>
                     {{ title }}
                 </strong>
@@ -26,7 +30,7 @@ const props = defineProps<{
             <svg-icon type="mdi" :path="icon"></svg-icon>
         </router-link>
         <button v-else disabled
-            class="flex items-left justify-between w-full p-2 rounded-lg mt-4 pl-6 bg-gray-100 hover:bg-pink-200">
+            class="flex items-left justify-between w-full p-2 rounded-lg mt-4 pl-6 bg-gray-100 hover:bg-accent-200">
             <span :class="[current ? 'text-gray-500' : 'text-gray-700']" class="flex items-center">
                 <strong>
                     {{ title }}

@@ -67,7 +67,7 @@ onMounted(() => {
             <svg-icon type="mdi" :path="mdiTextSearchVariant" class="w-6 h-6 text-gray-500"></svg-icon>
         </div>
         <input type="text" id="search"
-            class="col-span-8 col-start-3 px-4 py-2 border border-gray-300 rounded-md hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500"
+            class="col-span-8 col-start-3 px-4 py-2 border border-gray-300 rounded-md hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500"
             @input="typeSearch" :placeholder="props.placeholder" />
     </div>
 </template>

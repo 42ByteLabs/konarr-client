@@ -22,6 +22,7 @@ import {
 import { useServerStore } from "@/stores/server";
 import { router, navigation } from "@/router";
 import type { KonarrUser } from "@/types";
+import DarkModeButton from "@/components/DarkModeButton.vue";
 
 const server = useServerStore();
 
@@ -32,7 +33,7 @@ const props = defineProps<{
 </script>
 
 <template>
-    <Disclosure as="nav" class="bg-gray-800" v-slot="{ open }">
+    <Disclosure as="nav" class="bg-gray-900 dark:bg-gray-dark" v-slot="{ open }">
         <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div class="relative flex h-16 items-center justify-between">
                 <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -72,8 +73,8 @@ const props = defineProps<{
                 <div v-if="server.user"
                     class="absolute inset-y-0 right-0 flex items-center justify-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                     <Menu as="div" class="relative ml-3">
-                        <MenuButton class="text-white bg-gray-800 rounded-md px-3 py-2 text-sm font-medium">
-                            <PlusCircleIcon class="h-7 w-7 mt-1" aria-hidden="true" />
+                        <MenuButton class="text-white rounded-md px-3 py-2 text-sm font-medium">
+                            <PlusCircleIcon class="h-7 w-7" aria-hidden="true" />
                         </MenuButton>
 
                         <transition enter-active-class="transition ease-out duration-100"
@@ -95,7 +96,6 @@ const props = defineProps<{
                             </MenuItems>
                         </transition>
                     </Menu>
-
                 </div>
 
                 <div v-if="user"
@@ -104,15 +104,15 @@ const props = defineProps<{
                     <Menu as="div" class="relative ml-3">
                         <div>
                             <MenuButton
-                                class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                                <span class="text-gray-300 text-sm font-medium truncate mr-4 mt-1.5">
+                                class="relative flex rounded-full bg-accent-500 hover:bg-accent-600 text-sm px-6 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                <span class="text-black text-sm font-medium truncate mr-4 mt-1.5">
                                     {{ user.username }}
                                 </span>
                                 <span class="absolute -inset-1.5" />
                                 <span class="sr-only"> Open user menu </span>
                                 <img v-if="user.avatar" class="h-8 w-8 rounded-full" :src="user.avatar"
                                     :alt="user.username + ' avatar'" />
-                                <UserCircleIcon v-else class="h-8 w-8 rounded-full text-gray-300" aria-hidden="true" />
+                                <UserCircleIcon v-else class="h-8 w-8 rounded-full text-black" aria-hidden="true" />
                             </MenuButton>
                         </div>
                         <transition enter-active-class="transition ease-out duration-100"
@@ -131,6 +131,16 @@ const props = defineProps<{
                                     Admin Panel
                                 </router-link>
                                 </MenuItem>
+
+                                <MenuItem v-slot="{ active }">
+                                <div class="grid grid-cols-2">
+                                    <span class="px-4 py-2 text-sm text-gray-700">
+                                        Theme
+                                    </span>
+                                    <DarkModeButton />
+                                </div>
+                                </MenuItem>
+
                                 <MenuItem v-slot="{ active }">
                                 <a href="#" :class="[
                                     active ? 'bg-gray-100' : '',
@@ -147,11 +157,11 @@ const props = defineProps<{
                 <div v-else="user"
                     class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                     <RouterLink v-if="server.config.registration" to="/register"
-                        class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-6 py-2 text-sm font-medium bg-pink-700 mr-4">
+                        class="text-gray-300 bg-accent-500 hover:bg-accent-700 hover:text-white rounded-md px-6 py-2 text-sm font-medium mr-4">
                         Register
                     </RouterLink>
                     <RouterLink to="/login"
-                        class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-6 py-2 text-sm font-medium bg-pink-700">
+                        class="text-gray-300 bg-accent-500 hover:bg-accent-600 hover:text-white rounded-md px-6 py-2 text-sm font-medium">
                         Login
                     </RouterLink>
                 </div>

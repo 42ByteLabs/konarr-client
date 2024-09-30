@@ -9,6 +9,13 @@ import router from "@/router";
 const server = useServerStore();
 
 onMounted(() => {
+    // Dark mode
+    var darkMode = localStorage.getItem("dark-mode");
+    if (darkMode === null) {
+        darkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    }
+    document.documentElement.className = darkMode === "true" ? "dark" : "";
+
     server.fetchInfo();
 });
 
@@ -21,8 +28,8 @@ onMounted(() => {
 
     <RouterView />
 
-    <footer class="mx-auto bg-gray-100 pt-4 pb-6">
-        <p class="text-center text-gray-500 text-xs pb-2">
+    <footer class="mx-auto bg-gray-100 dark:bg-black pt-4 pb-6">
+        <p class="text-center text-gray-500 dark:text-gray-100 text-xs pb-2">
             <a :href="'https://github.com/42ByteLabs/konarr/releases/tag/' + server.version
                 ">
                 v{{ server.version }}
@@ -30,7 +37,7 @@ onMounted(() => {
             - {{ server.commit }}
         </p>
 
-        <p class="text-center text-gray-500 text-xs">
+        <p class="text-center text-gray-500 dark:text-gray-100 text-xs">
             <a href="https://42bytelabs.com">42ByteLabs</a> &copy; 2024 All rights
             reserved
         </p>
