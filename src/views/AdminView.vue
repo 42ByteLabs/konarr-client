@@ -29,7 +29,32 @@ onMounted(() => {
             <div class="grid grid-cols-6 gap-2 w-full mx-auto">
                 <AdminSettingMenu current="general" :icon="mdiServer" />
 
-                <div v-if="!admin.loading" class="col-span-4 bg-white shadow-md rounded-lg p-4">
+                <div v-if="!admin.loading" class="col-span-4 bg-white shadow-md rounded-lg p-4 pt-6">
+                    <h3 class="text-lg font-semibold my-4 text-center">
+                        Project Summary Information
+                    </h3>
+                    <div class="grid grid-cols-3 text-center">
+                        <div class="">
+                            <span>Total</span>
+                        </div>
+                        <div class="">
+                            <span>Active</span>
+                        </div>
+                        <div class="">
+                            <span>Archived</span>
+                        </div>
+                        <div class="">
+                            <strong>{{ admin.projectStats.total || 0 }}</strong>
+                        </div>
+                        <div class="">
+                            <strong>{{ admin.projectStats.active || 0 }}</strong>
+                        </div>
+                        <div class="">
+                            <strong>{{ admin.projectStats.archived || 0 }}</strong>
+                        </div>
+                    </div>
+
+                    <hr class="my-6 border-gray-300" />
 
                     <AdminSetting title="Server Version" :data="server.version" />
                     <AdminSetting title="Server Commit" :data="server.commit" />

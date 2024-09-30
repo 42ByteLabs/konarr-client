@@ -16,6 +16,26 @@ export interface KonarrConfig {
     registration: boolean;
 }
 
+export interface KonarrAdmin {
+    loading: boolean;
+    settings: [string, string][];
+    project_stats: KonarrAdminProjectStats;
+    users: KonarrUser[];
+    userStats: KonarrAdminUserStats;
+}
+
+export interface KonarrAdminUserStats {
+    total: number;
+    active: number;
+    inactive: number;
+}
+
+export interface KonarrAdminProjectStats {
+    total: number;
+    inactive: number;
+    archived: number;
+}
+
 export interface KonarrUser {
     username: string;
     avatar?: string;

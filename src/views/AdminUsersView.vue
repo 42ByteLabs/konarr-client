@@ -32,6 +32,34 @@ onMounted(() => {
                 <div v-if="!admin.loading" class="col-span-4 bg-white shadow-md rounded-lg p-4">
                     <AdminSetting title="Registration Active" :data="admin.settings.registration" setting="registration"
                         toggle />
+
+                    <hr class="my-6 border-gray-300" />
+
+                    <h3 class="text-lg font-semibold my-4 text-center">
+                        User Summary Information
+                    </h3>
+                    <div class="grid grid-cols-3 text-center">
+                        <div class="">
+                            <span>Total</span>
+                        </div>
+                        <div class="">
+                            <span>Active</span>
+                        </div>
+                        <div class="">
+                            <span>Inactive</span>
+                        </div>
+                        <div class="">
+                            <strong>{{ admin.userStats.total }}</strong>
+                        </div>
+                        <div class="">
+                            <strong>{{ admin.userStats.active }}</strong>
+                        </div>
+                        <div class="">
+                            <strong>{{ admin.userStats.inactive }}</strong>
+                        </div>
+                    </div>
+
+
                     <hr class="my-6 border-gray-300" />
 
                     <h4 class="text-lg font-semibold ml-4 text-center">

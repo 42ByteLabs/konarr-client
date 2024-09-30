@@ -1,15 +1,25 @@
 import { defineStore } from "pinia";
 import client from "@/client";
 import router from "@/router";
+import type { KonarrAdmin } from "@/types";
 
 export const useAdminStore = defineStore("admin", {
     state: () =>
     ({
         loading: true,
         settings: {},
+        projectStats: {
+            total: 0,
+            inactive: 0,
+            archived: 0,
+        },
         users: [],
-        page: "General",
-    }),
+        userStats: {
+            total: 0,
+            active: 0,
+            inactive: 0,
+        },
+    } as KonarrAdmin),
 
     actions: {
         async fetchInfo() {
@@ -18,7 +28,9 @@ export const useAdminStore = defineStore("admin", {
                 .get("/admin")
                 .then((response) => {
                     this.settings = response.data.settings;
+                    this.projectStats = response.data.projectStats;
                     this.users = response.data.users;
+                    this.userStats = response.data.userStats;
                     this.loading = false;
                 })
                 .catch((error) => {
