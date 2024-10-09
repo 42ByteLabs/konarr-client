@@ -25,6 +25,14 @@ export default {
             green: colors.emerald,
             blue: colors.blue,
             pink: colors.pink,
+
+            sec: {
+                critical: colors.red,
+                high: colors.orange,
+                medium: colors.blue,
+                low: colors.emerald,
+                other: colors.gray,
+            }
         },
         extend: {
             gridTemplateColumns: {

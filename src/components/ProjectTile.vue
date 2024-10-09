@@ -31,7 +31,8 @@ const link = computed(() => {
 </script>
 
 <template>
-    <div class="bg-white shadow-md rounded-lg p-4 mb-6 hover:bg-pink-500 hover:shadow-lg">
+    <div
+        class="bg-white dark:bg-gray-700 dark:text-white shadow-md rounded-lg p-4 m-2 hover:bg-pink-500 hover:shadow-lg">
         <router-link :to="{ name: 'Project', params: { id: project.id } }" class="flex items-center">
             <h3 class="ml-2 text-lg font-semibold">
                 {{ props.project.title || props.project.name }}
@@ -47,12 +48,13 @@ const link = computed(() => {
             </div>
             <!-- Online Status -->
             <div class="flex items-center col-span-1 mr-2">
-                <svg-icon v-if="project.status === true" type="mdi" :path="mdiCloudCheckOutline"></svg-icon>
-                <svg-icon v-else type="mdi" :path="mdiCloudOffOutline"></svg-icon>
+                <svg-icon v-if="project.status === true" type="mdi" :path="mdiCloudCheckOutline"
+                    class="text-blue-400"></svg-icon>
+                <svg-icon v-else type="mdi" :path="mdiCloudOffOutline" class="text-red-400"></svg-icon>
             </div>
             <!-- Dependencies -->
             <div v-if="project.snapshot && project.snapshot.dependencies" class="flex items-center col-span-1 mr-2">
-                <svg-icon type="mdi" :path="mdiGraph"></svg-icon>
+                <svg-icon type="mdi" :path="mdiGraph" class="text-green-400"></svg-icon>
                 <span class="ml-1">
                     {{ project.snapshot.dependencies || 0 }}
                 </span>

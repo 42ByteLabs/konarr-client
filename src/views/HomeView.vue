@@ -17,47 +17,54 @@ const server = useServerStore();
                 <Title title="Konarr Home" />
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-                    <div class="bg-white shadow-md rounded-md p-4 text-center">
+                    <div class="bg-white dark:bg-gray-700 dark:text-white shadow-md rounded-md p-4 text-center pb-6">
                         <h2 class="text-lg font-semibold">Projects</h2>
-                        <p class="text-sm text-gray-500">Summary of the projects</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-200">
+                            Summary of the projects
+                        </p>
 
                         <div class="grid-cols-3 gap-4 mt-6">
                             <!-- Count of projects -->
                             <div class="flex items center justify-between mt-4 px-6">
-                                <span class="text-sm text-gray-500">Total Projects</span>
-                                <span class="text-lg font-semibold">{{ server.projects.total }}</span>
+                                <span class="text-sm text-gray-500 dark:text-gray-200">Total Projects</span>
+                                <span class="text-lg font-semibold">{{ server.projects.total
+                                    }}</span>
                             </div>
                             <div class="flex items center justify-between mt-4 px-6">
-                                <span class="text-sm text-gray-500">Total Servers</span>
+                                <span class="text-sm text-gray-500 dark:text-gray-200">Total Servers</span>
                                 <span class="text-lg font-semibold">{{ server.projects.servers }}</span>
                             </div>
                             <div class="flex items center justify-between mt-4 px-6">
-                                <span class="text-sm text-gray-500">Total Containers</span>
+                                <span class="text-sm text-gray-500 dark:text-gray-200">Total Containers</span>
                                 <span class="text-lg font-semibold">{{ server.projects.containers }}</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white shadow-md rounded-md p-4 text-center pb-6">
+                    <div class="bg-white dark:bg-gray-700 dark:text-white shadow-md rounded-md p-4 text-center pb-6">
                         <h2 class="text-lg font-semibold">
                             Dependencies
                         </h2>
-                        <p class="text-sm text-gray-500">Summary of the dependencies</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-200">Summary of the dependencies</p>
                         <div class="grid-cols-3 gap-4 mt-6">
                             <!-- Count of dependencies -->
                             <div class="flex items center justify-between mt-4 px-6">
-                                <span class="text-sm text-gray-500">Total Dependencies</span>
+                                <span class="text-sm text-gray-500 dark:text-gray-200">Total Dependencies</span>
                                 <span class="text-lg font-semibold">{{ server.dependencies.total }}</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white shadow-md rounded-md p-4 pb-6 text-center">
+                    <div class="bg-white dark:bg-gray-700 dark:text-white shadow-md rounded-md p-4 text-center pb-6">
                         <h2 class="text-lg font-semibold">
                             Security
                         </h2>
-                        <p v-if="server.security" class="text-sm text-gray-500">Summary of the Security Alerts</p>
-                        <p v-else class="text-sm text-gray-500">Feature Coming Soon...</p>
+                        <p v-if="server.security" class="text-sm text-gray-500 dark:text-gray-200">
+                            Summary of the Security Alerts
+                        </p>
+                        <p v-else class="text-sm text-gray-500 dark:text-gray-200">
+                            Feature Coming Soon...
+                        </p>
                         <div v-if="server.security" class="grid-cols-3 gap-4 mt-6">
                             <!-- Count of security alerts -->
                             <div class="flex items center justify-between mt-4 px-6">

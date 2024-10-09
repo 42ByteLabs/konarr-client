@@ -10,16 +10,17 @@ const props = defineProps<{
 }>();
 </script>
 <template>
-    <div class="mb-10">
+    <div class="mb-10 mt-6">
         <div class="flex justify-center items-center mb-4">
             <svg-icon type="mdi" :path="mdiSecurity" class="mr-2"></svg-icon>
             <h2 class="text-2xl font-semibold">
                 Security - {{ props.summary.total }}
             </h2>
         </div>
-        <div class="grid grid-cols-10 gap-2 w-full mx-auto">
+        <div class="grid grid-cols-10 gap-2 w-full mx-auto dark:text-black">
+            <!-- on hover, make the card slightly bigger and change the color -->
             <router-link :to="{ name: 'Security', query: { snapshot: props.snapshot, severity: 'critical' } }"
-                class="col-span-2 shadow-md rounded-lg p-4 bg-red-100 hover:bg-red-300 hover:shadow-lg text-center">
+                class="col-span-2 shadow-md rounded-lg p-4 bg-sec-critical-200 dark:bg-sec-critical-400 hover:bg-sec-critical-300 dark:hover:bg-sec-critical-500 hover:shadow-lg text-center">
                 <h5 class="">
                     Critical
                 </h5>
@@ -30,7 +31,7 @@ const props = defineProps<{
                 </span>
             </router-link>
             <router-link :to="{ name: 'Security', query: { snapshot: props.snapshot, severity: 'high' } }"
-                class="col-span-2 shadow-md rounded-lg p-4 bg-orange-100 hover:bg-orange-300 hover:shadow-lg text-center">
+                class="col-span-2 shadow-md rounded-lg p-4 bg-sec-high-200 dark:bg-sec-high-300 hover:bg-sec-high-300 dark:hover:bg-sec-high-400 hover:shadow-lg text-center">
                 <h5 class="">
                     High
                 </h5>
@@ -41,7 +42,7 @@ const props = defineProps<{
                 </span>
             </router-link>
             <router-link :to="{ name: 'Security', query: { snapshot: props.snapshot, severity: 'medium' } }"
-                class="col-span-2 shadow-md rounded-lg p-4 bg-blue-100 hover:bg-blue-300 hover:shadow-lg text-center">
+                class="col-span-2 shadow-md rounded-lg p-4 bg-sec-medium-200 dark:bg-sec-medium-300 hover:bg-sec-medium-300 dark:hover:bg-sec-medium-400 hover:shadow-lg text-center">
                 <h5 class="">
                     Medium
                 </h5>
@@ -52,7 +53,7 @@ const props = defineProps<{
                 </span>
             </router-link>
             <router-link :to="{ name: 'Security', query: { snapshot: props.snapshot, severity: 'low' } }"
-                class="col-span-2 shadow-md rounded-lg p-4 bg-green-100 hover:bg-green-300 hover:shadow-lg text-center">
+                class="col-span-2 shadow-md rounded-lg p-4 bg-sec-low-200 dark:bg-sec-low-300 hover:bg-sec-low-300 dark:hover:bg-sec-low-400 hover:shadow-lg text-center">
                 <h5 class="">
                     Low
                 </h5>
@@ -62,8 +63,8 @@ const props = defineProps<{
                     </strong>
                 </span>
             </router-link>
-            <router-link :to="{ name: 'Security', query: { snapshot: props.snapshot, severity: 'low' } }"
-                class="col-span-2 shadow-md rounded-lg p-4 bg-gray-100 hover:bg-gray-300 hover:shadow-lg text-center">
+            <router-link :to="{ name: 'Security', query: { snapshot: props.snapshot, severity: 'other' } }"
+                class="col-span-2 shadow-md rounded-lg p-4 bg-sec-other-200 dark:bg-sec-other-300 hover:bg-sec-other-300 dark:hover:bg-sec-other-400 hover:shadow-lg text-center">
                 <h5 class="">
                     Other
                 </h5>

@@ -79,7 +79,7 @@ onMounted(() => {
                         class="relative inline-flex h-6 w-11 items-center rounded-full" @click="toggle">
                         <span class="sr-only">Enable {{ props.title }}</span>
                         <span :class="enabled ? 'translate-x-6' : 'translate-x-1'"
-                            class="inline-block h-4 w-4 transform rounded-full bg-white transition" />
+                            class="inline-block h-4 w-4 transform rounded-full bg-white dark:bg-gray-700 transition" />
                     </Switch>
 
                     <div v-else-if="props.hidedata" class="grid grid-cols-12">

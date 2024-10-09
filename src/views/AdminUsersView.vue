@@ -29,12 +29,8 @@ onMounted(() => {
             <div class="grid grid-cols-6 gap-2 w-full mx-auto">
                 <AdminSettingMenu current="general" :icon="mdiServer" />
 
-                <div v-if="!admin.loading" class="col-span-4 bg-white shadow-md rounded-lg p-4">
-                    <AdminSetting title="Registration Active" :data="admin.settings.registration" setting="registration"
-                        toggle />
-
-                    <hr class="my-6 border-gray-300" />
-
+                <div v-if="!admin.loading"
+                    class="col-span-4 bg-white dark:bg-gray-700 dark:text-white shadow-md rounded-lg p-4 pt-6">
                     <h3 class="text-lg font-semibold my-4 text-center">
                         User Summary Information
                     </h3>
@@ -59,6 +55,9 @@ onMounted(() => {
                         </div>
                     </div>
 
+                    <hr class="my-6 border-gray-300" />
+                    <AdminSetting title="Registration Active" :data="admin.settings.registration" setting="registration"
+                        toggle />
 
                     <hr class="my-6 border-gray-300" />
 
@@ -68,7 +67,8 @@ onMounted(() => {
 
                     <table class="min-w-full table-auto mt-4">
                         <thead>
-                            <tr class="bg-gray-200 text-gray-600 text-sm leading-normal">
+                            <tr
+                                class="bg-gray-200 dark:bg-accent-500 text-gray-600 dark:text-black text-sm leading-normal">
                                 <th class="py-3 px-6 text-left">Username</th>
                                 <th class="py-3 px-6 text-left">Status</th>
                                 <th class="py-3 px-6 text-left">Role</th>

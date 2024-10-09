@@ -67,19 +67,16 @@ let container_sha = computed(() => {
 <template>
     <main>
         <div v-if="project" class="container mt-4 mb-6 w-full mx-auto">
-            <div class="w-4/5 mx-auto">
-                <ProjectNav :name="project.name" :id="project.id" :parent="project.parent" />
-            </div>
             <div class="grid grid-cols-6 gap-2 w-full mx-auto">
-                <div class="col-span-2 bg-white shadow-md rounded-lg p-4">
-                    <div class="flex flex-col items-center pb-6">
+                <div class="col-span-2 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4">
+                    <div class="flex flex-col items-center pb-6 pt-2">
                         <ProjectIcon :type="project.type" size="64" />
-
-                        <h2 class="text-4xl">
+                        <h2 class="text-4xl mt-2 text-center">
                             {{ title }}
                         </h2>
+
                         <div v-if="description" v-html="description"
-                            class="text-center text-gray-600 dark:text-black text-sm my-2">
+                            class="text-center text-gray-600 dark:text-white text-sm my-2">
                         </div>
 
                         <div v-if="project.type === 'Container' && project.snapshot">
@@ -108,31 +105,41 @@ let container_sha = computed(() => {
                     </div>
                 </div>
                 <div v-if="project.snapshot && project.snapshot.dependencies"
-                    class="col-span-4 bg-white shadow-md rounded-lg p-4">
-                    <SecuritySummary v-if="server.security" :summary="project.snapshot.security"
-                        :snapshot="project.snapshot.id" />
+                    class="col-span-4 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4">
+
+                    <ProjectNav :title="title" :id="project.id" :parent="project.parent" />
+
+                    <SecuritySummary :summary="project.snapshot.security" :snapshot="project.snapshot.id" />
+
+                    <hr class="my-6 bg-gray-400" />
 
                     <DependenciesList :snapid="project.snapshot.id" :projectid="project.id"
                         :total="project.snapshot.dependencies" />
                 </div>
-                <div v-else-if="project.children" class="col-span-4">
-                    <h2 class="text-2xl font-bold text-center my-6">
+                <div v-else-if="project.children"
+                    class="col-span-4 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4">
+
+                    <ProjectNav :title="title" :id="project.id" :parent="project.parent" />
+
+                    <SecuritySummary :summary="project.snapshot.security" :snapshot="project.snapshot.id" />
+
+                    <h2 class="text-2xl font-bold text-center my-6 dark:text-white">
                         Subprojects - {{ project.children.length }}
                     </h2>
 
-                    <hr class="my-6 bg-gray-400" />
                     <div class="grid grid-cols-2 gap-2">
                         <div v-for="child in project.children" :key="child.id">
                             <ProjectTile :project="child" :id="child.id" />
                         </div>
                     </div>
                 </div>
-                <div v-else class="col-span-4 bg-white shadow-md rounded-lg p-4">
-                    <h3 class="text-center text-xl font-bold mt-6">
+                <div v-else class="col-span-4 bg-white dark:bg-gray-700 shadow-md rounded-lg p-4">
+                    <h3 class="dark:text-white text-center text-xl font-bold mt-6">
                         Project has no Snapshots or Subprojects
                     </h3>
                 </div>
-                <div v-if="server.user.role === 'admin'" class="col-span-2 bg-white shadow-md rounded-lg p-4">
+                <div v-if="server.user.role === 'admin'"
+                    class="col-span-2 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4">
                     <h3 class="text-xl font-semibold text-center my-2">Admin Actions</h3>
                     <!-- Delete Project Button -->
                     <div class="mt-4">

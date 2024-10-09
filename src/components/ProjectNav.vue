@@ -1,38 +1,45 @@
 <script setup lang="ts">
 import SvgIcon from "@jamescoyle/vue-icon";
-import { mdiMenuRight } from "@mdi/js";
+import { mdiPencil, mdiMenuLeft } from "@mdi/js";
 
 const props = defineProps<{
     id: number;
-    name: string;
+    title: string;
     parent?: number;
 }>();
 
 </script>
 
 <template>
-    <div class="p-4 mb-6">
-        <ol class="flex items-center">
-            <li class="inline-flex items-center ml-3">
-                <router-link :to="{ 'name': 'Projects' }"
-                    class="text-black hover:text-gray-800 dark:text-white dark:hover:text-gray-100">
-                    Projects
-                </router-link>
-            </li>
-            <li v-if="props.parent" class="inline-flex items-center mx-3">
-                <svg-icon type="mdi" :path="mdiMenuRight" class="h-4 w-4 mr-3 dark:text-white"></svg-icon>
-                <router-link :to="{ 'name': 'Project', 'params': { 'id': props.parent } }"
-                    class="text-gray-500 hover:text-gray-700 dark:text-white dark:hover:text-gray-100">
+    <div class="grid grid-cols-8 mb-8 mt-4">
+        <div class="col-span-1 text-center">
+            <router-link v-if="parent" :to="{ 'name': 'Project', 'params': { 'id': props.parent } }"
+                class="text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-100 mt-4">
+                <button class="flex items-center rounded-md bg-accent-400 hover:bg-accent-500 p-2 pr-6 mt-2">
+                    <svg-icon type="mdi" :path="mdiMenuLeft" class="h-6 w-6 mr-1"></svg-icon>
                     Parent
-                </router-link>
-            </li>
-            <li class="inline-flex items-center">
-                <svg-icon type="mdi" :path="mdiMenuRight" class="h-4 w-4 mr-3"></svg-icon>
-                <router-link :to="{ 'name': 'Project', 'params': { 'id': props.id } }"
-                    class="text-accent-500 hover:text-accent-700">
-                    {{ props.name }}
-                </router-link>
-            </li>
-        </ol>
+                </button>
+            </router-link>
+            <router-link v-else :to="{ 'name': 'Projects' }"
+                class="text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-100 mt-4">
+                <button class="flex items-center rounded-md bg-accent-400 hover:bg-accent-500 p-2 pr-6 mt-2">
+                    <svg-icon type="mdi" :path="mdiMenuLeft" class="h-6 w-6 mr-1"></svg-icon>
+                    Projects
+                </button>
+            </router-link>
+        </div>
+        <div class="col-span-6">
+            <h2 class="text-4xl mt-2 text-center">
+                {{ title }}
+            </h2>
+        </div>
+        <div class="col-span-1 text-center">
+            <router-link :to="{ 'name': 'Edit Project', 'params': { 'id': props.id } }">
+                <button
+                    class="bg-blue-400 hover:bg-blue-600 text-white font-bold py-2 px-4 mt-2 rounded focus:outline-none focus:shadow-outline">
+                    <svg-icon type="mdi" :path="mdiPencil" class="h-6 w-6"></svg-icon>
+                </button>
+            </router-link>
+        </div>
     </div>
 </template>
