@@ -25,7 +25,7 @@ export const useDependenciesStore = defineStore("dependencies", {
         async fetchDependencies(page: number = 0, limit: number = 10) {
             if (this.current === 0) {
                 await client
-                    .get(`/dependencies?page=${page}&limit=${limit}`)
+                    .get(`/dependencies?top=true&page=${page}&limit=${limit}`)
                     .then((response) => {
                         this.loading = false;
                         this.data = response.data.data;
@@ -92,14 +92,24 @@ export const useDependenciesStore = defineStore("dependencies", {
 
         async fetchDependency(id: number, snapshot?: number) {
             this.current = id;
-            // Optional snapshot
-            let params = snapshot === undefined ? "" : `snapshot=${snapshot}`;
 
+            // Optional snapshot
+            let params = "";
+            if (!isNaN(snapshot)) {
+                params += `snapshot=${snapshot}`
+            }
+    
             await client
                 .get(`/dependencies/${this.current}?${params}`)
                 .then((response) => {
                     this.loading = false;
-                    this.data.push(response.data);
+                    // If the item already exists, resplce it or push it 
+                    const index = this.data.findIndex((item) => item.id === this.current);
+                    if (index !== -1) {
+                        this.data[index] = response.data;
+                    } else {
+                        this.data.push(response.data);
+                    }
                 })
                 .catch((error) => {
                     if (error.response.status === 401) {

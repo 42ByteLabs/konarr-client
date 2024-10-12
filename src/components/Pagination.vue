@@ -8,7 +8,7 @@ const props = defineProps<{
 </script>
 
 <template>
-    <div class="flex justify-center mt-6 mb-2">
+    <div class="flex justify-center mt-6 mb-2 dark:text-white">
         <button :class="[
             props.page !== 0
                 ? 'bg-accent-500 hover:bg-accent-700'

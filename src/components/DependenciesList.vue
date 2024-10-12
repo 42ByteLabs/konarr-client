@@ -48,7 +48,7 @@ onMounted(() => {
                 <tbody>
                     <tr v-for="dependency in dependencies.data" :key="dependency.id">
                         <td class="border px-4 py-2 w-6">
-                            <DependencyIcon :manager="dependency.manager" :id="dependency.id" />
+                            <DependencyIcon :dep="dependency" />
                         </td>
                         <td class="border px-4 py-2">
                             <router-link

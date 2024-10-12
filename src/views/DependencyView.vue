@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, computed } from "vue";
+import { onMounted, computed, ref } from "vue";
 import Title from "@/components/Title.vue";
 import type { KonarrDependency } from "@/types";
 
@@ -27,25 +27,40 @@ onMounted(() => {
     }
 });
 
-const dependency = computed(() => {
+var dependency = computed(() => {
     return dependencies.data.find(
         (c: KonarrDependency) => c.id === dependencies.current,
     );
 });
+
 </script>
 
 <template>
     <main>
         <div v-if="dependency" class="container mt-4 mb-6 w-full mx-auto">
-            <Title :title="dependency.name" :subtitle="dependency.purl" />
+            <div class="grid md:grid-cols-10 sm:grid-cols-1">
+                <div class="md:col-span-2 sm:grid-cols-1 dark:text-white flex justify-center content-center">
+                    <DependencyIcon :dep="dependency" size="96" />
+                </div>
+                <div class="md:col-span-6 sm:grid-cols-1">
+                    <Title :title="dependency.name" :subtitle="dependency.purl" />
+                </div>
+                <div class="md:col-span-2 sm:grid-cols-1 dark:text-white flex justify-center content-center">
+                    <div v-if="dependency.version" class="mt-6">
+                        <a class="text-2xl w-full">
+                            <strong>{{ dependency.version }}</strong>
+                        </a>
+                    </div>
+                </div>
+            </div>
 
-            <div v-if="dependency.projects">"
-                <hr class="my-6 bg-gray-400" />
+            <hr class="my-6 bg-gray-400" />
+            <div v-if="dependency.projects">
                 <h3 class="text-2xl text-center dark:text-white mb-6">
                     Dependency Projects - {{ dependency.projects.length }}
                 </h3>
 
-                <div class="grid grid-cols-2 gap-2">
+                <div class="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4">
                     <div v-for="child in dependency.projects" :key="child.id">
                         <ProjectTile :project="child" :id="child.id" />
                     </div>

@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiTextSearchVariant } from "@mdi/js";
+
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
+import { ChevronDownIcon } from '@heroicons/vue/20/solid'
 
 import router from "@/router";
 
@@ -14,6 +17,7 @@ const dependencies = useDependenciesStore();
 const props = defineProps<{
     searching: string;
     placeholder?: string;
+    selectables?: Object;
     limit?: number;
 }>();
 
@@ -47,6 +51,9 @@ const search = (value) => {
     }
 };
 
+var active = ref();
+var current = ref();
+
 onMounted(() => {
     const squery = new URLSearchParams(window.location.search).get("search");
 
@@ -67,8 +74,24 @@ onMounted(() => {
             <svg-icon type="mdi" :path="mdiTextSearchVariant"
                 class="w-6 h-6 text-gray-500 dark:text-gray-200"></svg-icon>
         </div>
-        <input type="text" id="search"
-            class="dark:bg-gray-700 dark:text-white col-span-8 col-start-3 px-4 py-2 border border-gray-300 rounded-md hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500"
+
+        <input type="text" id="search" :class="[selectables ? 'col-span-7' : 'col-span-8']"
+            class="dark:bg-gray-700 dark:text-white col-start-3 px-4 py-2 border border-gray-300 rounded-md hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500"
             @input="typeSearch" :placeholder="props.placeholder" />
+
+        <div v-if="selectables" class="col-span-1 mt-1">
+            <select id="countries"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-auto p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                v-model="selected">
+                <option selected>
+                    All Dependency types
+                </option>
+
+                <option v-for="(value, name, index) in props.selectables" key="name" :value="name"
+                    :selected="name === current">
+                    {{ value }}
+                </option>
+            </select>
+        </div>
     </div>
 </template>

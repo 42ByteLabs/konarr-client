@@ -1,31 +1,55 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import SvgIcon from "@jamescoyle/vue-icon";
-import { mdiLanguagePython, mdiDotNet, mdiPackageVariantClosed, mdiLanguagePhp, mdiLanguageGo } from "@mdi/js";
+import * as i from "@mdi/js";
+import type { KonarrDependency } from "@/types";
 
 const props = defineProps<{
-    type?: string;
-    manager?: string;
+    dep: KonarrDependency;
     id?: number;
-    size?: number;
+    size?: string;
 }>();
 
 const icon = computed(() => {
-    switch (props.manager) {
-        case "deb":
-            return mdiPackageVariantClosed;
-        case "composer":
-            return mdiLanguagePhp;
-        case "golang":
-            return mdiLanguageGo;
-        case "pypi":
-            return mdiLanguagePython;
-        case "nuget":
-            return mdiDotNet;
-        default:
-            return mdiPackageVariantClosed;
+    if (props.dep.type === "operating_system") {
+        switch (props.dep.name) {
+            case "debian":
+                return i.mdiDebian;
+            case "alpine":
+                return i.mdiLinux;
+            case "ubuntu":
+                return i.mdiUbuntu;
+            case "rpm" | "fedora":
+                return i.mdiFedora;
+            default:
+                return i.mdiLinux;
+        }
     }
+    else if (props.dep.type === "library") {
+        switch (props.dep.manager) {
+            case "deb":
+                return i.mdiPackageVariantClosed;
+            case "cargo" | "rust":
+                return i.mdiLanguageRust;
+            case "composer":
+                return i.mdiLanguagePhp;
+            case "golang":
+                return i.mdiLanguageGo;
+            case "pypi":
+                return i.mdiLanguagePython;
+            case "nuget":
+                return i.mdiDotNet;
+            case "lua":
+                return i.mdiLanguageLua;
+            case "gem" | "ruby":
+                return i.mdiLanguageRuby;
+            default:
+                return i.mdiPackageVariantClosed;
+        }
+    }
+    return i.mdiPackageVariantClosed;
 });
+
 const link = computed(() => {
     return `/dependencies/${props.id || ""}`;
 });
@@ -34,7 +58,8 @@ const size = computed(() => {
 });
 </script>
 <template>
-    <router-link :to="link" :style="{ width: `${size}px`, height: `${size}px` }">
-        <svg-icon type="mdi" :path="icon" :alt="manager"></svg-icon>
+    <router-link :to="link" class="">
+        <svg-icon type="mdi" :path="icon" :alt="props.dep.manager" :style="{ width: `${size}px`, height: `${size}px` }">
+        </svg-icon>
     </router-link>
 </template>

@@ -23,6 +23,11 @@ onMounted(() => {
     }
 });
 
+const selectables = {
+    "operatin_systems": "Operating System",
+    "libraries": "Libraries",
+};
+
 </script>
 
 <template>
@@ -31,16 +36,15 @@ onMounted(() => {
             <Title :title="'Dependencies - ' + dependencies.total"
                 description="List of Global Components & Dependencies" />
 
-            <div class="w-full">
-                <Search searching="dependencies" placeholder="Find dependency..." limit="24" />
+            <div class="w-full px-4">
+                <Search searching="dependencies" placeholder="Find dependency..." :selectables="selectables"
+                    limit="24" />
 
-                <hr class="my-6 border-gray-300" />
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4 mt-8">
                     <div v-for="dep in dependencies.data" :key="dep.id"
                         class="bg-white dark:bg-gray-700 dark:text-white hover:bg-accent-500 shadow-md rounded-lg p-4">
                         <div class="flex items-center">
-                            <DependencyIcon :manager="dep.manager" :id="dep.id" />
+                            <DependencyIcon :dep="dep" />
                             <router-link :to="{ name: 'Dependency', params: { id: dep.id } }" class="flex items-center">
                                 <h3 class="ml-2 text-lg font-semibold">{{ dep.name }}</h3>
                             </router-link>

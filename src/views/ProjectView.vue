@@ -127,7 +127,7 @@ let container_sha = computed(() => {
                         Subprojects - {{ project.children.length }}
                     </h2>
 
-                    <div class="grid grid-cols-2 gap-2">
+                    <div class="grid grid-cols-2 gap-4">
                         <div v-for="child in project.children" :key="child.id">
                             <ProjectTile :project="child" :id="child.id" />
                         </div>
@@ -137,6 +137,22 @@ let container_sha = computed(() => {
                     <h3 class="dark:text-white text-center text-xl font-bold mt-6">
                         Project has no Snapshots or Subprojects
                     </h3>
+
+                    <hr class="my-6 bg-gray-400" />
+                    <h3 class="dark:text-white text-center text-xl font-bold mt-6">
+                        Setup Konarr Agent
+                    </h3>
+
+                    <div class="grid grid-cols-8 dark:text-white mt-8">
+                        <h4 class="col-span-1 text-xl my-4 font-bold">Docker</h4>
+                        <div class="col-span-7">
+                            <code lang="bash">
+                                docker run -e KONARR_INSTANCE -e KONARR_AGENT_TOKEN -e KONARR_PROJECT_ID -v
+                                "/var/run/docker.sock:/var/run/docker.sock:ro"
+                                ghrc.io/42bytelabs/konarr-agent:latest
+                            </code>
+                        </div>
+                    </div>
                 </div>
                 <div v-if="server.user.role === 'admin'"
                     class="col-span-2 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4">

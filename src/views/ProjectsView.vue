@@ -30,9 +30,8 @@ onMounted(() => {
             <div v-else class="w-full">
                 <Search searching="projects" placeholder="Find projects..." />
 
-                <hr class="my-6 border-gray-300" />
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-8">
                     <ProjectTile v-for="project in projects.data" :key="project.id" :project="project" />
                 </div>
 
