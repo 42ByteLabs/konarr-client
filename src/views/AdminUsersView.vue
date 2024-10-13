@@ -15,6 +15,16 @@ import { useAdminStore } from "@/stores/admin";
 const server = useServerStore();
 const admin = useAdminStore();
 
+
+const updateState = (event, id) => {
+    let state = event.target.value;
+    admin.updateUser(id, null, state);
+};
+const updateRole = (event, id) => {
+    let role = event.target.value;
+    admin.updateUser(id, role);
+};
+
 onMounted(() => {
     admin.fetchInfo();
 });
@@ -69,25 +79,49 @@ onMounted(() => {
                         <thead>
                             <tr
                                 class="bg-gray-200 dark:bg-accent-500 text-gray-600 dark:text-black text-sm leading-normal">
+                                <th class="py-3 px-6 text-left">ID</th>
                                 <th class="py-3 px-6 text-left">Username</th>
                                 <th class="py-3 px-6 text-left">Status</th>
                                 <th class="py-3 px-6 text-left">Role</th>
-                                <th class="py-3 px-6 text-center">Created</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="user in admin.users" :key="user.id">
                                 <td class="py-3 px-6 text-left whitespace-nowrap">
+                                    {{ user.id }}
+                                </td>
+                                <td class="py-3 px-6 text-left whitespace-nowrap">
                                     {{ user.username }}
                                 </td>
                                 <td class="py-3 px-6 text-left">
-                                    {{ user.state }}
+                                    <select v-if="user.id !== 1" @change="updateState($event, user.id)"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option value="active" :selected="user.state === 'active'">
+                                            Active
+                                        </option>
+                                        <option value="disabled" :selected="user.state === 'disabled'">
+                                            Disable
+                                        </option>
+                                    </select>
+                                    <span v-else
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        Active
+                                    </span>
                                 </td>
                                 <td class="py-3 px-6 text-left">
-                                    {{ user.role }}
-                                </td>
-                                <td class="py-3 px-6 text-center">
-                                    {{ user.created_at }}
+                                    <select v-if="user.id !== 1" @change="updateRole($event, user.id)"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option value="admin" :selected="user.role === 'admin'">
+                                            Admin
+                                        </option>
+                                        <option value="user" :selected="user.role === 'user'">
+                                            User
+                                        </option>
+                                    </select>
+                                    <span v-else
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        Admin
+                                    </span>
                                 </td>
                             </tr>
                         </tbody>

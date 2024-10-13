@@ -77,5 +77,28 @@ export const useAdminStore = defineStore("admin", {
                     }
                 });
         },
+
+        async updateUser(id: number, role?: string, state?: string) {
+            var payload = {};
+
+            if (role !== undefined) {
+                payload['role'] = role;
+            }
+            if (state !== undefined) {
+                payload['state'] = state;
+            }
+
+            await client
+                .patch(`/admin/users/${id}`, payload)
+                .then((response) => {
+                    // Update users
+
+                })
+                .catch((error) => {
+                    if (error.response.status === 401) {
+                        router.push({ name: "Login" });
+                    }
+                });
+        }, 
     },
 });

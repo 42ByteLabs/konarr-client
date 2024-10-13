@@ -42,6 +42,14 @@ export interface KonarrUser {
     role: string;
 }
 
+export interface KonarrAdminUser {
+    id: number;
+    username: string;
+    state: string;
+    role: string;
+    createdAt: string;
+}
+
 export interface KonarrProjectsSummary {
     total: number;
     containers: number;
