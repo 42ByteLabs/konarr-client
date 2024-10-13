@@ -66,10 +66,6 @@ onMounted(() => {
                     </div>
 
                     <hr class="my-6 border-gray-300" />
-                    <AdminSetting title="Registration Active" :data="admin.settings.registration" setting="registration"
-                        toggle />
-
-                    <hr class="my-6 border-gray-300" />
 
                     <h4 class="text-lg font-semibold ml-4 text-center">
                         System Users
