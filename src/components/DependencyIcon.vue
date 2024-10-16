@@ -47,6 +47,9 @@ const icon = computed(() => {
                 return i.mdiPackageVariantClosed;
         }
     }
+    else if (props.dep.type === "database") {
+        return i.mdiDatabase
+    }
     return i.mdiPackageVariantClosed;
 });
 

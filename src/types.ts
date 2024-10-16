@@ -94,6 +94,7 @@ export interface KonarrProject {
     name: string;
     title: string;
     type: string;
+    status: boolean;
     snapshot?: KonarrSnapshot;
     security?: KonarrSecuritySummary;
     description?: string;

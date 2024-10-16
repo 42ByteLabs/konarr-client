@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, computed, onUpdated } from "vue";
 import SvgIcon from "@jamescoyle/vue-icon";
-import { mdiGraph, mdiPencil, mdiDelete } from "@mdi/js";
+import { mdiGraph, mdiPencil, mdiDelete, mdiCloudOffOutline, mdiCloudCheckOutline } from "@mdi/js";
 import MarkdownIt from "markdown-it";
 import DOMPurify from "dompurify";
 
@@ -70,7 +70,19 @@ let container_sha = computed(() => {
             <div class="grid grid-cols-6 gap-2 w-full mx-auto">
                 <div class="col-span-2 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4">
                     <div class="flex flex-col items-center pb-6 pt-2">
-                        <ProjectIcon :type="project.type" size="64" />
+                        <!-- Project Icons -->
+                        <div class="grid grid-cols-6 w-full mb-6">
+                            <div class="col-span-3 flex justify-center">
+                                <svg-icon v-if="project.status" type="mdi" :path="mdiCloudCheckOutline" size="86"
+                                    class="text-blue-400">
+                                </svg-icon>
+                                <svg-icon v-else type="mdi" :path="mdiCloudOffOutline" size="86" class="text-red-400">
+                                </svg-icon>
+                            </div>
+                            <div class="col-span-3 flex justify-center">
+                                <ProjectIcon :type="project.type" size="86" />
+                            </div>
+                        </div>
                         <h2 class="text-4xl mt-2 text-center">
                             {{ title }}
                         </h2>
@@ -79,9 +91,9 @@ let container_sha = computed(() => {
                             class="text-center text-gray-600 dark:text-white text-sm my-2">
                         </div>
 
+
                         <div v-if="project.type === 'Container' && project.snapshot">
                             <ProjectInfo :value="project.snapshot.metadata['container.image']" />
-                            <!-- <ProjectInfo name="Status" :value="project.status ? 'Online' : 'Offline'" /> -->
 
                             <ProjectInfo name="Tool" :value="project.snapshot.metadata['bom.tool']"
                                 :version="project.snapshot.metadata['bom.tool.version']" />
