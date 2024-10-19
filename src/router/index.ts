@@ -1,13 +1,19 @@
+// https://v3.router.vuejs.org/
 import { createRouter, createWebHistory } from "vue-router";
 
 import HomeView from "@/views/HomeView.vue";
+// Auth Views
 import LoginView from "@/views/LoginView.vue";
 import RegisterView from "@/views/RegisterView.vue";
+// Project Views
 import ProjectsView from "@/views/ProjectsView.vue";
 import ProjectView from "@/views/ProjectView.vue";
 import ProjectNew from "@/views/ProjectNew.vue";
+import ProjectEdit from "@/views/ProjectEdit.vue";
+// Dependency Views
 import DependenciesView from "@/views/DependenciesView.vue";
 import DependencyView from "@/views/DependencyView.vue";
+// Security Views
 import SecurityView from "@/views/SecurityView.vue";
 // Admin Views
 import AdminView from "@/views/AdminView.vue";
@@ -55,7 +61,7 @@ export const router = createRouter({
         {
             "path": "/projects/:id/edit",
             "name": "Edit Project",
-            component: ProjectNew
+            component: ProjectEdit
         },
         {
             path: "/dependencies",

@@ -6,6 +6,7 @@ const props = defineProps<{
     id: number;
     title: string;
     parent?: number;
+    edit?: boolean;
 }>();
 
 </script>
@@ -29,11 +30,11 @@ const props = defineProps<{
             </router-link>
         </div>
         <div class="col-span-6">
-            <h2 class="text-4xl mt-2 text-center">
+            <h2 class="text-4xl mt-2 text-center dark:text-white">
                 {{ title }}
             </h2>
         </div>
-        <div class="col-span-1 text-center">
+        <div v-if="props.edit" class="col-span-1 text-center">
             <router-link :to="{ 'name': 'Edit Project', 'params': { 'id': props.id } }">
                 <button
                     class="bg-blue-400 hover:bg-blue-600 text-white font-bold py-2 px-4 mt-2 rounded focus:outline-none focus:shadow-outline">

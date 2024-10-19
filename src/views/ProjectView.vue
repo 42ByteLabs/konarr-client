@@ -119,7 +119,7 @@ let container_sha = computed(() => {
                 <div v-if="project.snapshot && project.snapshot.dependencies"
                     class="col-span-4 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4">
 
-                    <ProjectNav :title="title" :id="project.id" :parent="project.parent" />
+                    <ProjectNav :title="title" :id="project.id" :parent="project.parent" edit />
 
                     <SecuritySummary :summary="project.snapshot.security" :snapshot="project.snapshot.id" />
 
@@ -131,7 +131,7 @@ let container_sha = computed(() => {
                 <div v-else-if="project.children"
                     class="col-span-4 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4">
 
-                    <ProjectNav :title="title" :id="project.id" :parent="project.parent" />
+                    <ProjectNav :title="title" :id="project.id" :parent="project.parent" edit />
 
                     <SecuritySummary :summary="project.snapshot.security" :snapshot="project.snapshot.id" />
 

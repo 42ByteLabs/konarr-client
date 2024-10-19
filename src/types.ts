@@ -99,6 +99,7 @@ export interface KonarrProject {
     security?: KonarrSecuritySummary;
     description?: string;
     created_at: string;
+    parent?: number;
     children?: KonarrProject[];
 }
 

@@ -113,6 +113,22 @@ export const useProjectsStore = defineStore("projects", {
                 });
         },
 
+        async update(project: KonarrProject) {
+            await client
+                .patch(`/projects/${project.id}`, project)
+                .then((response) => {
+                    // Replace the project in the data array
+                    let index = this.data.findIndex((p) => p.id === project.id);
+                    this.data[index] = response.data;
+                    router.push({ name: "Project", params: { id: project.id } });
+                })
+                .catch((error) => {
+                    if (error.response.status === 401) {
+                        router.push({ name: "Login" });
+                    }
+                });
+        },
+
         async delete(id: number) {
             await client
                 .delete(`/projects/${id}`)
