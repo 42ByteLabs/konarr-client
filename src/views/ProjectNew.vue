@@ -28,38 +28,42 @@ onMounted(() => {
         <div class="container mt-4 mb-6 w-full max-w-xl mx-auto">
             <form>
                 <!-- Project Name -->
-                <div class="mb-4">
-                    <label for="username" class="block text-gray-700 text-sm font-bold mb-2">
-                        <span class="text-red-500">*</span>
-                        Project Name
-                    </label>
-                    <input type="text" id="name" name="name" v-model="name"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                </div>
-                <!-- Project Type -->
-                <div class="mb-4">
-                    <label for="type" class="block text-gray-700 text-sm font-bold mb-2">
-                        <span class="text-red-500">*</span>
-                        Project Type
-                    </label>
-                    <select id="type" name="type" v-model="type"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                        <option value="Container">Container</option>
-                        <option value="Server">Server</option>
-                        <option value="Group">Group</option>
-                    </select>
+                <div class="mb-4 grid grid-cols-6">
+                    <div class="col-span-4">
+                        <label for="username" class="block text-gray-700 dark:text-white text-sm font-bold mb-2">
+                            <span class="text-red-500">*</span>
+                            Project Name
+                        </label>
+                        <input type="text" id="name" name="name" placeholder="Project name..." v-model="name"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                    </div>
+                    <div class="col-span-2 pl-6">
+                        <!-- Project Type -->
+                        <label for="type" class="block text-gray-700 dark:text-white text-sm font-bold mb-2">
+                            <span class="text-red-500">*</span>
+                            Project Type
+                        </label>
+                        <select id="type" name="type" v-model="type"
+                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <option value="Server" selected>Server</option>
+                            <option value="Group">Group</option>
+                            <option value="Container">Container</option>
+                        </select>
+                    </div>
                 </div>
                 <!-- Project Description (optional) -->
                 <div class="mb-4">
-                    <label for="description" class="block text-gray-700 text-sm font-bold mb-2">
+                    <label for="description" class="block text-gray-700 dark:text-white text-sm font-bold mb-2">
                         Project Description
                     </label>
-                    <input id="description" name="description" v-model="description"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></input>
+                    <textarea id="description" name="description" placeholder="Project description..."
+                        v-model="description"
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </textarea>
                 </div>
                 <!-- Parent Project (optional) -->
                 <div class="mb-4">
-                    <label for="parent" class="block text-gray-700 text-sm font-bold mb-2">
+                    <label for="parent" class="block text-gray-700 dark:text-white text-sm font-bold mb-2">
                         Parent Project
                     </label>
                     <select id="parent" name="parent" v-model="parent"
@@ -70,9 +74,9 @@ onMounted(() => {
                     </select>
                 </div>
                 <!-- Create Project Button -->
-                <div class="flex items-center justify-between mt-6">
+                <div class="grid grid-cols-6 mt-6">
                     <button
-                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        class="col-span-2 col-start-3 bg-accent-500 hover:bg-accent-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                         type="button" @click="create">
                         Create Project
                     </button>
