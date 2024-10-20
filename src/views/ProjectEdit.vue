@@ -18,12 +18,11 @@ const project_id = parseInt(router.currentRoute.value.params.id);
 const update = async () => {
     await projects.update({
         id: project_id,
-        title: name.value,
-        type: type.value,
-        description: description.value,
-        parent: parent.value || 0
+        title: project.title,
+        type: project.type,
+        description: project.description,
+        parent: project.parent || 0,
     });
-    console.log("Project updated!");
 };
 
 const project = computed(() => {
@@ -31,7 +30,7 @@ const project = computed(() => {
     return projects.data.find((p: KonarrProject) => p.id === project_id)
         || {
         id: project_id,
-        name: "Untitled Project",
+        title: "Untitled Project",
         type: "Server",
         description: "",
         parent: 0,
@@ -53,14 +52,14 @@ onMounted(() => {
         </div>
         <div class="container mt-4 mb-6 w-full max-w-xl mx-auto">
             <form>
-                <!-- Project Name -->
+                <!-- Project Title -->
                 <div class="mb-4 grid grid-cols-6">
                     <div class="col-span-4">
                         <label for="username" class="block text-gray-700 dark:text-white text-sm font-bold mb-2">
                             <span class="text-red-500">*</span>
-                            Project Name
+                            Project Title
                         </label>
-                        <input type="text" id="name" name="name" placeholder="Project name..." :value="project.name"
+                        <input type="text" id="title" name="title" placeholder="Project title..." :value="project.title"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                     </div>
                     <div class="col-span-2 pl-6">

@@ -5,13 +5,13 @@ import { useProjectsStore } from "@/stores/projects";
 
 const projects = useProjectsStore();
 
-const name = ref("");
+const title = ref("");
 const description = ref("");
 const type = ref(0);
 const parent = ref(0);
 
 const create = async () => {
-    await projects.create(name.value, type.value, description.value, parent.value);
+    await projects.create(title.value, type.value, description.value, parent.value);
 };
 
 onMounted(() => {
@@ -32,9 +32,9 @@ onMounted(() => {
                     <div class="col-span-4">
                         <label for="username" class="block text-gray-700 dark:text-white text-sm font-bold mb-2">
                             <span class="text-red-500">*</span>
-                            Project Name
+                            Project Title
                         </label>
-                        <input type="text" id="name" name="name" placeholder="Project name..." v-model="name"
+                        <input type="text" id="title" name="title" placeholder="Project title..." v-model="title"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                     </div>
                     <div class="col-span-2 pl-6">
