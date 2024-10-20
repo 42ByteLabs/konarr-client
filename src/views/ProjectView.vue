@@ -91,7 +91,6 @@ let container_sha = computed(() => {
                             class="text-center text-gray-600 dark:text-white text-sm my-2">
                         </div>
 
-
                         <div v-if="project.type === 'Container' && project.snapshot">
                             <ProjectInfo :value="project.snapshot.metadata['container.image']" />
 
@@ -133,7 +132,8 @@ let container_sha = computed(() => {
 
                     <ProjectNav :title="title" :id="project.id" :parent="project.parent" edit />
 
-                    <SecuritySummary :summary="project.snapshot.security" :snapshot="project.snapshot.id" />
+                    <SecuritySummary v-if="project.snapshot" :summary="project.snapshot.security"
+                        :snapshot="project.snapshot.id" />
 
                     <h2 class="text-2xl font-bold text-center my-6 dark:text-white">
                         Subprojects - {{ project.children.length }}
