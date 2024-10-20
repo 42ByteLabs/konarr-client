@@ -1,22 +1,27 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
-import Title from "@/components/Title.vue";
+import { router } from "@/router";
 
-import { useDependenciesStore } from "@/stores/dependencies";
+import Title from "@/components/Title.vue";
 import DependencyIcon from "@/components/DependencyIcon.vue";
 import DependencyTable from "@/components/DependencyTable.vue";
 import Pagination from "@/components/Pagination.vue";
 import Search from "@/components/Search.vue";
 import Loading from "@/components/Loading.vue";
 
+import { useDependenciesStore } from "@/stores/dependencies";
+
 const dependencies = useDependenciesStore();
 
 onMounted(() => {
     dependencies.setSnapshot(0);
-    const squery = new URLSearchParams(window.location.search).get("search");
+    const squery = router.currentRoute.value.query.search;
+    const sselect = router.currentRoute.value.query.select;
 
     if (squery) {
         dependencies.searchDependencies(squery);
+    } else if (sselect && sselect !== "" && sselect !== "All") {
+        dependencies.fetchDependencies(0, 24, false, sselect);
     } else {
         // Set snapshot id to 0 to fetch all dependencies
         dependencies.fetchDependencies(0, 24);
@@ -24,8 +29,9 @@ onMounted(() => {
 });
 
 const selectables = {
-    "operatin_systems": "Operating System",
-    "libraries": "Libraries",
+    "os": "Operating System",
+    "lib": "Libraries",
+    "cryptography": "Cryptography",
 };
 
 </script>
@@ -41,15 +47,23 @@ const selectables = {
                     limit="24" />
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4 mt-8">
-                    <div v-for="dep in dependencies.data" :key="dep.id"
+                    <router-link :to="{ name: 'Dependency', params: { id: dep.id } }" v-for="dep in dependencies.data"
+                        :key="dep.id"
                         class="bg-white dark:bg-gray-700 dark:text-white hover:bg-accent-500 shadow-md rounded-lg p-4">
-                        <div class="flex items-center">
-                            <DependencyIcon :dep="dep" />
-                            <router-link :to="{ name: 'Dependency', params: { id: dep.id } }" class="flex items-center">
-                                <h3 class="ml-2 text-lg font-semibold">{{ dep.name }}</h3>
-                            </router-link>
+                        <div class="grid grid-cols-8">
+                            <div class="col-span-1">
+                                <DependencyIcon :dep="dep" />
+                            </div>
+                            <div class="col-span-6">
+                                <h3 class="ml-2 text-lg font-semibold">
+                                    {{ dep.name }}
+                                </h3>
+                            </div>
+                            <div class="col-span-1">
+                                <svg-icon type="mdi" path="mdiCheckCircle" class="h-6 w-6 ml-2"></svg-icon>
+                            </div>
                         </div>
-                    </div>
+                    </router-link>
                 </div>
 
                 <Pagination :page="dependencies.page" :pages="dependencies.pages" :next="dependencies.fetchNextPage"

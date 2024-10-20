@@ -22,10 +22,19 @@ export const useDependenciesStore = defineStore("dependencies", {
             this.current = snapid;
         },
 
-        async fetchDependencies(page: number = 0, limit: number = 10) {
+        async fetchDependencies(page: number = 0, limit: number = 10, top: boolean = true, deptype?: string = null) {
+
+            var params = `page=${page}&limit=${limit}`;
+            if (top) {
+                params += "&top=true";
+            }
+            if (deptype) {
+                params += `&deptype=${deptype}`;
+            }
+
             if (this.current === 0) {
                 await client
-                    .get(`/dependencies?top=true&page=${page}&limit=${limit}`)
+                    .get(`/dependencies?${params}`)
                     .then((response) => {
                         this.loading = false;
                         this.data = response.data.data;
@@ -42,7 +51,7 @@ export const useDependenciesStore = defineStore("dependencies", {
             } else {
                 await client
                     .get(
-                        `/snapshots/${this.current}/dependencies?page=${page}&limit=${limit}`,
+                        `/snapshots/${this.current}/dependencies?${params}`,
                     )
                     .then((response) => {
                         this.loading = false;

@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
+import { router } from "@/router";
+
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiTextSearchVariant } from "@mdi/js";
 
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { ChevronDownIcon } from '@heroicons/vue/20/solid'
 
-import router from "@/router";
 
 import { useProjectsStore } from "@/stores/projects";
 import { useDependenciesStore } from "@/stores/dependencies";
@@ -51,11 +52,27 @@ const search = (value) => {
     }
 };
 
+const selected = ref("All");
+const select = (value) => {
+    selected.value = value.target.value;
+    router.push({ query: { select: selected.value } });
+
+    if (selected.value === "All") {
+        router.push({ query: {} });
+    }
+    else if (props.searching === "dependencies") {
+        dependencies.fetchDependencies(0, props.limit || 10, false, selected.value);
+    } else {
+        console.error("Unknown searching type: " + props.searching);
+    }
+};
+
 var active = ref();
 var current = ref();
 
 onMounted(() => {
-    const squery = new URLSearchParams(window.location.search).get("search");
+    const squery = router.currentRoute.value.query.search;
+    selected.value = router.currentRoute.value.query.select || "All";
 
     if (squery) {
         // Update the search input
@@ -82,13 +99,12 @@ onMounted(() => {
         <div v-if="selectables" class="col-span-1 mt-1">
             <select id="countries"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-auto p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                v-model="selected">
-                <option selected>
-                    All Dependency types
+                @change="select" v-model="selected">
+                <option :selected="selected == 'All'">
+                    All
                 </option>
-
                 <option v-for="(value, name, index) in props.selectables" key="name" :value="name"
-                    :selected="name === current">
+                    :selected="selected === current">
                     {{ value }}
                 </option>
             </select>
