@@ -6,19 +6,19 @@ import HomeView from "@/views/HomeView.vue";
 import LoginView from "@/views/LoginView.vue";
 import RegisterView from "@/views/RegisterView.vue";
 // Project Views
-import ProjectsView from "@/views/ProjectsView.vue";
-import ProjectView from "@/views/ProjectView.vue";
-import ProjectNew from "@/views/ProjectNew.vue";
-import ProjectEdit from "@/views/ProjectEdit.vue";
+import ProjectsView from "@/views/projects/ProjectsView.vue";
+import ProjectView from "@/views/projects/ProjectView.vue";
+import ProjectNew from "@/views/projects/ProjectNew.vue";
+import ProjectEdit from "@/views/projects/ProjectEdit.vue";
 // Dependency Views
-import DependenciesView from "@/views/DependenciesView.vue";
-import DependencyView from "@/views/DependencyView.vue";
+import DependenciesView from "@/views/dependencies/DependenciesView.vue";
+import DependencyView from "@/views/dependencies/DependencyView.vue";
 // Security Views
 import SecurityView from "@/views/SecurityView.vue";
 // Admin Views
-import AdminView from "@/views/AdminView.vue";
-import AdminUsersView from "@/views/AdminUsersView.vue";
-import AdminAgentsView from "@/views/AdminAgentsView.vue";
+import AdminView from "@/views/admin/AdminView.vue";
+import AdminUsersView from "@/views/admin/AdminUsersView.vue";
+import AdminAgentsView from "@/views/admin/AdminAgentsView.vue";
 
 export const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
