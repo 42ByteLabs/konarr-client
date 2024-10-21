@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, computed, onUpdated } from "vue";
 import SvgIcon from "@jamescoyle/vue-icon";
-import { mdiGraph, mdiPencil, mdiDelete, mdiCloudOffOutline, mdiCloudCheckOutline } from "@mdi/js";
+import { mdiGraph, mdiPencil, mdiArchive, mdiCloudOffOutline, mdiCloudCheckOutline } from "@mdi/js";
 import MarkdownIt from "markdown-it";
 import DOMPurify from "dompurify";
 
@@ -66,9 +66,10 @@ let container_sha = computed(() => {
 
 <template>
     <main>
-        <div v-if="project" class="container mt-4 mb-6 w-full mx-auto">
-            <div class="grid grid-cols-6 gap-2 w-full mx-auto">
-                <div class="col-span-2 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4">
+        <div v-if="project" class="container mt-4 mb-6 px-2 w-full mx-auto">
+            <div class="grid grid-cols-6 md:gap-2 w-full mx-auto">
+                <div
+                    class="md:col-span-2 sm:col-span-6 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4 sm:mb-4 md:mb-0">
                     <div class="flex flex-col items-center pb-6 pt-2">
                         <!-- Project Icons -->
                         <div class="grid grid-cols-6 w-full mb-6">
@@ -115,37 +116,34 @@ let container_sha = computed(() => {
                         </div>
                     </div>
                 </div>
-                <div v-if="project.snapshot && project.snapshot.dependencies"
-                    class="col-span-4 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4">
 
-                    <ProjectNav :title="title" :id="project.id" :parent="project.parent" edit />
-
-                    <SecuritySummary :summary="project.snapshot.security" :snapshot="project.snapshot.id" />
-
-                    <hr class="my-6 bg-gray-400" />
-
-                    <DependenciesList :snapid="project.snapshot.id" :projectid="project.id"
-                        :total="project.snapshot.dependencies" />
-                </div>
-                <div v-else-if="project.children"
-                    class="col-span-4 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4">
+                <div v-if="project.snapshot"
+                    class="md:col-span-4 sm:col-span-6 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4 sm:mb-4 md:mb-0">
 
                     <ProjectNav :title="title" :id="project.id" :parent="project.parent" edit />
 
                     <SecuritySummary v-if="project.snapshot" :summary="project.snapshot.security"
                         :snapshot="project.snapshot.id" />
 
-                    <h2 class="text-2xl font-bold text-center my-6 dark:text-white">
-                        Subprojects - {{ project.children.length }}
-                    </h2>
+                    <hr class="my-6 bg-gray-400" v-if="project.snapshot" />
 
-                    <div class="grid grid-cols-2 gap-4">
-                        <div v-for="child in project.children" :key="child.id">
-                            <ProjectTile :project="child" :id="child.id" />
+                    <DependenciesList v-if="project.snapshot && project.snapshot.dependencies"
+                        :snapid="project.snapshot.id" :projectid="project.id" :total="project.snapshot.dependencies" />
+
+                    <div v-if="project.children">
+                        <h2 class="text-2xl font-bold text-center my-6 dark:text-white">
+                            Subprojects - {{ project.children.length }}
+                        </h2>
+
+                        <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
+                            <div v-for="child in project.children" :key="child.id">
+                                <ProjectTile :project="child" :id="child.id" />
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div v-else class="col-span-4 bg-white dark:bg-gray-700 shadow-md rounded-lg p-4">
+
+                <div v-else class="md:col-span-4 sm:col-span-6 bg-white dark:bg-gray-700 shadow-md rounded-lg p-4">
                     <h3 class="dark:text-white text-center text-xl font-bold mt-6">
                         Project has no Snapshots or Subprojects
                     </h3>
@@ -167,19 +165,19 @@ let container_sha = computed(() => {
                     </div>
                 </div>
                 <div v-if="server.user.role === 'admin'"
-                    class="col-span-2 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4">
+                    class="md:col-span-2 sm:col-span-6 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4">
                     <h3 class="text-xl font-semibold text-center my-2">Admin Actions</h3>
                     <!-- Delete Project Button -->
                     <div class="mt-4">
-                        <div class="grid grid-cols-2 gap-2">
+                        <div class="grid grid-cols-8 gap-2">
                             <router-link :to="{ name: 'Edit Project', params: { id: project.id } }"
-                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                class="md:col-span-3 md:col-start-2 sm:col-span-3 sm:col-start-2 flex justify-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 <svg-icon type="mdi" :path="mdiPencil"></svg-icon>
                             </router-link>
                             <button
-                                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                class="md:col-span-3 sm:col-span-3 bg-red-500 hover:bg-red-700 text-white flex justify-center font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                 @click="projects.delete(project.id)">
-                                <svg-icon type="mdi" :path="mdiDelete"></svg-icon>
+                                <svg-icon type="mdi" :path="mdiArchive"></svg-icon>
                             </button>
                         </div>
                     </div>

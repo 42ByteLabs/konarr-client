@@ -18,14 +18,18 @@ const props = defineProps<{
                 class="text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-100 mt-4">
                 <button class="flex items-center rounded-md bg-accent-400 hover:bg-accent-500 p-2 pr-6 mt-2">
                     <svg-icon type="mdi" :path="mdiMenuLeft" class="h-6 w-6 mr-1"></svg-icon>
-                    Parent
+                    <span class="sm:hidden">
+                        Parent
+                    </span>
                 </button>
             </router-link>
             <router-link v-else :to="{ 'name': 'Projects' }"
                 class="text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-100 mt-4">
                 <button class="flex items-center rounded-md bg-accent-400 hover:bg-accent-500 p-2 pr-6 mt-2">
-                    <svg-icon type="mdi" :path="mdiMenuLeft" class="h-6 w-6 mr-1"></svg-icon>
-                    Projects
+                    <svg-icon type="mdi" :path="mdiMenuLeft" class="h-6 w-6 mr-1 sm:flex sm:justify-center"></svg-icon>
+                    <span class="sm:hidden">
+                        Projects
+                    </span>
                 </button>
             </router-link>
         </div>
