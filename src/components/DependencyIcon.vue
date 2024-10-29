@@ -25,6 +25,12 @@ const icon = computed(() => {
                 return i.mdiLinux;
         }
     }
+    else if (props.dep.type === "package_manager") {
+        return i.mdiPackageVariant;
+    }
+    else if (props.dep.type === "cryptography_library") {
+        return i.mdiSecurityNetwork;
+    }
     else if (props.dep.type === "library") {
         switch (props.dep.manager) {
             case "deb":

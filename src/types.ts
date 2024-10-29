@@ -132,6 +132,7 @@ export interface KonarrDependency {
     name: string;
     namespace?: string;
     version?: string;
+    versions?: string[];
     purl?: string;
     logo?: string;
 }

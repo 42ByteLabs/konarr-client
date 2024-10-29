@@ -22,6 +22,20 @@ export const useDependenciesStore = defineStore("dependencies", {
             this.current = snapid;
         },
 
+        async getDependency(id?: number, snapshot?: number) {
+            if (!id) {
+                // TODO: Get ID from URL
+                this.current = parseInt(window.location.pathname.split("/").pop()!);
+            } else {
+                this.current = id;
+            }
+
+            let result = this.data.find((dep) => dep.id === this.current);
+            if (!result) {
+                await this.fetchDependency(this.current, snapshot);
+            }
+        },
+
         async fetchDependencies(page: number = 0, limit: number = 10, top: boolean = true, deptype?: string = null) {
 
             var params = `page=${page}&limit=${limit}`;
