@@ -102,6 +102,8 @@ export interface KonarrProject {
     description?: string;
     created_at: string;
     parent?: number;
+    // Possible Parents to select from (not from API)
+    parents?: KonarrProject[];
     children?: KonarrProject[];
 }
 

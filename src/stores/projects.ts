@@ -17,15 +17,12 @@ export const useProjectsStore = defineStore("projects", {
         }) as KonarrProjects,
 
     actions: {
-        async fetchProjects(page: number = 0, limit: number = 24, top: boolean = true, parents_only: boolean = false) {
+        async fetchProjects(page: number = 0, limit: number = 24, top: boolean = true) {
             this.page = page;
 
             var params = `page=${page}&limit=${limit}`;
             if (top) {
                 params += "&top=true";
-            }
-            if (parents_only) {
-                params += "&parents=true";
             }
 
             await client
@@ -73,18 +70,24 @@ export const useProjectsStore = defineStore("projects", {
             }
         },
 
-        async fetchProject(id: number) {
+        async fetchProject(id: number, parents?: boolean = false) {
             await client
                 .get(`/projects/${id}`)
-                .then((response) => {
+                .then(async (response) => {
                     this.data.push(response.data);
+                    this.current = id;
                     this.loading = false;
+
+                    if (parents) {
+                        await this.fetchParents();
+                    }
                 })
                 .catch((error) => {
                     if (error.response.status === 401) {
                         router.push({ name: "Login" });
                     }
                 });
+
         },
 
         async fetchNextPage() {
@@ -97,6 +100,19 @@ export const useProjectsStore = defineStore("projects", {
             if (this.page > 0) {
                 await this.fetchProjects(this.page - 1);
             }
+        },
+
+        async fetchParents() {
+            await client
+                .get("/projects?parents=true")
+                .then((response) => {
+                    // Update `parents` 
+                    let index = this.data.findIndex((p) => p.id === this.current);
+                    this.data[index]['parents'] = response.data.data;
+                })
+                .catch((error) => {
+                    console.error("Error fetching parents", error);
+                });
         },
 
         async create(name: string, type: string, description?: string, parent?: number) {

@@ -14,6 +14,7 @@ const server = useServerStore();
 const projects = useProjectsStore();
 
 const project_id = parseInt(router.currentRoute.value.params.id);
+var parent = ref(0);
 
 const update = async () => {
     await projects.update({
@@ -21,7 +22,7 @@ const update = async () => {
         title: project.title,
         type: project.type,
         description: project.description,
-        parent: project.parent || 0,
+        parent: parent.value || 0,
     });
 };
 
@@ -38,9 +39,7 @@ const project = computed(() => {
 });
 
 onMounted(() => {
-    // Get the top projects
-    projects.fetchProjects(0, 24, false, true);
-    projects.fetchProject(project_id);
+    projects.fetchProject(project_id, true);
 });
 
 </script>
@@ -81,11 +80,10 @@ onMounted(() => {
                     <label for="parent" class="block text-gray-700 dark:text-white text-sm font-bold mb-2">
                         Parent Project
                     </label>
-                    <select id="parent" name="parent" v-model="project.parent"
+                    <select id="parent" name="parent" v-model="parent"
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                        <option value="0">None / Root</option>
-                        <option v-for="p in projects.data" :key="p.id" :value="p.id"
-                            :selected="p.id === project.parent">
+                        <option value="0" :selected="project.parent === undefined">None / Root</option>
+                        <option v-for="p in project.parents" :key="p.id" :value="p.id">
                             {{ p.name }}
                         </option>
                     </select>
