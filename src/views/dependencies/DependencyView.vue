@@ -46,12 +46,12 @@ var dependency = computed(() => {
 
 <template>
     <main>
-        <div v-if="dependency" class="container mt-4 mb-12 w-full mx-auto">
+        <div v-if="dependency" class="container mt-4 mb-12 w-full mx-auto dark:text-white">
             <div class="grid md:grid-cols-10 sm:grid-cols-1">
                 <div class="md:col-span-2 sm:grid-cols-1 text-black dark:text-white flex justify-center content-center">
                     <div v-if="dependency.version" class="mt-6">
                         <router-link :to="{ 'name': 'Dependency', 'params': { 'id': props.id } }"
-                            class="text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-100 mt-4">
+                            class="text-black hover:text-gray-600 dark:hover:text-gray-100 mt-4">
                             <button
                                 class="flex items-center rounded-md bg-accent-400 hover:bg-accent-500 p-2 pr-6 mt-2">
                                 <svg-icon type="mdi" :path="mdiMenuLeft" class="h-6 w-6 mr-1">
@@ -62,7 +62,7 @@ var dependency = computed(() => {
                     </div>
                     <div v-else class="mt-6">
                         <router-link :to="{ 'name': 'Dependencies' }"
-                            class="text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-100 mt-4">
+                            class="text-black hover:text-gray-600 dark:hover:text-gray-100 mt-4">
                             <button
                                 class="flex items-center rounded-md bg-accent-400 hover:bg-accent-500 p-2 pr-6 mt-2">
                                 <svg-icon type="mdi" :path="mdiMenuLeft" class="h-6 w-6 mr-1">
@@ -73,16 +73,45 @@ var dependency = computed(() => {
                     </div>
                 </div>
                 <div class="md:col-span-6 sm:grid-cols-1">
-                    <Title :title="dependency.name" :subtitle="dependency.purl" />
-
-                    <div v-if="dependency.version" class="mt-6 text-center dark:text-white">
+                    <Title :title="dependency.name" />
+                </div>
+                <div class="md:col-span-2 sm:grid-cols-1 dark:text-white flex justify-center content-center pt-2">
+                    <DependencyIcon :dep="dependency" size="96" />
+                </div>
+                <div class="md:col-span-2 sm:grid-cols-1 flex justify-center content-center">
+                    <div v-if="dependency.version" class="text-center">
                         <a class="text-2xl w-full">
                             <strong>{{ dependency.version }}</strong>
                         </a>
                     </div>
                 </div>
-                <div class="md:col-span-2 sm:grid-cols-1 dark:text-white flex justify-center content-center pt-2">
-                    <DependencyIcon :dep="dependency" size="96" />
+                <div class="md:col-span-6 sm:grid-cols-1">
+                    <h4 class="text-2xl text-center">
+                        {{ dependency.purl }}
+                    </h4>
+                </div>
+                <div class="md:col-span-2 sm:grid-cols-1 flex justify-center content-center text-2xl text-center">
+                    <span v-if="dependency.type == 'library'">
+                        Library
+                    </span>
+                    <span v-else-if="dependency.type == 'operating_system'">
+                        Operating System
+                    </span>
+                    <span v-else-if="dependency.type == 'application'">
+                        Application
+                    </span>
+                    <span v-else-if="dependency.type == 'package_manager'">
+                        Package Manager
+                    </span>
+                    <span v-else-if="dependency.type == 'cryptography_library'">
+                        Cryptography Library
+                    </span>
+                    <span v-else-if="dependency.type == 'programming_language'">
+                        Programming Language
+                    </span>
+                    <span v-else>
+                        {{ dependency.type }}
+                    </span>
                 </div>
             </div>
 

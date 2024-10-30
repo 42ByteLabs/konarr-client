@@ -26,7 +26,24 @@ const icon = computed(() => {
         }
     }
     else if (props.dep.type === "programming_language") {
-        return i.mdiApplicationEditOutline;
+        switch (props.dep.name) {
+            case "cargo" | "rust":
+                return i.mdiLanguageRust;
+            case "composer":
+                return i.mdiLanguagePhp;
+            case "go" | "golang":
+                return i.mdiLanguageGo;
+            case "pypi":
+                return i.mdiLanguagePython;
+            case "nuget":
+                return i.mdiDotNet;
+            case "lua":
+                return i.mdiLanguageLua;
+            case "gem" | "ruby":
+                return i.mdiLanguageRuby;
+            default:
+                return i.mdiApplicationEditOutline;
+        }
     }
     else if (props.dep.type === "application") {
         return i.mdiApplicationBrackets;
@@ -38,26 +55,7 @@ const icon = computed(() => {
         return i.mdiSecurityNetwork;
     }
     else if (props.dep.type === "library") {
-        switch (props.dep.manager) {
-            case "deb":
-                return i.mdiPackageVariantClosed;
-            case "cargo" | "rust":
-                return i.mdiLanguageRust;
-            case "composer":
-                return i.mdiLanguagePhp;
-            case "golang":
-                return i.mdiLanguageGo;
-            case "pypi":
-                return i.mdiLanguagePython;
-            case "nuget":
-                return i.mdiDotNet;
-            case "lua":
-                return i.mdiLanguageLua;
-            case "gem" | "ruby":
-                return i.mdiLanguageRuby;
-            default:
-                return i.mdiPackageVariantClosed;
-        }
+        return i.mdiPackageVariantClosed;
     }
     else if (props.dep.type === "database") {
         return i.mdiDatabase

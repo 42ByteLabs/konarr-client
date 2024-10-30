@@ -77,6 +77,8 @@ export interface Pagination<T> {
     loading: boolean;
     // Total number of items
     total: number;
+    // Search result count
+    count: number;
     // Total number of pages
     pages: number;
     // Current page

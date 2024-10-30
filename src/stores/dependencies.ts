@@ -11,6 +11,7 @@ export const useDependenciesStore = defineStore("dependencies", {
             loading: true,
             current: null,
             total: 0,
+            count: 0,
             pages: 0,
             page: 0,
             limit: 0,
@@ -37,7 +38,6 @@ export const useDependenciesStore = defineStore("dependencies", {
         },
 
         async fetchDependencies(page: number = 0, limit: number = 10, top: boolean = true, deptype?: string = null) {
-
             var params = `page=${page}&limit=${limit}`;
             if (top) {
                 params += "&top=true";
@@ -54,6 +54,7 @@ export const useDependenciesStore = defineStore("dependencies", {
                         this.data = response.data.data;
 
                         this.total = response.data.total;
+                        this.count = response.data.count;
                         this.pages = response.data.pages;
                         this.page = page;
                     })
@@ -72,6 +73,7 @@ export const useDependenciesStore = defineStore("dependencies", {
                         this.data = response.data.data;
 
                         this.total = response.data.total;
+                        this.count = response.data.count;
                         this.pages = response.data.pages;
                         this.page = page;
                     })
@@ -90,6 +92,7 @@ export const useDependenciesStore = defineStore("dependencies", {
                     .then((response) => {
                         this.loading = false;
                         this.data = response.data.data;
+                        this.count = response.data.count;
                     })
                     .catch((error) => {
                         if (error.response.status === 401) {

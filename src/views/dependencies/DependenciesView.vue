@@ -20,6 +20,8 @@ onMounted(() => {
 
     if (squery) {
         dependencies.searchDependencies(squery);
+    } else if (sselect && sselect === "") {
+        dependencies.fetchDependencies(0, 24, true);
     } else if (sselect && sselect !== "" && sselect !== "All") {
         dependencies.fetchDependencies(0, 24, false, sselect);
     } else {
@@ -34,6 +36,7 @@ const selectables = {
     "application": "Applications",
     "programming_language": "Programming Languages",
     "package_manager": "Package Managers",
+    "database": "Databases",
     "cryptography": "Cryptography",
 };
 
@@ -41,13 +44,12 @@ const selectables = {
 
 <template>
     <main>
-        <div class="container mt-4 mb-6 w-full mx-auto">
-            <Title :title="'Dependencies - ' + dependencies.total"
-                description="List of Global Components & Dependencies" />
+        <div class="container mt-4 mb-6 w-full mx-auto dark:text-white">
+            <Title title="Dependencies" description="List of Global Components & Dependencies" />
 
             <div class="w-full px-4">
                 <Search searching="dependencies" placeholder="Find dependency..." :selectables="selectables"
-                    limit="24" />
+                    :count="dependencies.count" :total="dependencies.total" limit="24" />
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4 mt-8">
                     <router-link :to="{ name: 'Dependency', params: { id: dep.id } }" v-for="dep in dependencies.data"

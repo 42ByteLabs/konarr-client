@@ -20,7 +20,12 @@ const props = defineProps<{
     placeholder?: string;
     selectables?: Object;
     limit?: number;
+    count?: number;
+    total?: number;
 }>();
+
+var count = ref(props.count || 0);
+var total = ref(props.total || 0);
 
 const typeSearch = (event) => {
     search(event.target.value);
@@ -36,6 +41,8 @@ const search = (value) => {
             router.push({ query: { search: value } });
             projects.searchProjects(value);
         }
+        count.value = projects.count;
+        total.value = projects.total;
         // Search for dependencies
     } else if (props.searching === "dependencies") {
         if (value === "") {
@@ -47,25 +54,34 @@ const search = (value) => {
             router.push({ query: { search: value } });
             dependencies.searchDependencies(value);
         }
+        count.value = dependencies.count;
+        total.value = dependencies.total;
     } else {
         console.error("Unknown searching type: " + props.searching);
     }
 };
 
-const selected = ref("All");
+const selected = ref("Top");
+
 const select = (value) => {
     selected.value = value.target.value;
-    router.push({ query: { select: selected.value } });
 
-    if (selected.value === "All") {
+    if (selected.value === "Top") {
         router.push({ query: {} });
         dependencies.fetchDependencies(0, props.limit || 10, true);
+    } else if (selected.value === "All") {
+        router.push({ query: { select: "all" } });
+        dependencies.fetchDependencies(0, props.limit || 10, false);
     }
     else if (props.searching === "dependencies") {
+        router.push({ query: { select: selected.value } });
         dependencies.fetchDependencies(0, props.limit || 10, false, selected.value);
     } else {
         console.error("Unknown searching type: " + props.searching);
     }
+
+    count.value = dependencies.count;
+    total.value = dependencies.total;
 };
 
 var active = ref();
@@ -73,7 +89,7 @@ var current = ref();
 
 onMounted(() => {
     const squery = router.currentRoute.value.query.search;
-    selected.value = router.currentRoute.value.query.select || "All";
+    selected.value = router.currentRoute.value.query.select || "Top";
 
     if (squery) {
         // Update the search input
@@ -88,9 +104,10 @@ onMounted(() => {
 <template>
     <!-- Search -->
     <div class="grid grid-cols-12 gap-4 mb-6 mt-4">
-        <div class="col-span-1 col-start-2 flex justify-center items-center">
+        <div class="col-span-2 flex justify-center items-center">
             <svg-icon type="mdi" :path="mdiTextSearchVariant"
                 class="w-6 h-6 text-gray-500 dark:text-gray-200"></svg-icon>
+            <span class="ml-4 text-center">{{ count }} / {{ total }}</span>
         </div>
 
         <input type="text" id="search" :class="[selectables ? 'col-span-7' : 'col-span-8']"
@@ -101,6 +118,9 @@ onMounted(() => {
             <select id="countries"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-auto p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 @change="select" v-model="selected">
+                <option :selected="selected == 'Top'">
+                    Top
+                </option>
                 <option :selected="selected == 'All'">
                     All
                 </option>
