@@ -66,7 +66,7 @@ const icon = computed(() => {
 });
 
 const link = computed(() => {
-    return `/dependencies/${props.id || ""}`;
+    return `/dependencies/${props.id || ""}?select=${props.dep.type}`;
 });
 const size = computed(() => {
     return props.size || 24;
