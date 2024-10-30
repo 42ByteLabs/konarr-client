@@ -25,6 +25,12 @@ const icon = computed(() => {
                 return i.mdiLinux;
         }
     }
+    else if (props.dep.type === "programming_language") {
+        return i.mdiApplicationEditOutline;
+    }
+    else if (props.dep.type === "application") {
+        return i.mdiApplicationBrackets;
+    }
     else if (props.dep.type === "package_manager") {
         return i.mdiPackageVariant;
     }

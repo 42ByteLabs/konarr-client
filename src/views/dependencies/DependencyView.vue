@@ -21,7 +21,14 @@ const props = defineProps<{
 
 onMounted(() => {
     const snapshot = router.currentRoute.value.query.snapshot;
-    dependencies.getDependency(props.id, snapshot);
+
+    if (props.id) {
+        dependencies.getDependency(props.id, snapshot);
+    } else {
+        // Get ID from the URL
+        const current = parseInt(window.location.pathname.split("/").pop()!);
+        dependencies.fetchDependency(current, snapshot);
+    }
 });
 
 onUpdated(() => {

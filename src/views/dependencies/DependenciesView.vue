@@ -31,6 +31,9 @@ onMounted(() => {
 const selectables = {
     "os": "Operating System",
     "lib": "Libraries",
+    "application": "Applications",
+    "programming_language": "Programming Languages",
+    "package_manager": "Package Managers",
     "cryptography": "Cryptography",
 };
 

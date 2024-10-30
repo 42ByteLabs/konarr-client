@@ -59,6 +59,7 @@ const select = (value) => {
 
     if (selected.value === "All") {
         router.push({ query: {} });
+        dependencies.fetchDependencies(0, props.limit || 10, true);
     }
     else if (props.searching === "dependencies") {
         dependencies.fetchDependencies(0, props.limit || 10, false, selected.value);
