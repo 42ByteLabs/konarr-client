@@ -34,7 +34,10 @@ onMounted(() => {
                 ">
                 v{{ server.version }}
             </a>
-            - {{ server.commit }}
+            -
+            <a :href="'https://github.com/42ByteLabs/konarr/commit/' + server.commit">
+                {{ server.commit }}
+            </a>
         </p>
 
         <p class="text-center text-gray-500 dark:text-gray-100 text-xs">

@@ -15,7 +15,7 @@ const create = async () => {
 };
 
 onMounted(() => {
-    projects.fetchProjects(0, 24, false, true);
+    projects.fetchProjects(0, 24, false);
 });
 
 </script>

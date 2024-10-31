@@ -19,11 +19,11 @@ var parent = ref(0);
 const update = async () => {
     await projects.update({
         id: project_id,
-        title: project.title,
-        type: project.type,
-        description: project.description,
+        title: project.value.title,
+        type: project.value.type,
+        description: project.value.description,
         parent: parent.value || 0,
-    });
+    } as KonarrProject);
 };
 
 const project = computed(() => {
@@ -58,7 +58,8 @@ onMounted(() => {
                             <span class="text-red-500">*</span>
                             Project Title
                         </label>
-                        <input type="text" id="title" name="title" placeholder="Project title..." :value="project.title"
+                        <input type="text" id="title" name="title" placeholder="Project title..."
+                            v-model="project.title"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                     </div>
                     <div class="col-span-2 pl-6">
@@ -67,7 +68,7 @@ onMounted(() => {
                             <span class="text-red-500">*</span>
                             Project Type
                         </label>
-                        <select id="type" name="type" v-model="project.type"
+                        <select id="type" name="type" v-model="type"
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                             <option value="Server" selected>Server</option>
                             <option value="Group">Group</option>
@@ -82,7 +83,8 @@ onMounted(() => {
                     </label>
                     <select id="parent" name="parent" v-model="parent"
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                        <option value="0" :selected="project.parent === undefined">None / Root</option>
+                        <option value="0" :selected="project.parent === undefined || project.parent === 0">None / Root
+                        </option>
                         <option v-for="p in project.parents" :key="p.id" :value="p.id">
                             {{ p.name }}
                         </option>

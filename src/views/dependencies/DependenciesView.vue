@@ -15,18 +15,19 @@ const dependencies = useDependenciesStore();
 
 onMounted(() => {
     dependencies.setSnapshot(0);
-    const squery = router.currentRoute.value.query.search;
-    const sselect = router.currentRoute.value.query.select;
+    const qquery = router.currentRoute.value.query.search;
+    const qselect = router.currentRoute.value.query.select;
+    const qpage = parseInt(router.currentRoute.value.query.page || 1) - 1;
 
-    if (squery) {
-        dependencies.searchDependencies(squery);
-    } else if (sselect && sselect === "") {
-        dependencies.fetchDependencies(0, 24, true);
-    } else if (sselect && sselect !== "" && sselect !== "All") {
-        dependencies.fetchDependencies(0, 24, false, sselect);
+    if (qquery) {
+        dependencies.searchDependencies(qquery);
+    } else if (qselect && qselect === "") {
+        dependencies.fetchDependencies(qpage, 24, true);
+    } else if (qselect && qselect !== "" && qselect !== "All") {
+        dependencies.fetchDependencies(qpage, 24, false, qselect);
     } else {
         // Set snapshot id to 0 to fetch all dependencies
-        dependencies.fetchDependencies(0, 24);
+        dependencies.fetchDependencies(qpage, 24);
     }
 });
 
@@ -71,8 +72,8 @@ const selectables = {
                     </router-link>
                 </div>
 
-                <Pagination :page="dependencies.page" :pages="dependencies.pages" :next="dependencies.fetchNextPage"
-                    :prev="dependencies.fetchPrevPage" />
+                <Pagination v-if="dependencies.pages !== 1" :page="dependencies.page" :pages="dependencies.pages"
+                    :next="dependencies.fetchNextPage" :prev="dependencies.fetchPrevPage" />
             </div>
         </div>
     </main>

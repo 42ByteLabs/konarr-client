@@ -17,12 +17,15 @@ export const useProjectsStore = defineStore("projects", {
         }) as KonarrProjects,
 
     actions: {
-        async fetchProjects(page: number = 0, limit: number = 24, top: boolean = true) {
+        async fetchProjects(page: number = 0, limit: number = 24, top: boolean = true, select?: string) {
             this.page = page;
 
             var params = `page=${page}&limit=${limit}`;
             if (top) {
                 params += "&top=true";
+            }
+            if (select !== undefined) {
+                params += `&type=${select}`
             }
 
             await client
@@ -130,6 +133,8 @@ export const useProjectsStore = defineStore("projects", {
         },
 
         async update(project: KonarrProject) {
+            console.log("Update Project", project);
+
             await client
                 .patch(`/projects/${project.id}`, project)
                 .then((response) => {

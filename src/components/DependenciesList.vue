@@ -29,13 +29,14 @@ onMounted(() => {
     <div>
         <div class="flex justify-center items-center mb-4">
             <svg-icon type="mdi" :path="mdiGraph" class="mr-2"></svg-icon>
-            <h2 class="text-2xl font-semibold">Dependencies - {{ total || 0 }}</h2>
+            <h2 class="text-2xl font-semibold">Dependencies</h2>
         </div>
 
         <Loading v-if="dependencies.loading" />
 
         <div v-else>
-            <Search searching="dependencies" placeholder="Find dependency..." />
+            <Search searching="dependencies" placeholder="Find dependency..." :total="dependencies.total"
+                :count="dependencies.count" />
 
             <table class="table-auto w-full">
                 <thead>

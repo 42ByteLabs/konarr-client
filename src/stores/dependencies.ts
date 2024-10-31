@@ -38,6 +38,11 @@ export const useDependenciesStore = defineStore("dependencies", {
         },
 
         async fetchDependencies(page: number = 0, limit: number = 10, top: boolean = true, deptype?: string = null) {
+            // Get from URL if null
+            if (deptype === undefined) {
+                deptype = router.currentRoute.value.query.select;
+            }
+
             var params = `page=${page}&limit=${limit}`;
             if (top) {
                 params += "&top=true";
@@ -145,22 +150,35 @@ export const useDependenciesStore = defineStore("dependencies", {
         },
 
         async fetchNextPage() {
+            const sselect = router.currentRoute.value.query.select;
+            const top = sselect === undefined
+
             if (this.page < this.pages) {
                 if (this.current) {
                     await this.fetchDependencies(this.page + 1);
                 }
                 else {
-                    await this.fetchDependencies(this.page + 1, 24);
+                    await this.fetchDependencies(this.page + 1, 24, top, sselect);
+                    router.push({ query: { page: this.page + 1, select: sselect } });
                 }
             }
         },
 
         async fetchPrevPage() {
+            const sselect = router.currentRoute.value.query.select;
+            const top = sselect === undefined
+
             if (this.page !== 0) {
                 if (this.current) {
                     await this.fetchDependencies(this.page - 1);
                 } else {
-                    await this.fetchDependencies(this.page - 1, 24);
+                    await this.fetchDependencies(this.page - 1, 24, top, sselect);
+                    if (this.isFirstPage()) {
+                        // Remove page if first
+                        router.push({ query: { page: undefined, select: sselect } });
+                    } else {
+                        router.push({ query: { page: this.page + 1, select: sselect } });
+                    }
                 }
             }
         },

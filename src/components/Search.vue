@@ -24,9 +24,6 @@ const props = defineProps<{
     total?: number;
 }>();
 
-var count = ref(props.count || 0);
-var total = ref(props.total || 0);
-
 const typeSearch = (event) => {
     search(event.target.value);
 };
@@ -66,22 +63,29 @@ const selected = ref("Top");
 const select = (value) => {
     selected.value = value.target.value;
 
-    if (selected.value === "Top") {
-        router.push({ query: {} });
-        dependencies.fetchDependencies(0, props.limit || 10, true);
-    } else if (selected.value === "All") {
-        router.push({ query: { select: "all" } });
-        dependencies.fetchDependencies(0, props.limit || 10, false);
+    if (props.searching === "projects") {
+        if (selected.value === "Top") {
+            router.push({ query: {} });
+            projects.fetchProjects(0, props.limit || 10, true);
+        } else if (selected.value === "All") {
+            router.push({ query: { select: "all" } });
+            projects.fetchProjects(0, props.limit || 10, false);
+        } else {
+            router.push({ query: { select: selected.value } });
+            projects.fetchProjects(0, props.limit || 10, false, selected.value);
+        }
+    } else if (props.searching === "dependencies") {
+        if (selected.value === "Top") {
+            router.push({ query: {} });
+            dependencies.fetchDependencies(0, props.limit || 10, true);
+        } else if (selected.value === "All") {
+            router.push({ query: { select: "all" } });
+            dependencies.fetchDependencies(0, props.limit || 10, false);
+        } else {
+            router.push({ query: { select: selected.value } });
+            dependencies.fetchDependencies(0, props.limit || 10, false, selected.value);
+        }
     }
-    else if (props.searching === "dependencies") {
-        router.push({ query: { select: selected.value } });
-        dependencies.fetchDependencies(0, props.limit || 10, false, selected.value);
-    } else {
-        console.error("Unknown searching type: " + props.searching);
-    }
-
-    count.value = dependencies.count;
-    total.value = dependencies.total;
 };
 
 var active = ref();
@@ -104,29 +108,31 @@ onMounted(() => {
 <template>
     <!-- Search -->
     <div class="grid grid-cols-12 gap-4 mb-6 mt-4">
-        <div class="col-span-2 flex justify-center items-center">
+        <div class="col-span-1 flex justify-center items-center dark:text-white">
             <svg-icon type="mdi" :path="mdiTextSearchVariant"
                 class="w-6 h-6 text-gray-500 dark:text-gray-200"></svg-icon>
-            <span class="ml-4 text-center">{{ count }} / {{ total }}</span>
+        </div>
+        <div class="col-span-1 flex justify-center items-center dark:text-white text-center">
+            {{ props.count }} / {{ props.total }}
         </div>
 
-        <input type="text" id="search" :class="[selectables ? 'col-span-7' : 'col-span-8']"
+        <input type="text" id="search" :class="[selectables ? 'col-span-8' : 'col-span-9']"
             class="dark:bg-gray-700 dark:text-white col-start-3 px-4 py-2 border border-gray-300 rounded-md hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500"
             @input="typeSearch" :placeholder="props.placeholder" />
 
-        <div v-if="selectables" class="col-span-1 mt-1">
+        <div v-if="selectables" class="col-span-2 mt-0.5">
             <select id="countries"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-auto p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 text-center"
                 @change="select" v-model="selected">
                 <option :selected="selected == 'Top'">
                     Top
                 </option>
-                <option :selected="selected == 'All'">
-                    All
-                </option>
                 <option v-for="(value, name, index) in props.selectables" key="name" :value="name"
                     :selected="selected === current">
                     {{ value }}
+                </option>
+                <option :selected="selected == 'All'">
+                    All
                 </option>
             </select>
         </div>
