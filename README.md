@@ -1,12 +1,12 @@
 <!-- markdownlint-disable -->
 <div align="center">
-<h1>Konarr Client</h1>
+<h1>Konarr Frontend Client</h1>
 
 [![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)][github]
 [![Crates.io Version](https://img.shields.io/crates/v/konarr?style=for-the-badge)][crates-io]
 [![Crates.io Downloads (recent)](https://img.shields.io/crates/dr/konarr?style=for-the-badge)][crates-io]
 [![GitHub Stars](https://img.shields.io/github/stars/42ByteLabs/konarr?style=for-the-badge)][github]
-[![GitHub Issues](https://img.shields.io/github/issues/42ByteLabs/konarr?style=for-the-badge)][github-issues]
+[![GitHub Issues](https://img.shields.io/github/issues/42ByteLabs/konarr-client?style=for-the-badge)][github-issues]
 [![Licence](https://img.shields.io/github/license/42ByteLabs/konarr?style=for-the-badge)][license]
 
 ⚠️  This is currently a work in progress and still in the early stages of development ⚠️
@@ -20,6 +20,16 @@
 It is designed to be lightweight and fast, with minimal resource usage.
 
 This repository contains the client-side code for [Konarr][konarr].
+
+## ✨ Components
+
+Here is the core components used by Konarr:
+
+- [VueJS][vue]
+- [Tailwind][tailwind]
+- [Material Design Icons (MDI)][mdi]
+- [Heroicons][heroicons]
+- [HeadlessUI][headlessui]
 
 ## ❤️  Maintainers / Contributors
 
@@ -56,9 +66,14 @@ Please refer to [Apache2][license] for the full terms.
 [crates-io]: https://crates.io/crates/konarr
 [docs]: https://docs.rs/konarr/latest/konarr
 [semver]: https://semver.org/
-[vue]: https://vuejs.org/
 
 [konarr]: https://github.com/42ByteLabs/konarr
 [github]: https://github.com/42ByteLabs/konarr-client
 [github-issues]: https://github.com/42ByteLabs/konarr-client/issues
+
+[vue]: https://vuejs.org/
+[tailwind]: https://tailwindcss.com/
+[mdi]: https://pictogrammers.com/library/mdi/
+[heroicons]: https://heroicons.com/
+[headlessui]: https://headlessui.com/v1/vue
 
