@@ -105,6 +105,7 @@ router.beforeEach((to, from, next) => {
 });
 
 export const navigation = [
+    { name: "Home", current: false },
     { name: "Projects", current: false },
     { name: "Dependencies", current: false },
     { name: "Security", current: false },
