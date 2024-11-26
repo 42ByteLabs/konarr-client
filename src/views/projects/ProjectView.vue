@@ -122,7 +122,7 @@ let container_sha = computed(() => {
 
                     <ProjectNav :title="title" :id="project.id" :parent="project.parent" edit />
 
-                    <SecuritySummary v-if="project.snapshot" :summary="project.snapshot.security"
+                    <SecuritySummary v-if="project.snapshot" :summary="project.security"
                         :snapshot="project.snapshot.id" />
 
                     <hr class="my-6 bg-gray-400" v-if="project.snapshot" />
