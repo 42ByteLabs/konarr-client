@@ -15,9 +15,11 @@ import DependenciesView from "@/views/dependencies/DependenciesView.vue";
 import DependencyView from "@/views/dependencies/DependencyView.vue";
 // Security Views
 import SecurityView from "@/views/SecurityView.vue";
+import SecurityAlertView from "@/views/SecurityAlertView.vue";
 // Admin Views
 import AdminView from "@/views/admin/AdminView.vue";
 import AdminUsersView from "@/views/admin/AdminUsersView.vue";
+import AdminSecurityView from "@/views/admin/AdminSecurityView.vue";
 import AdminAgentsView from "@/views/admin/AdminAgentsView.vue";
 
 export const router = createRouter({
@@ -79,6 +81,11 @@ export const router = createRouter({
             component: SecurityView
         },
         {
+            path: "/security/:id",
+            name: "Alert",
+            component: SecurityAlertView
+        },
+        {
             path: "/admin",
             name: "Admin",
             component: AdminView,
@@ -87,6 +94,11 @@ export const router = createRouter({
             path: "/admin/users",
             name: "Admin Users",
             component: AdminUsersView,
+        },
+        {
+            path: "/admin/security",
+            name: "Admin Security",
+            component: AdminSecurityView,
         },
         {
             path: "/admin/agents",

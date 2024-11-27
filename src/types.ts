@@ -141,3 +141,9 @@ export interface KonarrDependency {
     logo?: string;
 }
 
+export type KonarrSecurityAlerts = Pagination<KonarrSecurityAlert>;
+
+export interface KonarrSecurityAlert {
+    id: number;
+    name: string;
+}
