@@ -8,6 +8,7 @@ const props = defineProps<{
     name: string;
     count: number;
 
+    snapshot?: number;
     description?: string;
 }>();
 
@@ -33,7 +34,7 @@ const severity = computed(() => {
 </script>
 
 <template>
-    <router-link :to="{ name: 'Security', query: { severity: severity } }"
+    <router-link :to="{ name: 'Security', query: { severity: severity, snapshot: props.snapshot } }"
         :class="['shadow-md rounded-lg md:p-4 sm:p-2 hover:shadow-lg text-center', color]">
         <div class="grid grid-cols-6">
             <svg-icon class="col-span-1 text-accent-500 dark:text-gray-800" :type="'mdi'" :path="icon" />
