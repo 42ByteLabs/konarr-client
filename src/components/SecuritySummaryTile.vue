@@ -34,8 +34,26 @@ const snapshot = computed(() => {
 });
 
 const color = computed(() => {
-    const name = props.name.toLowerCase();
-    return `bg-sec-${name}-200 dark:bg-sec-${name}-300 hover:bg-sec-${name}-300 dark:hover:bg-sec-${name}-400`
+    switch (props.name) {
+        case "Total":
+            return "bg-blue-300 dark:db-blue-200";
+        case "Critical":
+            return "bg-sec-critical-500 dark:bg-sec-critical-400";
+        case "High":
+            return "bg-sec-high-500 dark:bg-sec-high-400";
+        case "Medium":
+            return "bg-sec-medium-500 dark:bg-sec-medium-400";
+        case "Low":
+            return "bg-sec-low-500 dark:bg-sec-low-400";
+        case "Informational":
+            return "bg-sec-information-300 dark:bg-sec-information-200";
+        case "Malware":
+            return "bg-sec-malware-300 dark:bg-sec-malware-200";
+        case "Unmaintained":
+            return "bg-sec-unmaintained-300 dark:bg-sec-unmaintained-200";
+        default:
+            return "bg-gray-300 dark:bg-gray-200";
+    }
 });
 const severity = computed(() => {
     return props.name.toLowerCase();

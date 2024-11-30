@@ -10,6 +10,7 @@ import {
 
 const props = defineProps<{
     severity: string;
+    color?: boolean;
     size?: string;
 }>();
 
@@ -26,25 +27,28 @@ const icon = computed(() => {
     }
 });
 const color = computed(() => {
+    if (!props.color) {
+        return "text-gray-300 dark:text-gray-200";
+    }
     switch (props.severity) {
         case "Total":
-            return "text-blue-300";
+            return "text-blue-300 dark:text-blue-200";
         case "Critical":
-            return "text-sec-critical-500";
+            return "text-sec-critical-500 dark:text-sec-critical-400";
         case "High":
-            return "text-sec-high-500";
+            return "text-sec-high-500 dark:text-sec-high-400";
         case "Medium":
-            return "text-sec-medium-500";
+            return "text-sec-medium-500 dark:text-sec-medium-400";
         case "Low":
-            return "text-sec-low-500";
+            return "text-sec-low-500 dark:text-sec-low-400";
         case "Informational":
-            return "text-sec-information-300";
+            return "text-sec-information-300 dark:text-sec-information-200";
         case "Malware":
-            return "text-sec-malware-300";
+            return "text-sec-malware-300 dark:text-sec-malware-200";
         case "Unmaintained":
-            return "text-sec-unmaintained-300";
+            return "text-sec-unmaintained-300 dark:text-sec-unmaintained-200";
         default:
-            return "text-gray-300";
+            return "text-gray-300 dark:text-gray-200";
     }
 });
 const size = computed(() => {

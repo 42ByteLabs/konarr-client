@@ -85,7 +85,7 @@ onMounted(() => {
                                 </h3>
                             </div>
                             <div class="col-span-1">
-                                <SecurityIcon :severity="sec.severity" />
+                                <SecurityIcon :severity="sec.severity" color />
                             </div>
                         </div>
                     </router-link>

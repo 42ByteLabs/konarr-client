@@ -44,7 +44,7 @@ const data = computed(() => {
 </script>
 
 <template>
-    <div>
+    <div class="text-black dark:text-white">
         <Pie :data="data" />
     </div>
 </template>
