@@ -1,16 +1,36 @@
 <script setup lang="ts">
 import { computed } from "vue";
+import { router } from "@/router";
 
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiSecurity, mdiBug, mdiStopCircleOutline, mdiInformationSlabCircleOutline } from "@mdi/js";
 
+import { useSecurityStore } from "@/stores/security";
+
+const security = useSecurityStore();
+
 const props = defineProps<{
     name: string;
     count: number;
-
     snapshot?: number;
     description?: string;
 }>();
+
+// Update on click 
+const update = () => {
+    security.fetchAlerts(0, 24, props.name.toLowerCase());
+    router.push({
+        name: 'Security',
+        query: {
+            severity: props.name.toLowerCase(),
+            snapshot: snapshot.value
+        }
+    });
+}
+
+const snapshot = computed(() => {
+    return props.snapshot || router.currentRoute.value.query.search;
+});
 
 const icon = computed(() => {
     if (props.name === "Informational" || props.name === "Other") {
@@ -34,8 +54,7 @@ const severity = computed(() => {
 </script>
 
 <template>
-    <router-link :to="{ name: 'Security', query: { severity: severity, snapshot: props.snapshot } }"
-        :class="['shadow-md rounded-lg md:p-4 sm:p-2 hover:shadow-lg text-center', color]">
+    <button @click="update" :class="['shadow-md rounded-lg md:p-4 sm:p-2 hover:shadow-lg text-center', color]">
         <div class="grid grid-cols-6">
             <svg-icon class="col-span-1 text-accent-500 dark:text-gray-800" :type="'mdi'" :path="icon" />
             <h5 class="col-span-4 font-bold">
@@ -48,5 +67,5 @@ const severity = computed(() => {
                 </strong>
             </span>
         </div>
-    </router-link>
+    </button>
 </template>

@@ -31,16 +31,17 @@ onMounted(() => {
         security.fetchAlerts(qpage, 24);
     }
 });
+
 </script>
 
 <template>
     <main>
         <div v-if="server.security" class="container mt-4 mb-6 w-full mx-auto">
-            <Title title="Security" description="List of Security Alerts" />
+            <Title title="Security Alerts" description="List of Security Alerts" />
 
             <Loading v-if="security.loading" />
             <div v-else class="w-full">
-                <div
+                <div v-if="!security.current"
                     class="grid lg:grid-cols-6 md:grid-cols-3 sm:grid-cols-1 gap-2 w-full mx-auto dark:text-black my-4">
                     <SecuritySummaryTile name="Total" :count="server.security.total"
                         class="col-span-1 bg-sec-total-200" />
@@ -51,7 +52,8 @@ onMounted(() => {
                     <SecuritySummaryTile name="Informational" :count="server.security.informational"
                         class="col-span-1 bg-sec-information-200 dark:bg-sec-information-300" />
                 </div>
-                <div class="grid lg:grid-cols-3 sm:grid-cols-1 gap-2 w-full mx-auto dark:text-black mt-4 mb-8">
+                <div v-if="!security.current"
+                    class="grid lg:grid-cols-3 sm:grid-cols-1 gap-2 w-full mx-auto dark:text-black mt-4 mb-8">
                     <SecuritySummaryTile name="Malware" :count="server.security.malware"
                         class="col-span-1 bg-sec-malware-100 dark:bg-sec-malware-300" />
                     <SecuritySummaryTile name="Unmaintained" :count="server.security.unmaintained"
@@ -63,10 +65,16 @@ onMounted(() => {
                 <Search searching="security" placeholder="Find alerts..." :total="security.total" limit="24"
                     :count="security.data.length" />
 
+                <h2 v-if="security.current" class="text-xl font-semibold mt-8 text-center">
+                    Security Alerts from Project Snapshot
+                </h2>
+
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4 mt-8">
                     <router-link :to="{ name: 'Alert', params: { id: sec.id } }" v-for="sec in security.data"
-                        :key="sec.id"
-                        class="bg-white dark:bg-gray-700 dark:text-white hover:bg-accent-500 shadow-md rounded-lg p-4">
+                        :key="sec.id" :class="[
+                            `bg-sec-${sec.severity.toLowerCase()}-100 dark:bg-sec-${sec.severity.toLowerCase()}-300`,
+                            'dark:text-white hover:bg-accent-500 shadow-md rounded-lg p-4',
+                        ]">
                         <div class="grid grid-cols-8">
                             <div class="col-span-1">
                                 <SvgIcon type="mdi" :path="mdiSecurity" class="h-6 w-6 ml-2" />

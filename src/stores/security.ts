@@ -44,6 +44,7 @@ export const useSecurityStore = defineStore("security", {
                     this.loading = false;
                     this.data = response.data.data;
 
+                    this.current = null;
                     this.total = response.data.total;
                     this.count = response.data.count;
                     this.pages = response.data.pages;
@@ -81,6 +82,7 @@ export const useSecurityStore = defineStore("security", {
                 .then((response) => {
                     this.loading = false;
                     this.data = response.data.data;
+                    this.current = snapshot;
                     this.total = response.data.total;
                     this.count = response.data.count;
                     this.pages = response.data.pages;
@@ -101,7 +103,14 @@ export const useSecurityStore = defineStore("security", {
                 }
                 else {
                     await this.fetchAlerts(this.page + 1, 24, top, sselect);
-                    router.push({ query: { page: this.page + 1, select: sselect } });
+                    router.push({
+                        query: { 
+                            page: this.page + 1,
+                            severity: router.currentRoute.value.query.severity,
+                            snapshot: router.currentRoute.value.query.snapshot,
+                            select: sselect
+                        }
+                    });
                 }
             }
         },
@@ -117,9 +126,23 @@ export const useSecurityStore = defineStore("security", {
                     await this.fetchAlerts(this.page - 1, 24, top, sselect);
                     if (this.isFirstPage()) {
                         // Remove page if first
-                        router.push({ query: { page: undefined, select: sselect } });
+                        router.push({ 
+                            query: { 
+                                page: undefined, 
+                                severity: router.currentRoute.value.query.severity, 
+                                snapshot: router.currentRoute.value.query.snapshot,
+                                select: sselect
+                            } 
+                        });
                     } else {
-                        router.push({ query: { page: this.page + 1, select: sselect } });
+                        router.push({ 
+                            query: { 
+                                page: this.page + 1, 
+                                severity: router.currentRoute.value.query.severity, 
+                                snapshot: router.currentRoute.value.query.snapshot,
+                                select: sselect
+                            }
+                        });
                     }
                 }
             }
