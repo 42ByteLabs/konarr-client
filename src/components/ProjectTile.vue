@@ -69,11 +69,11 @@ const severity = computed(() => {
                 <div v-if="project.security" class="flex items-center justify-center col-span-1 mr-2">
                     <svg-icon v-if="project.security.critical !== 0" type="mdi" :path="mdiSecurity"
                         class="text-sec-critical-400"></svg-icon>
-                    <svg-icon v-if="project.security.high !== 0" type="mdi" :path="mdiSecurity"
+                    <svg-icon v-else-if="project.security.high !== 0" type="mdi" :path="mdiSecurity"
                         class="text-sec-high-400"></svg-icon>
-                    <svg-icon v-if="project.security.medium !== 0" type="mdi" :path="mdiSecurity"
+                    <svg-icon v-else-if="project.security.medium !== 0" type="mdi" :path="mdiSecurity"
                         class="text-sec-medium-400"></svg-icon>
-                    <svg-icon v-if="project.security.low !== 0" type="mdi" :path="mdiSecurity"
+                    <svg-icon v-else-if="project.security.low !== 0" type="mdi" :path="mdiSecurity"
                         class="text-sec-low-400"></svg-icon>
                     <svg-icon v-else type="mdi" :path="mdiSecurity" class="text-sec-other-300"></svg-icon>
                     <span class="ml-1">

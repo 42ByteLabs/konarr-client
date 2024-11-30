@@ -36,7 +36,8 @@ onMounted(() => {
                     <hr class="my-6 border-gray-300" />
 
                     <AdminSetting v-if="admin.settings.agent === 'enabled'" title="Agent Share Key"
-                        :data="admin.settings['agent.key']" setting="agent.key" hidedata />
+                        description="Shared secret key for agent communication" :data="admin.settings['agent.key']"
+                        setting="agent.key" hidedata />
                 </div>
                 <Loading v-else />
             </div>

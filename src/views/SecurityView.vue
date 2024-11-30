@@ -9,8 +9,12 @@ import Search from "@/components/Search.vue";
 import Loading from "@/components/Loading.vue";
 import Pagination from "@/components/Pagination.vue";
 import SecurityAlertTile from "@/components/SecurityAlertTile.vue";
+import SecuritySummaryTile from "@/components/SecuritySummaryTile.vue";
+
+import { useServerStore } from "@/stores/server";
 import { useSecurityStore } from "@/stores/security";
 
+const server = useServerStore();
 const security = useSecurityStore();
 
 onMounted(() => {
@@ -24,59 +28,33 @@ onMounted(() => {
         security.fetchAlerts(qpage, 24);
     }
 });
-
-onUpdated(() => {
-    const squery = router.currentRoute.value.query.search;
-    const qseverity = router.currentRoute.value.query.severity;
-    const qpage = parseInt(router.currentRoute.value.query.page || 1) - 1;
-
-    if (qseverity) {
-        security.fetchAlerts(qpage, 24, qseverity);
-    } else {
-        security.fetchAlerts(qpage, 24);
-    }
-});
-
 </script>
 
 <template>
     <main>
-        <div class="container mt-4 mb-6 w-full mx-auto">
+        <div v-if="server.security" class="container mt-4 mb-6 w-full mx-auto">
             <Title title="Security" description="List of Security Alerts" />
 
             <Loading v-if="security.loading" />
             <div v-else class="w-full">
-                <div class="grid md:grid-cols-10 sm:grid-cols-4 gap-2 w-full mx-auto dark:text-black my-8">
-                    <router-link :to="{ name: 'Security', query: { severity: 'critical' } }"
-                        class="col-span-2 shadow-md rounded-lg md:p-4 sm:p-2 bg-sec-critical-200 dark:bg-sec-critical-400 hover:bg-sec-critical-300 dark:hover:bg-sec-critical-500 hover:shadow-lg text-center">
-                        <h5 class="">
-                            Critical
-                        </h5>
-                    </router-link>
-                    <router-link :to="{ name: 'Security', query: { severity: 'high' } }"
-                        class="col-span-2 shadow-md rounded-lg md:p-4 sm:p-2 bg-sec-high-200 dark:bg-sec-high-300 hover:bg-sec-high-300 dark:hover:bg-sec-high-400 hover:shadow-lg text-center">
-                        <h5 class="">
-                            High
-                        </h5>
-                    </router-link>
-                    <router-link :to="{ name: 'Security', query: { severity: 'medium' } }"
-                        class="col-span-2 shadow-md rounded-lg md:p-4 sm:p-2 bg-sec-medium-200 dark:bg-sec-medium-300 hover:bg-sec-medium-300 dark:hover:bg-sec-medium-400 hover:shadow-lg text-center">
-                        <h5 class="">
-                            Medium
-                        </h5>
-                    </router-link>
-                    <router-link :to="{ name: 'Security', query: { severity: 'low' } }"
-                        class="col-span-2 shadow-md rounded-lg md:p-4 sm:p-2 bg-sec-low-200 dark:bg-sec-low-300 hover:bg-sec-low-300 dark:hover:bg-sec-low-400 hover:shadow-lg text-center">
-                        <h5 class="">
-                            Low
-                        </h5>
-                    </router-link>
-                    <router-link :to="{ name: 'Security', query: { severity: 'other' } }"
-                        class="col-span-2 shadow-md rounded-lg md:p-4 sm:p-2 bg-sec-other-200 dark:bg-sec-other-300 hover:bg-sec-other-300 dark:hover:bg-sec-other-400 hover:shadow-lg text-center">
-                        <h5 class="">
-                            Other
-                        </h5>
-                    </router-link>
+                <div
+                    class="grid lg:grid-cols-6 md:grid-cols-3 sm:grid-cols-1 gap-2 w-full mx-auto dark:text-black my-8">
+                    <SecuritySummaryTile name="Total" :count="server.security.total"
+                        class="col-span-1 bg-sec-total-200" />
+                    <SecuritySummaryTile name="Critical" :count="server.security.critical" class="col-span-1" />
+                    <SecuritySummaryTile name="High" :count="server.security.high" class="col-span-1" />
+                    <SecuritySummaryTile name="Medium" :count="server.security.medium" class="col-span-1" />
+                    <SecuritySummaryTile name="Low" :count="server.security.low" class="col-span-1" />
+                    <SecuritySummaryTile name="Informational" :count="server.security.informational"
+                        class="col-span-1 bg-sec-information-200 dark:bg-sec-information-300" />
+                </div>
+                <div class="grid lg:grid-cols-3 sm:grid-cols-1 gap-2 w-full mx-auto dark:text-black my-8">
+                    <SecuritySummaryTile name="Malware" :count="server.security.malware"
+                        class="col-span-1 bg-sec-malware-100 dark:bg-sec-malware-300" />
+                    <SecuritySummaryTile name="Unmaintained" :count="server.security.unmaintained"
+                        class="col-span-1 bg-sec-unmaintained-200 dark:bg-sec-unmaintained-300" />
+                    <SecuritySummaryTile name="Unknown" :count="server.security.informational"
+                        class="col-span-1 bg-sec-information-200 dark:bg-sec-information-300" />
                 </div>
 
                 <Search searching="security" placeholder="Find alerts..." :total="security.total" limit="24"
@@ -105,6 +83,9 @@ onUpdated(() => {
                 <Pagination v-if="security.pages !== 1" :page="security.page" :pages="security.pages"
                     :next="security.fetchNextPage" :prev="security.fetchPrevPage" />
             </div>
+        </div>
+        <div v-else class="container mt-4 mb-6 w-full mx-auto">
+            <Title title="Security" description="Security alerts are disabled on this server." />
         </div>
     </main>
 </template>

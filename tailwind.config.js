@@ -27,10 +27,14 @@ export default {
             pink: colors.pink,
 
             sec: {
+                total: colors.yellow,
                 critical: colors.red,
                 high: colors.orange,
                 medium: colors.blue,
                 low: colors.emerald,
+                information: colors.purple,
+                malware: colors.red,
+                unmaintained: colors.gray,
                 other: colors.gray,
             }
         },

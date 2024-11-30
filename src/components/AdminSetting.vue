@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, computed, ref } from "vue";
 import SvgIcon from "@jamescoyle/vue-icon";
-import { mdiPencil, mdiEyeOffOutline, mdiRefresh } from "@mdi/js";
+import { mdiPencil, mdiEyeOffOutline, mdiRefresh, mdiInformationBox } from "@mdi/js";
 import { Switch } from '@headlessui/vue'
 
 import { useServerStore } from "@/stores/server";
@@ -16,13 +16,20 @@ const props = defineProps<{
     title: string;
     // The value of the setting
     data: any;
+    // Description
+    description?: string;
     // The key of the setting
     setting?: string;
+
+    // Information
+    info?: string;
 
     // If the setting is editable (string)
     editable?: boolean;
     // If the setting is a toggle (boolean)
     toggle?: boolean;
+    // Click action
+    button?: boolean;
     // Is the data hidden to the user
     hidedata?: boolean;
     // Regenerate setting
@@ -31,6 +38,7 @@ const props = defineProps<{
 
 const enabled = ref(false);
 const hidden = ref(true);
+const description_help = ref(false);
 
 // If the data is a boolean, set the switch to the value
 // Toggle the setting
@@ -49,6 +57,9 @@ const hidedata = (data: any) => {
 const regenerate = () => {
     admin.updateSetting(props.setting, true);
 }
+const toggle_help = () => {
+    description_help.value = !description_help.value;
+}
 
 onMounted(() => {
     if (props.data == "true" || props.data == "enabled") {
@@ -63,8 +74,44 @@ onMounted(() => {
 <template>
     <div>
         <!-- Display a Admin Setting -->
-        <div class="grid grid-cols-6 gap-2 w-full mx-auto py-3 px-3">
-            <div class="col-span-2">
+        <div class="grid grid-cols-12 gap-2 w-full mx-auto py-3 px-3 mt-2">
+            <div v-if="props.toggle" class="col-span-1">
+                <div class="flex items-center justify-center">
+                    <Switch v-if="props.toggle" v-model="enabled" :class="enabled ? 'bg-pink-600' : 'bg-gray-200'"
+                        class="relative inline-flex h-6 w-11 items-center rounded-full" @click="toggle">
+                        <span class="sr-only">Enable {{ props.title }}</span>
+                        <span :class="enabled ? 'translate-x-6' : 'translate-x-1'"
+                            class="inline-block h-4 w-4 transform rounded-full bg-white dark:bg-gray-700 transition" />
+                    </Switch>
+                </div>
+            </div>
+            <div v-else-if="props.button" class="col-span-1">
+                <div class="flex items-center justify-center">
+                    <button @click="toggle"
+                        class="bg-accent-500 hover:bg-accent-700 text-white font-bold py-1 px-3 rounded">
+                        Action
+                    </button>
+                </div>
+            </div>
+            <div v-else-if="props.hidedata" class="col-span-1">
+                <div class="flex items-center justify-center">
+                    <button @click="regenerate" class="col-span-1 hover:text-accent-500">
+                        <svg-icon type="mdi" :path="mdiRefresh" />
+                    </button>
+                </div>
+            </div>
+            <div v-else class="col-span-1"></div>
+
+            <div v-if="props.description" class="col-span-1">
+                <div class="flex items-center justify-center">
+                    <button @click="toggle_help" class="hover:text-blue-500">
+                        <svg-icon type="mdi" :path="mdiInformationBox" class="h-4 w-4" />
+                    </button>
+                </div>
+            </div>
+            <div v-else class="col-span-1"></div>
+
+            <div class="col-span-4">
                 <div class="flex items-center">
                     <span>
                         <strong>
@@ -73,16 +120,10 @@ onMounted(() => {
                     </span>
                 </div>
             </div>
-            <div class="col-span-4">
-                <div class="flex items-center">
-                    <Switch v-if="props.toggle" v-model="enabled" :class="enabled ? 'bg-pink-600' : 'bg-gray-200'"
-                        class="relative inline-flex h-6 w-11 items-center rounded-full" @click="toggle">
-                        <span class="sr-only">Enable {{ props.title }}</span>
-                        <span :class="enabled ? 'translate-x-6' : 'translate-x-1'"
-                            class="inline-block h-4 w-4 transform rounded-full bg-white dark:bg-gray-700 transition" />
-                    </Switch>
 
-                    <div v-else-if="props.hidedata" class="grid grid-cols-12">
+            <div v-if="props.hidedata" class="col-span-5">
+                <div class="flex items-center">
+                    <div class="grid grid-cols-12">
                         <button @click="hidedata" class="col-span-1 hover:text-blue-500 mr-4">
                             <svg-icon type="mdi" :path="mdiEyeOffOutline" />
                         </button>
@@ -93,13 +134,35 @@ onMounted(() => {
                         <span v-else class="col-span-9 mt-1.5">
                             {{ props.data }}
                         </span>
-                        <button @click="regenerate" class="col-span-1 hover:text-blue-500 mr-4 ml-8">
-                            <svg-icon type="mdi" :path="mdiRefresh" />
-                        </button>
                     </div>
-                    <span v-else>
+                </div>
+            </div>
+            <div v-else-if="props.button || props.toggle" class="col-span-5"></div>
+            <div v-else class="col-span-5">
+                <div class="flex items-center">
+                    <span>
                         {{ props.data }}
                     </span>
+                </div>
+            </div>
+
+            <div v-if="props.info && !enabled" class="col-span-12 text-sm pt-1">
+                <div class="bg-gray-100 dark:bg-gray-800 border-l-4 border-accent-500 text-accent-700 dark:text-accent-400 p-4"
+                    role="alert">
+                    <div class="grid grid-cols-12">
+                        <div class="col-span-1 flex items-center justify-center">
+                            <svg-icon type="mdi" :path="mdiInformationBox" class="h-4 w-4 mr-2" />
+                        </div>
+                        <div class="col-span-11">
+                            {{ props.info }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div v-if="description_help" class="col-span-12 text-sm pt-2">
+                <div class="bg-gray-100 dark:bg-gray-800 border-l-4 border-accent-500 text-accent-700 dark:text-accent-400 p-4"
+                    role="alert">
+                    {{ props.description }}
                 </div>
             </div>
         </div>

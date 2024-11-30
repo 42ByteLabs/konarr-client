@@ -31,12 +31,53 @@ onMounted(() => {
 
                 <div v-if="!admin.loading"
                     class="col-span-4 bg-white dark:bg-gray-700 dark:text-white shadow-md rounded-lg p-4 pt-6">
-                    <AdminSetting title="Enable Security" :data="admin.settings.security" setting="security" toggle />
 
-                    <hr class="my-6 border-gray-300" />
+                    <AdminSetting title="Enable Security"
+                        info="Enable the security feature inside Konarr. This includes automatically discovering security alerts, update advisory database, etc."
+                        :data="admin.settings.security" setting="security" toggle />
 
-                    <AdminSetting v-if="admin.settings.security === 'enabled'" title="Poll Advisory Database"
-                        :data="admin.settings['security.advisories.poll']" setting="security.advisories.poll" toggle />
+                    <div v-if="admin.settings.security === 'enabled'">
+                        <hr class="my-6 border-gray-300" />
+
+                        <h2 class="text-xl text-center font-semibold mb-2">
+                            Advisory Database
+                        </h2>
+
+                        <AdminSetting title="Security Advisory Database"
+                            description="Enable to access the security advisory database. The current advisory database is stored locally and can be updated periodically."
+                            :data="admin.settings['security.advisories']" setting="security.advisories" toggle />
+
+                        <div v-if="admin.settings['security.advisories'] == 'enabled'">
+                            <AdminSetting title="Current Version" :data="admin.settings['security.advisories.version']"
+                                setting="security.advisories.version" />
+                            <AdminSetting title="Last Checked / Updated"
+                                :data="admin.settings['security.advisories.updated']"
+                                setting="security.advisories.updated" />
+
+                            <AdminSetting title="Automatic Polling"
+                                info="Allow automatically polling of the advisory database. This will access the internet to download the latest database."
+                                description="Enable to automatically poll the advisory database for new alerts. This will access the internet to download the latest security alerts."
+                                :data="admin.settings['security.advisories.polling']"
+                                setting="security.advisories.polling" toggle />
+
+                            <AdminSetting title="Manually Pull Database"
+                                description="Manually trigger a pull of the advisory database."
+                                :data="admin.settings['security.advisories.pull']" setting="security.advisories.pull"
+                                button />
+                        </div>
+
+                        <hr class="my-6 border-gray-300" />
+
+                        <h2 class="text-xl text-center font-semibold mb-2">
+                            Security Tools
+                        </h2>
+
+                        <AdminSetting title="Allow Tool Alerts"
+                            info="Enable to receive alerts from the security tools themselves. This might cause outdated alerts to be shown."
+                            description="Enable to receive alerts from security tools. This includes alerts from tools like Trivy, Grype, and other security scanners."
+                            :data="admin.settings['security.tools.alerts']" setting="security.tools.alerts" toggle />
+
+                    </div>
                 </div>
                 <Loading v-else />
             </div>
