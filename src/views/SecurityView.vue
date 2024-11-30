@@ -8,6 +8,7 @@ import Title from "@/components/Title.vue";
 import Search from "@/components/Search.vue";
 import Loading from "@/components/Loading.vue";
 import Pagination from "@/components/Pagination.vue";
+import SecurityIcon from "@/components/SecurityIcon.vue";
 import SecurityAlertTile from "@/components/SecurityAlertTile.vue";
 import SecuritySummaryTile from "@/components/SecuritySummaryTile.vue";
 
@@ -45,10 +46,14 @@ onMounted(() => {
                     class="grid lg:grid-cols-6 md:grid-cols-3 sm:grid-cols-1 gap-2 w-full mx-auto dark:text-black my-4">
                     <SecuritySummaryTile name="Total" :count="server.security.total"
                         class="col-span-1 bg-sec-total-200" />
-                    <SecuritySummaryTile name="Critical" :count="server.security.critical" class="col-span-1" />
-                    <SecuritySummaryTile name="High" :count="server.security.high" class="col-span-1" />
-                    <SecuritySummaryTile name="Medium" :count="server.security.medium" class="col-span-1" />
-                    <SecuritySummaryTile name="Low" :count="server.security.low" class="col-span-1" />
+                    <SecuritySummaryTile name="Critical" :count="server.security.critical"
+                        class="col-span-1 bg-sec-critical-300 hover:bg-sec-critical-400" />
+                    <SecuritySummaryTile name="High" :count="server.security.high"
+                        class="col-span-1 bg-sec-high-300 hover:bg-sec-high-400" />
+                    <SecuritySummaryTile name="Medium" :count="server.security.medium"
+                        class="col-span-1 bg-sec-medium-300 hover:bg-sec-medium-400" />
+                    <SecuritySummaryTile name="Low" :count="server.security.low"
+                        class="col-span-1 bg-sec-low-300 hover:bg-sec-medium-400" />
                     <SecuritySummaryTile name="Informational" :count="server.security.informational"
                         class="col-span-1 bg-sec-information-200 dark:bg-sec-information-300" />
                 </div>
@@ -71,21 +76,16 @@ onMounted(() => {
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4 mt-8">
                     <router-link :to="{ name: 'Alert', params: { id: sec.id } }" v-for="sec in security.data"
-                        :key="sec.id" :class="[
-                            `bg-sec-${sec.severity.toLowerCase()}-100 dark:bg-sec-${sec.severity.toLowerCase()}-300`,
-                            'dark:text-white hover:bg-accent-500 shadow-md rounded-lg p-4',
-                        ]">
+                        :key="sec.id"
+                        class="dark:text-white dark:bg-gray-700 hover:bg-accent-500 shadow-md rounded-lg p-4">
                         <div class="grid grid-cols-8">
-                            <div class="col-span-1">
-                                <SvgIcon type="mdi" :path="mdiSecurity" class="h-6 w-6 ml-2" />
-                            </div>
-                            <div class="col-span-6">
+                            <div class="col-span-7">
                                 <h3 class="ml-2 text-lg font-semibold">
                                     {{ sec.name }}
                                 </h3>
                             </div>
                             <div class="col-span-1">
-                                {{ sec.severity }}
+                                <SecurityIcon :severity="sec.severity" />
                             </div>
                         </div>
                     </router-link>

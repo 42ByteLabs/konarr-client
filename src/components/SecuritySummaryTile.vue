@@ -4,6 +4,7 @@ import { router } from "@/router";
 
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiSecurity, mdiBug, mdiStopCircleOutline, mdiInformationSlabCircleOutline } from "@mdi/js";
+import SecurityIcon from "@/components/SecurityIcon.vue";
 
 import { useSecurityStore } from "@/stores/security";
 
@@ -32,17 +33,6 @@ const snapshot = computed(() => {
     return props.snapshot || router.currentRoute.value.query.search;
 });
 
-const icon = computed(() => {
-    if (props.name === "Informational" || props.name === "Other") {
-        return mdiInformationSlabCircleOutline;
-    } else if (props.name === "Malware") {
-        return mdiBug;
-    } else if (props.name === "Unmaintained") {
-        return mdiStopCircleOutline;
-    } else {
-        return mdiSecurity;
-    }
-});
 const color = computed(() => {
     const name = props.name.toLowerCase();
     return `bg-sec-${name}-200 dark:bg-sec-${name}-300 hover:bg-sec-${name}-300 dark:hover:bg-sec-${name}-400`
@@ -56,7 +46,7 @@ const severity = computed(() => {
 <template>
     <button @click="update" :class="['shadow-md rounded-lg md:p-4 sm:p-2 hover:shadow-lg text-center', color]">
         <div class="grid grid-cols-6">
-            <svg-icon class="col-span-1 text-accent-500 dark:text-gray-800" :type="'mdi'" :path="icon" />
+            <SecurityIcon class="col-span-1 text-accent-500 dark:text-gray-800" :severity="props.name" :size="24" />
             <h5 class="col-span-4 font-bold">
                 {{ props.name }}
             </h5>
