@@ -26,5 +26,13 @@ const props = defineProps<{
             <SecuritySummaryTile name="Low" :count="props.summary.low" class="col-span-2" />
             <SecuritySummaryTile name="Infomational" :count="props.summary.informational" class="col-span-2" />
         </div>
+        <div class="grid lg:grid-cols-6 md:grid-cols-6 sm:grid-cols-4 gap-2 w-full mx-auto dark:text-black mt-4">
+            <SecuritySummaryTile name="Malware" :count="props.summary.malware"
+                class="col-span-2 bg-sec-malware-100 dark:bg-sec-malware-300" />
+            <SecuritySummaryTile name="Unmaintained" :count="props.summary.unmaintained"
+                class="col-span-2 bg-sec-unmaintained-200 dark:bg-sec-unmaintained-300" />
+            <SecuritySummaryTile name="Unknown" :count="props.summary.unknown"
+                class="col-span-2 bg-sec-information-200 dark:bg-sec-information-300" />
+        </div>
     </div class="mb-10">
 </template>

@@ -38,7 +38,7 @@ onMounted(() => {
             <Loading v-if="security.loading" />
             <div v-else class="w-full">
                 <div
-                    class="grid lg:grid-cols-6 md:grid-cols-3 sm:grid-cols-1 gap-2 w-full mx-auto dark:text-black my-8">
+                    class="grid lg:grid-cols-6 md:grid-cols-3 sm:grid-cols-1 gap-2 w-full mx-auto dark:text-black my-4">
                     <SecuritySummaryTile name="Total" :count="server.security.total"
                         class="col-span-1 bg-sec-total-200" />
                     <SecuritySummaryTile name="Critical" :count="server.security.critical" class="col-span-1" />
@@ -48,12 +48,12 @@ onMounted(() => {
                     <SecuritySummaryTile name="Informational" :count="server.security.informational"
                         class="col-span-1 bg-sec-information-200 dark:bg-sec-information-300" />
                 </div>
-                <div class="grid lg:grid-cols-3 sm:grid-cols-1 gap-2 w-full mx-auto dark:text-black my-8">
+                <div class="grid lg:grid-cols-3 sm:grid-cols-1 gap-2 w-full mx-auto dark:text-black mt-4 mb-8">
                     <SecuritySummaryTile name="Malware" :count="server.security.malware"
                         class="col-span-1 bg-sec-malware-100 dark:bg-sec-malware-300" />
                     <SecuritySummaryTile name="Unmaintained" :count="server.security.unmaintained"
                         class="col-span-1 bg-sec-unmaintained-200 dark:bg-sec-unmaintained-300" />
-                    <SecuritySummaryTile name="Unknown" :count="server.security.informational"
+                    <SecuritySummaryTile name="Unknown" :count="server.security.unknown"
                         class="col-span-1 bg-sec-information-200 dark:bg-sec-information-300" />
                 </div>
 
