@@ -20,9 +20,12 @@ const security = useSecurityStore();
 onMounted(() => {
     const squery = router.currentRoute.value.query.search;
     const qseverity = router.currentRoute.value.query.severity;
+    const qsnapshot = router.currentRoute.value.query.snapshot;
     const qpage = parseInt(router.currentRoute.value.query.page || 1) - 1;
 
-    if (qseverity) {
+    if (qsnapshot) {
+        security.fetchSnapshotAlerts(qsnapshot, qpage, 24, qseverity);
+    } else if (qseverity) {
         security.fetchAlerts(qpage, 24, qseverity);
     } else {
         security.fetchAlerts(qpage, 24);

@@ -70,6 +70,27 @@ export const useSecurityStore = defineStore("security", {
                     }
                 });
         },
+        async fetchSnapshotAlerts(snapshot: number, page?: number, limit?: number, severity?: string) {
+            var params = `page=${page}&limit=${limit}`;
+            if (severity) {
+                params += "&severity=" + severity;
+            }
+
+            await client
+                .get(`/snapshots/${snapshot}/alerts?${params}`)
+                .then((response) => {
+                    this.loading = false;
+                    this.data = response.data.data;
+                    this.total = response.data.total;
+                    this.count = response.data.count;
+                    this.pages = response.data.pages;
+                })
+                .catch((error) => {
+                    if (error.response.status === 401) {
+                        router.push({ name: "Login" });
+                    }
+                });
+        },
         async fetchNextPage() {
             const sselect = router.currentRoute.value.query.select;
             const top = sselect === undefined
