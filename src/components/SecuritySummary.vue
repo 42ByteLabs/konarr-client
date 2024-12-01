@@ -3,6 +3,7 @@ import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiSecurity } from "@mdi/js";
 
 import type { KonarrSecuritySummary } from "@/types";
+import SecuritySummaryTile from "@/components/SecuritySummaryTile.vue";
 
 const props = defineProps<{
     summary: KonarrSecuritySummary,
@@ -17,63 +18,25 @@ const props = defineProps<{
                 Security - {{ props.summary.total }}
             </h2>
         </div>
-        <div class="grid md:grid-cols-10 sm:grid-cols-4 gap-2 w-full mx-auto dark:text-black">
+        <div class="grid lg:grid-cols-10 md:grid-cols-6 sm:grid-cols-4 gap-2 w-full mx-auto dark:text-black">
             <!-- on hover, make the card slightly bigger and change the color -->
-            <router-link :to="{ name: 'Security', query: { snapshot: props.snapshot, severity: 'critical' } }"
-                class="col-span-2 shadow-md rounded-lg md:p-4 sm:p-2 bg-sec-critical-200 dark:bg-sec-critical-400 hover:bg-sec-critical-300 dark:hover:bg-sec-critical-500 hover:shadow-lg text-center">
-                <h5 class="">
-                    Critical
-                </h5>
-                <span>
-                    <strong>
-                        {{ props.summary.critical }}
-                    </strong>
-                </span>
-            </router-link>
-            <router-link :to="{ name: 'Security', query: { snapshot: props.snapshot, severity: 'high' } }"
-                class="col-span-2 shadow-md rounded-lg md:p-4 sm:p-2 bg-sec-high-200 dark:bg-sec-high-300 hover:bg-sec-high-300 dark:hover:bg-sec-high-400 hover:shadow-lg text-center">
-                <h5 class="">
-                    High
-                </h5>
-                <span>
-                    <strong>
-                        {{ props.summary.high }}
-                    </strong>
-                </span>
-            </router-link>
-            <router-link :to="{ name: 'Security', query: { snapshot: props.snapshot, severity: 'medium' } }"
-                class="col-span-2 shadow-md rounded-lg md:p-4 sm:p-2 bg-sec-medium-200 dark:bg-sec-medium-300 hover:bg-sec-medium-300 dark:hover:bg-sec-medium-400 hover:shadow-lg text-center">
-                <h5 class="">
-                    Medium
-                </h5>
-                <span>
-                    <strong>
-                        {{ props.summary.medium }}
-                    </strong>
-                </span>
-            </router-link>
-            <router-link :to="{ name: 'Security', query: { snapshot: props.snapshot, severity: 'low' } }"
-                class="col-span-2 shadow-md rounded-lg md:p-4 sm:p-2 bg-sec-low-200 dark:bg-sec-low-300 hover:bg-sec-low-300 dark:hover:bg-sec-low-400 hover:shadow-lg text-center">
-                <h5 class="">
-                    Low
-                </h5>
-                <span>
-                    <strong>
-                        {{ props.summary.low }}
-                    </strong>
-                </span>
-            </router-link>
-            <router-link :to="{ name: 'Security', query: { snapshot: props.snapshot, severity: 'other' } }"
-                class="col-span-2 shadow-md rounded-lg md:p-4 sm:p-2 bg-sec-other-200 dark:bg-sec-other-300 hover:bg-sec-other-300 dark:hover:bg-sec-other-400 hover:shadow-lg text-center">
-                <h5 class="">
-                    Other
-                </h5>
-                <span>
-                    <strong>
-                        {{ props.summary.other }}
-                    </strong>
-                </span>
-            </router-link>
+            <SecuritySummaryTile name="Critical" :snapshot="props.snapshot" :count="props.summary.critical"
+                class="col-span-2" />
+            <SecuritySummaryTile name="High" :snapshot="props.snapshot" :count="props.summary.high"
+                class="col-span-2" />
+            <SecuritySummaryTile name="Medium" :snapshot="props.snapshot" :count="props.summary.medium"
+                class="col-span-2" />
+            <SecuritySummaryTile name="Low" :snapshot="props.snapshot" :count="props.summary.low" class="col-span-2" />
+            <SecuritySummaryTile name="Infomational" :snapshot="props.snapshot" :count="props.summary.informational"
+                class="col-span-2" />
+        </div>
+        <div class="grid lg:grid-cols-6 md:grid-cols-6 sm:grid-cols-4 gap-2 w-full mx-auto dark:text-black mt-4">
+            <SecuritySummaryTile name="Malware" :snapshot="props.snapshot" :count="props.summary.malware"
+                class="col-span-2 bg-sec-malware-100 dark:bg-sec-malware-300" />
+            <SecuritySummaryTile name="Unmaintained" :snapshot="props.snapshot" :count="props.summary.unmaintained"
+                class="col-span-2 bg-sec-unmaintained-200 dark:bg-sec-unmaintained-300" />
+            <SecuritySummaryTile name="Unknown" :snapshot="props.snapshot" :count="props.summary.unknown"
+                class="col-span-2 bg-sec-information-200 dark:bg-sec-information-300" />
         </div>
     </div class="mb-10">
 </template>

@@ -16,6 +16,7 @@ const props = defineProps<{
             <div class="flex flex-col w-full mt-4">
                 <AdminSettingButton title="General" link="Admin" :icon="mdiServer" />
                 <AdminSettingButton title="Users" link="Admin Users" :icon="mdiAccountGroup" />
+                <AdminSettingButton title="Security Alerts & Tools" link="Admin Security" :icon="mdiSecurity" />
                 <AdminSettingButton title="Agents" link="Admin Agents" :icon="mdiRobotLoveOutline" />
             </div>
         </div>

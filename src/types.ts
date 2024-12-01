@@ -67,7 +67,10 @@ export interface KonarrSecuritySummary {
     high: number;
     medium: number;
     low: number;
-    other: number;
+    malware: number;
+    unmaintained: number;
+    informational: number;
+    unknown: number;
 }
 
 export interface Pagination<T> {
@@ -141,3 +144,9 @@ export interface KonarrDependency {
     logo?: string;
 }
 
+export type KonarrSecurityAlerts = Pagination<KonarrSecurityAlert>;
+
+export interface KonarrSecurityAlert {
+    id: number;
+    name: string;
+}

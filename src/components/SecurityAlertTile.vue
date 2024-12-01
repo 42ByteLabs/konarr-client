@@ -3,33 +3,32 @@ import { computed } from "vue";
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiGraph, mdiSecurity, mdiGroup, mdiCloudOffOutline, mdiCloudCheckOutline } from "@mdi/js";
 
-import type { KonarrProject } from "@/types";
-import ProjectIcon from "@/components/ProjectIcon.vue";
-import { useProjectsStore } from "@/stores/projects";
+import type { KonarrSecurityAlert } from "@/types";
+import { useSecurityStore } from "@/stores/security";
 
-const projects = useProjectsStore();
+const security = useSecurityStore();
 
 const props = defineProps<{
-    project?: KonarrProject;
+    alert?: KonarrSecurityAlert;
     id?: number;
 }>();
 
-const project = computed(() => {
-    if (props.project) {
-        return props.project;
+const alert = computed(() => {
+    if (props.alert) {
+        return props.alert;
     } else {
-        projects.getCurrentProject(props.id);
-        return projects.projects.find(
-            (p: KonarrProject) => p.id === projects.current,
+        security.fetchAlert(props.id);
+        return security.data.find(
+            (p: KonarrSecurityAlert) => p.id === security.current,
         );
     }
 });
 
 const link = computed(() => {
-    return `/projects/${props.project.id}`;
+    return `/security/${props.alert.id}`;
 });
 const severity = computed(() => {
-    if (props.project.security) {
+    if (props.alert.security) {
         return mdi
     }
 });
@@ -37,16 +36,15 @@ const severity = computed(() => {
 
 <template>
     <div class="bg-white dark:bg-gray-700 shadow-md rounded-lg hover:bg-accent-500 py-2">
-        <router-link :to="{ name: 'Project', params: { id: project.id } }"
+        <router-link :to="{ name: 'Project', params: { id: alert.id } }"
             class="dark:text-white hover:bg-pink-500 hover:shadow-lg">
             <h3 class="flex justify-center text-lg font-semibold">
-                {{ props.project.title || props.project.name }}
+                {{ props.alert.name }}
             </h3>
 
             <div class="grid grid-cols-4 mt-4 mb-2">
                 <!-- Type -->
                 <div class="flex items-center justify-center col-span-1">
-                    <ProjectIcon :type="project.type" />
                     <span v-if="project.children" class="ml-1">
                         {{ project.children.length || 0 }}
                     </span>
@@ -69,11 +67,11 @@ const severity = computed(() => {
                 <div v-if="project.security" class="flex items-center justify-center col-span-1 mr-2">
                     <svg-icon v-if="project.security.critical !== 0" type="mdi" :path="mdiSecurity"
                         class="text-sec-critical-400"></svg-icon>
-                    <svg-icon v-else-if="project.security.high !== 0" type="mdi" :path="mdiSecurity"
+                    <svg-icon v-if="project.security.high !== 0" type="mdi" :path="mdiSecurity"
                         class="text-sec-high-400"></svg-icon>
-                    <svg-icon v-else-if="project.security.medium !== 0" type="mdi" :path="mdiSecurity"
+                    <svg-icon v-if="project.security.medium !== 0" type="mdi" :path="mdiSecurity"
                         class="text-sec-medium-400"></svg-icon>
-                    <svg-icon v-else-if="project.security.low !== 0" type="mdi" :path="mdiSecurity"
+                    <svg-icon v-if="project.security.low !== 0" type="mdi" :path="mdiSecurity"
                         class="text-sec-low-400"></svg-icon>
                     <svg-icon v-else type="mdi" :path="mdiSecurity" class="text-sec-other-300"></svg-icon>
                     <span class="ml-1">

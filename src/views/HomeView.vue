@@ -3,6 +3,7 @@ import { onMounted } from "vue";
 
 import Title from "@/components/Title.vue";
 import Welcome from "@/components/Welcome.vue";
+import SecurityAlertsPie from "@/components/SecurityAlertsPie.vue";
 import { useServerStore } from "@/stores/server";
 
 const server = useServerStore();
@@ -66,34 +67,7 @@ const server = useServerStore();
                             Feature Coming Soon...
                         </p>
                         <div v-if="server.security" class="grid-cols-3 gap-4 mt-6">
-                            <!-- Count of security alerts -->
-                            <div class="flex items center justify-between mt-4 px-6">
-                                <span class="text-sm text-gray-500">Total Security Alerts</span>
-                                <span class="text-lg font-semibold">{{ server.security.total }}</span>
-                            </div>
-                            <div class="flex items center justify-between mt-4 px-6">
-                                <span class="text-sm text-gray-500">Critical Severity</span>
-                                <span class="text-lg font-semibold">{{ server.security.critical }}</span>
-                            </div>
-                            <div class="flex items center justify-between mt-4 px-6">
-                                <span class="text-sm text-gray-500">High Severity</span>
-                                <span class="text-lg font-semibold">{{ server.security.high }}</span>
-                            </div>
-                            <div class="flex items center justify-between mt-4 px-6">
-                                <span class="text-sm text-gray-500">Medium Severity</span>
-                                <span class="text-lg font-semibold">{{ server.security.medium }}</span>
-                            </div>
-                            <div class="flex items center justify-between mt-4 px-6">
-                                <span class="text-sm text-gray-500">Other Severity</span>
-                                <span class="text-lg font-semibold">{{ server.security.other }}</span>
-                            </div>
-
-                            <hr class="mt-4 mb-2" />
-
-                            <div class="flex items center justify-between mt-4 px-6">
-                                <span class="text-sm text-gray-500">Total Advisories</span>
-                                <span class="text-lg font-semibold">{{ server.security.advisories }}</span>
-                            </div>
+                            <SecurityAlertsPie :alerts="server.security" />
                         </div>
                     </div>
                 </div>
