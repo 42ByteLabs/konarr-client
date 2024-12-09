@@ -27,7 +27,7 @@ const props = defineProps<{
             <SecuritySummaryTile name="Medium" :snapshot="props.snapshot" :count="props.summary.medium"
                 class="col-span-2" />
             <SecuritySummaryTile name="Low" :snapshot="props.snapshot" :count="props.summary.low" class="col-span-2" />
-            <SecuritySummaryTile name="Infomational" :snapshot="props.snapshot" :count="props.summary.informational"
+            <SecuritySummaryTile name="Informational" :snapshot="props.snapshot" :count="props.summary.informational"
                 class="col-span-2" />
         </div>
         <div class="grid lg:grid-cols-6 md:grid-cols-6 sm:grid-cols-4 gap-2 w-full mx-auto dark:text-black mt-4">

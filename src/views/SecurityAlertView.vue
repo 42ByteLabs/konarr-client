@@ -6,6 +6,7 @@ import { mdiSecurity } from "@mdi/js";
 import type { KonarrSecurityAlert } from "@/types";
 
 import Title from "@/components/Title.vue";
+import DependencyIcon from "@/components/DependencyIcon.vue";
 import Loading from "@/components/Loading.vue";
 
 import { useSecurityStore } from "@/stores/security";
@@ -43,6 +44,32 @@ var alert = computed(() => {
                 <div class="md:col-span-6 sm:grid-cols-1">
                     <Title :title="alert.name" :subtitle="alert.severity" />
                 </div>
+            </div>
+            <div v-if="alert.dependency">
+                <h3 class="text-xl font-semibold text-center">Dependencies</h3>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4 mt-8">
+                    <router-link :to="{ name: 'Dependency', params: { id: alert.dependency.id } }"
+                        class="bg-white dark:bg-gray-700 dark:text-white hover:bg-accent-500 shadow-md rounded-lg p-4">
+                        <div class="grid grid-cols-8">
+                            <div class="col-span-1">
+                                <DependencyIcon :dep="alert.dependency.type" />
+                            </div>
+                            <div class="col-span-6">
+                                <h3 class="ml-2 text-lg font-semibold">
+                                    {{ alert.dependency.name }} @ {{ alert.dependency.version }}
+                                </h3>
+                            </div>
+                            <div class="col-span-1">
+                                <svg-icon type="mdi" path="mdiCheckCircle" class="h-6 w-6 ml-2"></svg-icon>
+                            </div>
+                        </div>
+                    </router-link>
+                </div>
+            </div>
+            <div v-if="alert.description">
+                <h3 class="text-xl font-semibold text-center">Description</h3>
+                <p class="text-center">{{ alert.description }}</p>
             </div>
         </div>
         <div v-else class="container mt-4 mb-6 w-full max-w-xs mx-auto">

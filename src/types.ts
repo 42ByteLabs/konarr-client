@@ -149,4 +149,6 @@ export type KonarrSecurityAlerts = Pagination<KonarrSecurityAlert>;
 export interface KonarrSecurityAlert {
     id: number;
     name: string;
+    severity: string;
+    dependency?: string;
 }

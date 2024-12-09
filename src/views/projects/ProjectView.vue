@@ -164,7 +164,7 @@ let container_sha = computed(() => {
                         </div>
                     </div>
                 </div>
-                <div v-if="server.user.role === 'admin'"
+                <div v-if="server.user.role === 'Admin'"
                     class="md:col-span-2 sm:col-span-6 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4">
                     <h3 class="text-xl font-semibold text-center my-2">Admin Actions</h3>
                     <!-- Delete Project Button -->
