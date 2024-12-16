@@ -24,6 +24,9 @@ const props = defineProps<{
     total?: number;
 }>();
 
+const count = ref(props.count || 0);
+const total = ref(props.total || 0);
+
 const typeSearch = (event) => {
     search(event.target.value);
 };
@@ -51,8 +54,8 @@ const search = (value) => {
             router.push({ query: { search: value } });
             dependencies.searchDependencies(value);
         }
-        count.value = dependencies.count;
-        total.value = dependencies.total;
+        count.value = dependencies.count || 0;
+        total.value = dependencies.total || 0;
     } else {
         console.error("Unknown searching type: " + props.searching);
     }

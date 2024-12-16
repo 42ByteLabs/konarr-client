@@ -5,12 +5,16 @@ import * as i from "@mdi/js";
 import type { KonarrDependency } from "@/types";
 
 const props = defineProps<{
-    dep: KonarrDependency;
+    dep: KonarrDependency | string;
     id?: number;
     size?: string;
 }>();
 
 const icon = computed(() => {
+    if (typeof props.dep === "string") {
+        return i.mdiPackageVariantClosed;
+    }
+
     if (props.dep.type === "operating_system") {
         switch (props.dep.name) {
             case "debian":

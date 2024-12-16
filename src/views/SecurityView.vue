@@ -67,7 +67,7 @@ onMounted(() => {
                         class="col-span-1 bg-sec-information-200 dark:bg-sec-information-300" />
                 </div>
 
-                <Search searching="security" placeholder="Find alerts..." :total="security.total" limit="24"
+                <Search searching="security" placeholder="Find alerts..." :total="security.total" :limit="24"
                     :count="security.data.length" />
 
                 <h2 v-if="security.current" class="text-xl font-semibold mt-8 text-center">

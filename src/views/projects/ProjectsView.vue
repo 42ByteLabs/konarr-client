@@ -42,7 +42,7 @@ onMounted(() => {
             <Loading v-if="projects.loading" />
 
             <div v-else class="w-full">
-                <Search searching="projects" placeholder="Find projects..." :total="projects.total" limit="24"
+                <Search searching="projects" placeholder="Find projects..." :total="projects.total" :limit="24"
                     :selectables="selectables" :count="projects.data.length" />
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-12">

@@ -11,7 +11,7 @@ import {
 const props = defineProps<{
     severity: string;
     color?: boolean;
-    size?: string;
+    size?: number;
 }>();
 
 const icon = computed(() => {

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 import { router } from "@/router";
+import SvgIcon from "@jamescoyle/vue-icon";
 
 import Title from "@/components/Title.vue";
 import DependencyIcon from "@/components/DependencyIcon.vue";
@@ -50,7 +51,7 @@ const selectables = {
 
             <div class="w-full px-4">
                 <Search searching="dependencies" placeholder="Find dependency..." :selectables="selectables"
-                    :count="dependencies.count" :total="dependencies.total" limit="24" />
+                    :count="dependencies.count" :total="dependencies.total" :limit="24" />
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4 mt-8">
                     <router-link :to="{ name: 'Dependency', params: { id: dep.id } }" v-for="dep in dependencies.data"

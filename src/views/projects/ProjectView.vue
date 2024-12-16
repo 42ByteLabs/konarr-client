@@ -74,10 +74,10 @@ let container_sha = computed(() => {
                         <!-- Project Icons -->
                         <div class="grid grid-cols-6 w-full mb-6">
                             <div class="col-span-3 flex justify-center">
-                                <svg-icon v-if="project.status" type="mdi" :path="mdiCloudCheckOutline" size="86"
+                                <svg-icon v-if="project.status" type="mdi" :path="mdiCloudCheckOutline" :size="86"
                                     class="text-blue-400">
                                 </svg-icon>
-                                <svg-icon v-else type="mdi" :path="mdiCloudOffOutline" size="86" class="text-red-400">
+                                <svg-icon v-else type="mdi" :path="mdiCloudOffOutline" :size="86" class="text-red-400">
                                 </svg-icon>
                             </div>
                             <div class="col-span-3 flex justify-center">
