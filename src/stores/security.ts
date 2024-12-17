@@ -63,7 +63,13 @@ export const useSecurityStore = defineStore("security", {
                 .get(`/security/${id}`)
                 .then((response) => {
                     this.loading = false;
-                    this.data.push(response.data);
+                    var index = this.data.findIndex((x) => x.id === id);
+                    if (index !== -1) {
+                        this.data[index] = response.data;
+                    } else {
+                        this.data.push(response.data);
+                    }
+
                 })
                 .catch((error) => {
                     if (error.response.status === 401) {

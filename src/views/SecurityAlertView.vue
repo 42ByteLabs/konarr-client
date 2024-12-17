@@ -23,11 +23,6 @@ onMounted(() => {
     security.fetchAlert(current);
 });
 
-onUpdated(() => {
-    const current = parseInt(window.location.pathname.split("/").pop()!);
-    security.fetchAlert(current);
-});
-
 var alert = computed(() => {
     return security.data.find(
         (c: KonarrSecurityAlert) => c.id === security.current,
@@ -37,7 +32,7 @@ var alert = computed(() => {
 
 <template>
     <main>
-        <div v-if="alert" class="container mt-4 mb-12 w-full mx-auto dark:text-white">
+        <div v-if="alert" class="container mt-4 mb-12 w-full mx-auto dark:text-white px-2">
             <div class="grid md:grid-cols-10 sm:grid-cols-1">
                 <div class="md:col-span-2 sm:grid-cols-1">
                 </div>

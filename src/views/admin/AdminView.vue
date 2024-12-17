@@ -23,17 +23,18 @@ onMounted(() => {
 
 <template>
     <main>
-        <div class="container mt-4 mb-6 w-full mx-auto">
+        <div class="container mt-4 mb-6 w-full mx-auto px-2">
             <Title title="Admin Panel" description="Konarr Admin Setting and Information Panel" />
 
             <div class="grid grid-cols-6 gap-2 w-full mx-auto">
-                <AdminSettingMenu current="general" :icon="mdiServer" />
+                <AdminSettingMenu current="general" :icon="mdiServer" class="col-span-6 md:col-span-2" />
 
                 <div v-if="!admin.loading"
-                    class="col-span-4 bg-white dark:bg-gray-700 dark:text-white shadow-md rounded-lg p-4 pt-6">
+                    class="col-span-6 md:col-span-4 bg-white dark:bg-gray-700 dark:text-white shadow-md rounded-lg p-4 pt-6">
 
-                    <AdminSetting title="Registration Active" :data="admin.settings.registration" setting="registration"
-                        toggle />
+                    <AdminSetting title="Registration Active"
+                        description="Allow users to register for an account. When disabled, no new users can register."
+                        :data="admin.settings.registration" setting="registration" toggle />
 
                     <hr class="my-6 border-gray-300" />
 

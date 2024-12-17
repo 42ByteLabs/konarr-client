@@ -69,7 +69,7 @@ let container_sha = computed(() => {
         <div v-if="project" class="container mt-4 mb-6 px-2 w-full mx-auto">
             <div class="grid grid-cols-6 md:gap-2 w-full mx-auto">
                 <div
-                    class="md:col-span-2 sm:col-span-6 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4 sm:mb-4 md:mb-0">
+                    class="col-span-6 md:col-span-2 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4 mb-4 md:mb-0">
                     <div class="flex flex-col items-center pb-6 pt-2">
                         <!-- Project Icons -->
                         <div class="grid grid-cols-6 w-full mb-6">
@@ -118,7 +118,7 @@ let container_sha = computed(() => {
                 </div>
 
                 <div v-if="project.snapshot"
-                    class="md:col-span-4 sm:col-span-6 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4 sm:mb-4 md:mb-0">
+                    class="col-span-6 md:col-span-4 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4 mb-4 md:mb-0">
 
                     <ProjectNav :title="title" :id="project.id" :parent="project.parent" edit />
 
@@ -143,7 +143,7 @@ let container_sha = computed(() => {
                     </div>
                 </div>
 
-                <div v-else class="md:col-span-4 sm:col-span-6 bg-white dark:bg-gray-700 shadow-md rounded-lg p-4">
+                <div v-else class="col-span-8 md:col-span-4 bg-white dark:bg-gray-700 shadow-md rounded-lg p-4">
                     <h3 class="dark:text-white text-center text-xl font-bold mt-6">
                         Project has no Snapshots or Subprojects
                     </h3>
@@ -154,8 +154,8 @@ let container_sha = computed(() => {
                     </h3>
 
                     <div class="grid grid-cols-8 dark:text-white mt-8">
-                        <h4 class="col-span-1 text-xl my-4 font-bold">Docker</h4>
-                        <div class="col-span-7">
+                        <h4 class="col-span-8 sm:col-span-1 text-xl my-4 font-bold">Docker</h4>
+                        <div class="col-span-8 sm:col-span-7">
                             <code lang="bash">
                                 docker run -e KONARR_INSTANCE -e KONARR_AGENT_TOKEN -e KONARR_PROJECT_ID -v
                                 "/var/run/docker.sock:/var/run/docker.sock:ro"
@@ -165,17 +165,17 @@ let container_sha = computed(() => {
                     </div>
                 </div>
                 <div v-if="server.user.role === 'Admin'"
-                    class="md:col-span-2 sm:col-span-6 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4">
+                    class="col-span-6 md:col-span-2 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4">
                     <h3 class="text-xl font-semibold text-center my-2">Admin Actions</h3>
                     <!-- Delete Project Button -->
                     <div class="mt-4">
                         <div class="grid grid-cols-8 gap-2">
                             <router-link :to="{ name: 'Edit Project', params: { id: project.id } }"
-                                class="md:col-span-3 md:col-start-2 sm:col-span-3 sm:col-start-2 flex justify-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                                class="col-span-3 col-start-2 flex justify-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 <svg-icon type="mdi" :path="mdiPencil"></svg-icon>
                             </router-link>
                             <button
-                                class="md:col-span-3 sm:col-span-3 bg-red-500 hover:bg-red-700 text-white flex justify-center font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                class="col-span-3 bg-red-500 hover:bg-red-700 text-white flex justify-center font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                 @click="projects.delete(project.id)">
                                 <svg-icon type="mdi" :path="mdiArchive"></svg-icon>
                             </button>

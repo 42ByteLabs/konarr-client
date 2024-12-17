@@ -11,13 +11,13 @@ const server = useServerStore();
 
 <template>
     <main>
-        <div class="container mt-4 mb-6 w-full mx-auto">
+        <div class="container mt-4 mb-6 w-full mx-auto px-2">
             <Welcome v-if="!server.user" />
 
             <div v-else>
                 <Title title="Konarr Home" />
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2">
                     <div class="bg-white dark:bg-gray-700 dark:text-white shadow-md rounded-md p-4 text-center pb-6">
                         <h2 class="text-lg font-semibold">Projects</h2>
                         <p class="text-sm text-gray-500 dark:text-gray-200">

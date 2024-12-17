@@ -20,7 +20,7 @@ onMounted(() => {
 });
 
 const tools = [
-    { "value": "syft", "label": "Syft" },
+    { "value": "syft", "label": "Syft (default)" },
     { "value": "grype", "label": "Grype" },
     { "value": "trivy", "label": "Trivy" },
 ];
@@ -29,18 +29,33 @@ const tools = [
 
 <template>
     <main>
-        <div class="container mt-4 mb-6 w-full mx-auto">
+        <div class="container mt-4 mb-6 w-full mx-auto px-2">
             <Title title="Admin Security Panel" description="Konarr Admin Setting for Security Alerts" />
 
             <div class="grid grid-cols-6 gap-2 w-full mx-auto">
-                <AdminSettingMenu current="general" :icon="mdiServer" />
+                <AdminSettingMenu current="security" :icon="mdiServer" class="col-span-6 md:col-span-2" />
 
                 <div v-if="!admin.loading"
-                    class="col-span-4 bg-white dark:bg-gray-700 dark:text-white shadow-md rounded-lg p-4 pt-6">
+                    class="col-span-6 md:col-span-4 bg-white dark:bg-gray-700 dark:text-white shadow-md rounded-lg p-4 pt-6">
 
                     <AdminSetting title="Enable Security"
                         info="Enable the security feature inside Konarr. This includes automatically discovering security alerts, update advisory database, etc."
                         :data="admin.settings.security" setting="security" toggle />
+
+                    <hr class="my-6 border-gray-300" />
+
+                    <h2 class="text-xl text-center font-semibold mb-2">
+                        Security Tools
+                    </h2>
+
+                    <AdminSetting title="SBOM / Security Tool"
+                        description="Select the tool to use for SBOM generating and/or security scanning."
+                        :data="admin.settings['security.tools.name']" setting="security.tools.name"
+                        :select_current="admin.settings['security.tools.name']" :select="tools" />
+
+                    <AdminSetting title="Allow Tool Alerts"
+                        description="Enable to receive alerts from security tools. This includes alerts from tools like Trivy, Grype, and other security scanners."
+                        :data="admin.settings['security.tools.alerts']" setting="security.tools.alerts" toggle />
 
                     <div v-if="admin.settings.security === 'enabled'">
                         <hr class="my-6 border-gray-300" />
@@ -71,23 +86,6 @@ const tools = [
                                 :data="admin.settings['security.advisories.pull']" setting="security.advisories.pull"
                                 button />
                         </div>
-
-                        <hr class="my-6 border-gray-300" />
-
-                        <h2 class="text-xl text-center font-semibold mb-2">
-                            Security Tools
-                        </h2>
-
-                        <AdminSetting title="SBOM / Security Tool"
-                            description="Select the tool to use for SBOM generating and/or security scanning."
-                            :data="admin.settings['security.tools.name']" setting="security.tools.name"
-                            :select_current="admin.settings['security.tools.name']" :select="tools" />
-
-                        <AdminSetting title="Allow Tool Alerts"
-                            info="Enable to receive alerts from the security tools themselves. This might cause outdated alerts to be shown."
-                            description="Enable to receive alerts from security tools. This includes alerts from tools like Trivy, Grype, and other security scanners."
-                            :data="admin.settings['security.tools.alerts']" setting="security.tools.alerts" toggle />
-
                     </div>
                 </div>
                 <Loading v-else />
