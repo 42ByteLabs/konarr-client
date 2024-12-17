@@ -26,6 +26,8 @@ onMounted(() => {
         <NavBar :user="server.user" />
     </header>
 
+    <notifications position="top right" width="40%" />
+
     <RouterView />
 
     <footer class="mx-auto bg-gray-100 dark:bg-black pt-4 pb-6">

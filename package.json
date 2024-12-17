@@ -16,6 +16,7 @@
         "@headlessui/vue": "^1.7.22",
         "@heroicons/vue": "^2.1.5",
         "@jamescoyle/vue-icon": "^0.1.2",
+        "@kyvg/vue3-notification": "^3.4.1",
         "@mdi/js": "^7.4.47",
         "axios": "^1.7.3",
         "chart.js": "^4.4.6",

@@ -1,8 +1,11 @@
 import { defineStore } from "pinia";
 import router from "@/router";
 import client from "@/client";
+import { useNotification } from "@kyvg/vue3-notification";
 
 import type { KonarrServer } from "@/types";
+
+const { notify }  = useNotification();
 
 export const useServerStore = defineStore("konarr", {
     state: () =>
@@ -33,11 +36,11 @@ export const useServerStore = defineStore("konarr", {
                         this.dependencies = response.data.dependencies;
                         this.security = response.data.security;
                     } else {
-                        if (this.config.registration === false) {
+                        if (!this.config.initialised) {
                             router.push({ name: "Login" });
                         }
-                        if (this.config.initialised) {
-                            router.push({ name: "Register" });
+                        if (this.config.registration === true) {
+                            router.push({ name: "Registration" });
                         }
                     }
 
@@ -69,6 +72,7 @@ export const useServerStore = defineStore("konarr", {
                     if (error.response.status === 401) {
                         router.push({ name: "Login" });
                     }
+                    notify({ type: "error", text: "Failed to login to Konarr, please try again."});
                 });
         },
 
@@ -110,6 +114,7 @@ export const useServerStore = defineStore("konarr", {
                     if (error.response.status === 401) {
                         router.push({ name: "Login" });
                     }
+                    notify({ type: "error", text: "Failed to register with Konarr, please try again."});
                 });
         },
     },
