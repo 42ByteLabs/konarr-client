@@ -34,6 +34,8 @@ const props = defineProps<{
     hidedata?: boolean;
     // Regenerate setting
     regenerate?: boolean;
+    // Select options
+    select?: Array<{ value: string; label: string }>;
 }>();
 
 const enabled = ref(false);
@@ -56,6 +58,9 @@ const hidedata = (data: any) => {
 }
 const regenerate = () => {
     admin.updateSetting(props.setting, true);
+}
+const onselect = (data: any) => {
+    admin.updateSetting(props.setting, data);
 }
 const toggle_help = () => {
     description_help.value = !description_help.value;
@@ -136,6 +141,14 @@ onMounted(() => {
                         </span>
                     </div>
                 </div>
+            </div>
+            <div v-else-if="props.select" class="col-span-5">
+                <select @change="onselect($event.target.value)"
+                    class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-1 focus:ring-accent-500 focus:border-accent-500 sm:text-sm rounded-md">
+                    <option :value="opt.value" v-for="opt in select" :key="opt.label" selected="opt.label === data">
+                        {{ opt.label }}
+                    </option>
+                </select>
             </div>
             <div v-else-if="props.button || props.toggle" class="col-span-5"></div>
             <div v-else class="col-span-5">

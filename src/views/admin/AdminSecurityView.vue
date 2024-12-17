@@ -19,6 +19,12 @@ onMounted(() => {
     admin.fetchInfo();
 });
 
+const tools = [
+    { "value": "syft", "label": "Syft" },
+    { "value": "grype", "label": "Grype" },
+    { "value": "trivy", "label": "Trivy" },
+];
+
 </script>
 
 <template>
@@ -71,6 +77,11 @@ onMounted(() => {
                         <h2 class="text-xl text-center font-semibold mb-2">
                             Security Tools
                         </h2>
+
+                        <AdminSetting title="SBOM / Security Tool"
+                            description="Select the tool to use for SBOM generating and/or security scanning."
+                            :data="admin.settings['security.tools.name']" setting="security.tools.name"
+                            :select_current="admin.settings['security.tools.name']" :select="tools" />
 
                         <AdminSetting title="Allow Tool Alerts"
                             info="Enable to receive alerts from the security tools themselves. This might cause outdated alerts to be shown."
