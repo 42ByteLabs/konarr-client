@@ -111,19 +111,19 @@ onMounted(() => {
 <template>
     <!-- Search -->
     <div class="grid grid-cols-12 gap-4 mb-6 mt-4">
-        <div class="col-span-1 flex justify-center items-center dark:text-white">
+        <div class="col-span-2 sm:col-span-1 flex justify-center items-center dark:text-white">
             <svg-icon type="mdi" :path="mdiTextSearchVariant"
                 class="w-6 h-6 text-gray-500 dark:text-gray-200"></svg-icon>
         </div>
-        <div class="col-span-1 flex justify-center items-center dark:text-white text-center">
+        <div class="col-span-1 mb-2 justify-center items-center dark:text-white text-center hidden sm:block">
             {{ props.count }} / {{ props.total }}
         </div>
 
-        <input type="text" id="search" :class="[selectables ? 'col-span-8' : 'col-span-9']"
+        <input type="text" id="search" :class="[selectables ? 'col-span-9 sm:col-span-8' : 'col-span-10 sm:col-span-9']"
             class="dark:bg-gray-700 dark:text-white col-start-3 px-4 py-2 border border-gray-300 rounded-md hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500"
             @input="typeSearch" :placeholder="props.placeholder" />
 
-        <div v-if="selectables" class="col-span-2 mt-0.5">
+        <div v-if="selectables" class="col-span-12 sm:col-span-2 mt-0.5">
             <select id="countries"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 text-center"
                 @change="select" v-model="selected">

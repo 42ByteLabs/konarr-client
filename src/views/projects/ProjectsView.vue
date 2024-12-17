@@ -36,7 +36,7 @@ onMounted(() => {
 
 <template>
     <main>
-        <div class="container mt-4 mb-6 w-full mx-auto">
+        <div class="container mt-4 mb-6 w-full mx-auto px-2">
             <Title title="Projects" description="List of Projects" />
 
             <Loading v-if="projects.loading" />
@@ -45,7 +45,7 @@ onMounted(() => {
                 <Search searching="projects" placeholder="Find projects..." :total="projects.total" :limit="24"
                     :selectables="selectables" :count="projects.data.length" />
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-12">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 my-12">
                     <ProjectTile v-for="project in projects.data" :key="project.id" :project="project" />
                 </div>
 

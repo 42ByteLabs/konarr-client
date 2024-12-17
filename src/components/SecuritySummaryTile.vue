@@ -62,14 +62,15 @@ const severity = computed(() => {
 </script>
 
 <template>
-    <button @click="update" :class="['shadow-md rounded-lg md:p-4 sm:p-2 hover:shadow-lg text-center', color]">
+    <button @click="update" :class="['shadow-md rounded-lg p-2 md:p-4 hover:shadow-lg text-center', color]">
         <div class="grid grid-cols-6">
-            <SecurityIcon class="col-span-1 text-accent-500 dark:text-gray-800" :severity="props.name" :size="24" />
-            <h5 class="col-span-4 font-bold">
+            <SecurityIcon class="col-span-1 text-accent-500 dark:text-gray-800 ml-4 sm:ml-0" :severity="props.name"
+                :size="24" />
+            <h5 class="col-span-3 font-bold">
                 {{ props.name }}
             </h5>
-            <div class="col-span-1"></div>
-            <span class="col-span-6">
+            <!-- <div class="col-span-1"></div> -->
+            <span class="col-span-2">
                 <strong>
                     {{ props.count }}
                 </strong>

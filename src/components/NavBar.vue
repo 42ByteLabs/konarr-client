@@ -38,13 +38,32 @@ const props = defineProps<{
             <div class="relative flex h-16 items-center justify-between">
                 <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
                     <!-- Mobile menu button-->
-                    <DisclosureButton
-                        class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-                        <span class="absolute -inset-0.5" />
-                        <span class="sr-only">Open main menu</span>
-                        <Bars3Icon v-if="!open" class="block h-6 w-6" aria-hidden="true" />
-                        <XMarkIcon v-else class="block h-6 w-6" aria-hidden="true" />
-                    </DisclosureButton>
+                    <Menu as="div" class="relative ml-3 sm:hidden" aria-controls="mobile-menu">
+                        <MenuButton
+                            class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                            <span class="absolute -inset-0.5" />
+                            <span class="sr-only">Open main menu</span>
+                            <Bars3Icon v-if="!open" class="block h-6 w-6" aria-hidden="true" />
+                            <XMarkIcon v-else class="block h-6 w-6" aria-hidden="true" />
+
+                        </MenuButton>
+                        <transition enter-active-class="transition ease-out duration-100"
+                            enter-from-class="transform opacity-0 scale-95"
+                            enter-to-class="transform opacity-100 scale-100"
+                            leave-active-class="transition ease-in duration-75"
+                            leave-from-class="transform opacity-100 scale-100"
+                            leave-to-class="transform opacity-0 scale-95">
+                            <MenuItems
+                                class="bg-white absolute z-10 mt-2 w-auto dark:text-black origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                <MenuItem v-slot="{ active }" v-for="item in navigation" :key="item.name"
+                                    class="block w-auto border-gray-300 text-sm text-gray-700 rounded-md my-2 mx-2 px-3 py-3 font-medium">
+                                <RouterLink :to="{ name: item.name }" :aria-current="item.current ? 'page' : undefined">
+                                    {{ item.name }}
+                                </RouterLink>
+                                </MenuItem>
+                            </MenuItems>
+                        </transition>
+                    </Menu>
                 </div>
                 <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                     <!-- Logo -->
@@ -104,8 +123,8 @@ const props = defineProps<{
                     <Menu as="div" class="relative ml-3">
                         <div>
                             <MenuButton
-                                class="relative flex rounded-full bg-accent-500 hover:bg-accent-600 text-sm px-6 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                                <span class="text-black text-sm font-medium truncate mr-4 mt-1.5">
+                                class="relative flex rounded-full bg-accent-500 hover:bg-accent-600 text-sm px-6 py-1 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                <span class="hidden md:block text-black text-sm font-medium truncate mr-4 mt-1.5">
                                     {{ user.username }}
                                 </span>
                                 <span class="absolute -inset-1.5" />

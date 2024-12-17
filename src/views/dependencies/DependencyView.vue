@@ -46,17 +46,18 @@ var dependency = computed(() => {
 
 <template>
     <main>
-        <div v-if="dependency" class="container mt-4 mb-12 w-full mx-auto dark:text-white">
-            <div class="grid md:grid-cols-10 sm:grid-cols-1">
-                <div class="md:col-span-2 sm:grid-cols-1 text-black dark:text-white flex justify-center content-center">
+        <div v-if="dependency" class="container mt-4 mb-12 w-full mx-auto dark:text-white px-2">
+            <div class="grid grid-cols-10">
+                <div class="col-span-2 text-black dark:text-white flex justify-center content-center">
                     <div v-if="dependency.version" class="mt-6">
                         <router-link :to="{ 'name': 'Dependency', 'params': { 'id': props.id } }"
                             class="text-black hover:text-gray-600 dark:hover:text-gray-100 mt-4">
                             <button
                                 class="flex items-center rounded-md bg-accent-400 hover:bg-accent-500 p-2 pr-6 mt-2">
-                                <svg-icon type="mdi" :path="mdiMenuLeft" class="h-6 w-6 mr-1">
-                                </svg-icon>
-                                Dependency
+                                <svg-icon type="mdi" :path="mdiMenuLeft" class="h-6 w-6 mr-1"></svg-icon>
+                                <span class="hidden sm:block">
+                                    Dependency
+                                </span>
                             </button>
                         </router-link>
                     </div>
@@ -65,32 +66,33 @@ var dependency = computed(() => {
                             class="text-black hover:text-gray-600 dark:hover:text-gray-100 mt-4">
                             <button
                                 class="flex items-center rounded-md bg-accent-400 hover:bg-accent-500 p-2 pr-6 mt-2">
-                                <svg-icon type="mdi" :path="mdiMenuLeft" class="h-6 w-6 mr-1">
-                                </svg-icon>
-                                Dependencies
+                                <svg-icon type="mdi" :path="mdiMenuLeft" class="h-6 w-6 mr-1"></svg-icon>
+                                <span class="hidden sm:block">
+                                    Dependency
+                                </span>
                             </button>
                         </router-link>
                     </div>
                 </div>
-                <div class="md:col-span-6 sm:grid-cols-1">
+                <div class="col-span-8 sm:col-span-6">
                     <Title :title="dependency.name" />
                 </div>
-                <div class="md:col-span-2 sm:grid-cols-1 dark:text-white flex justify-center content-center pt-2">
+                <div class="col-span-10 sm:col-span-2 dark:text-white flex justify-center content-center pt-2">
                     <DependencyIcon :dep="dependency" size="96" />
                 </div>
-                <div class="md:col-span-2 sm:grid-cols-1 flex justify-center content-center">
+                <div class="col-span-10 md:col-span-2 flex justify-center content-center">
                     <div v-if="dependency.version" class="text-center">
                         <a class="text-2xl w-full">
                             <strong>{{ dependency.version }}</strong>
                         </a>
                     </div>
                 </div>
-                <div class="md:col-span-6 sm:grid-cols-1">
+                <div class="col-span-10 sm:grid-cols-2">
                     <h4 class="text-2xl text-center">
                         {{ dependency.purl }}
                     </h4>
                 </div>
-                <div class="md:col-span-2 sm:grid-cols-1 flex justify-center content-center text-2xl text-center">
+                <div class="col-span-10 sm:grid-cols-2 flex justify-center content-center text-2xl text-center mt-2">
                     <span v-if="dependency.type == 'library'">
                         Library
                     </span>
@@ -116,8 +118,9 @@ var dependency = computed(() => {
             </div>
 
             <hr class="my-6 bg-gray-400" />
+
             <div class="grid grid-cols-10 gap-6">
-                <div v-if="dependency.versions" class="col-span-3">
+                <div v-if="dependency.versions" class="col-span-10 sm:col-span-3">
                     <h3 class="text-2xl text-center dark:text-white mb-6 font-semibold">
                         Versions - {{ dependency.versions.length }}
                     </h3>
@@ -132,7 +135,7 @@ var dependency = computed(() => {
                     </div>
                 </div>
 
-                <div v-if="dependency.projects" class="col-span-7">
+                <div v-if="dependency.projects" class="col-span-10 sm:col-span-7">
                     <h3 class="text-2xl text-center dark:text-white mb-6 font-semibold">
                         Projects - {{ dependency.projects.length }}
                     </h3>

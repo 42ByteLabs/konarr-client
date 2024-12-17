@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, computed, ref } from "vue";
 import SvgIcon from "@jamescoyle/vue-icon";
-import { mdiPencil, mdiEyeOffOutline, mdiRefresh, mdiInformationBox } from "@mdi/js";
+import { mdiPencil, mdiEyeOffOutline, mdiRefresh, mdiInformationBox, mdiRadioboxBlank } from "@mdi/js";
 import { Switch } from '@headlessui/vue'
 
 import { useServerStore } from "@/stores/server";
@@ -80,9 +80,9 @@ onMounted(() => {
     <div>
         <!-- Display a Admin Setting -->
         <div class="grid grid-cols-12 gap-2 w-full mx-auto py-3 px-3 mt-2">
-            <div v-if="props.toggle" class="col-span-1">
+            <div v-if="props.toggle" class="col-span-2 sm:col-span-1">
                 <div class="flex items-center justify-center">
-                    <Switch v-if="props.toggle" v-model="enabled" :class="enabled ? 'bg-pink-600' : 'bg-gray-200'"
+                    <Switch v-if="props.toggle" v-model="enabled" :class="enabled ? 'bg-pink-600' : 'bg-gray-400'"
                         class="relative inline-flex h-6 w-11 items-center rounded-full" @click="toggle">
                         <span class="sr-only">Enable {{ props.title }}</span>
                         <span :class="enabled ? 'translate-x-6' : 'translate-x-1'"
@@ -90,33 +90,33 @@ onMounted(() => {
                     </Switch>
                 </div>
             </div>
-            <div v-else-if="props.button" class="col-span-1">
+            <div v-else-if="props.button" class="col-span-2 sm:col-span-1">
                 <div class="flex items-center justify-center">
                     <button @click="toggle"
                         class="bg-accent-500 hover:bg-accent-700 text-white font-bold py-1 px-3 rounded">
-                        Action
+                        <svg-icon type="mdi" :path="mdiRadioboxBlank" class="h-4 w-4" />
                     </button>
                 </div>
             </div>
-            <div v-else-if="props.hidedata" class="col-span-1">
+            <div v-else-if="props.hidedata" class="col-span-2 sm:col-span-1">
                 <div class="flex items-center justify-center">
                     <button @click="regenerate" class="col-span-1 hover:text-accent-500">
                         <svg-icon type="mdi" :path="mdiRefresh" />
                     </button>
                 </div>
             </div>
-            <div v-else class="col-span-1"></div>
+            <div v-else class="col-span-2 sm:col-span-1"></div>
 
-            <div v-if="props.description" class="col-span-1">
+            <div v-if="props.description" class="col-span-2 sm:col-span-1">
                 <div class="flex items-center justify-center">
-                    <button @click="toggle_help" class="hover:text-blue-500">
+                    <button @click="toggle_help" class="hover:text-blue-500 mt-1">
                         <svg-icon type="mdi" :path="mdiInformationBox" class="h-4 w-4" />
                     </button>
                 </div>
             </div>
             <div v-else class="col-span-1"></div>
 
-            <div class="col-span-4">
+            <div class="col-span-8 md:col-span-4">
                 <div class="flex items-center">
                     <span>
                         <strong>
@@ -126,10 +126,10 @@ onMounted(() => {
                 </div>
             </div>
 
-            <div v-if="props.hidedata" class="col-span-5">
+            <div v-if="props.hidedata" class="col-span-12 md:col-span-5 mt-2">
                 <div class="flex items-center">
                     <div class="grid grid-cols-12">
-                        <button @click="hidedata" class="col-span-1 hover:text-blue-500 mr-4">
+                        <button @click="hidedata" class="col-span-2 sm:col-span-1 hover:text-blue-500 mr-4">
                             <svg-icon type="mdi" :path="mdiEyeOffOutline" />
                         </button>
                         <!-- Hide the data and on click, show the data -->
@@ -142,16 +142,16 @@ onMounted(() => {
                     </div>
                 </div>
             </div>
-            <div v-else-if="props.select" class="col-span-5">
+            <div v-else-if="props.select" class="col-span-12 md:col-span-5 mt-2">
                 <select @change="onselect($event.target.value)"
-                    class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-1 focus:ring-accent-500 focus:border-accent-500 sm:text-sm rounded-md">
-                    <option :value="opt.value" v-for="opt in select" :key="opt.label" selected="opt.label === data">
+                    class="bg-gray-200 dark:bg-gray-500 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-1 focus:ring-accent-500 focus:border-accent-500 sm:text-sm rounded-md">
+                    <option :value="opt.value" v-for="opt in select" :key="opt.label" :selected="opt.value === data">
                         {{ opt.label }}
                     </option>
                 </select>
             </div>
             <div v-else-if="props.button || props.toggle" class="col-span-5"></div>
-            <div v-else class="col-span-5">
+            <div v-else class="col-span-12 md:col-span-5 mt-2">
                 <div class="flex items-center">
                     <span>
                         {{ props.data }}
