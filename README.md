@@ -21,6 +21,41 @@ It is designed to be lightweight and fast, with minimal resource usage.
 
 This repository contains the client-side code for [Konarr][konarr].
 
+## 🚀 Local Development
+
+To run the client locally, you will need to have the following installed:
+
+- [Node.js][node] & [npm][npm]
+
+Once you have the above installed, you can run the following commands:
+
+```bash
+npm install
+```
+
+This will install all the required dependencies.
+
+To start the development server, run:
+
+```bash
+npm run dev
+```
+
+This will start the development server on `http://localhost` and you can access the client from your browser.
+
+### 🌐 Setting up the Server
+
+To access a Konarr Server instance, you will need to have the [Konarr Server][github] running.
+Checkout the [Konarr Server][github] repository for more information on how to run the server.
+
+You can set the server URL by creating a `.env` file in the root of the project and adding the following:
+
+```env
+VITE_SERVER_BASE_URL=http://localhost:8000/api
+```
+
+Replace `http://localhost:8000/api` with the URL of your server.
+
 ## ✨ Components
 
 Here is the core components used by Konarr:
@@ -72,6 +107,7 @@ Please refer to [Apache2][license] for the full terms.
 [github-issues]: https://github.com/42ByteLabs/konarr-client/issues
 
 [vue]: https://vuejs.org/
+[node]: https://nodejs.org/
 [tailwind]: https://tailwindcss.com/
 [mdi]: https://pictogrammers.com/library/mdi/
 [heroicons]: https://heroicons.com/

@@ -26,7 +26,8 @@ onMounted(() => {
         <NavBar :user="server.user" />
     </header>
 
-    <notifications position="top right" width="40%" />
+    <notifications group="auth" position="top center" width="50%" classes="my-notification" />
+    <notifications group="app" position="bottom right" width="30%" classes="my-notification" />
 
     <RouterView />
 
@@ -48,3 +49,35 @@ onMounted(() => {
         </p>
     </footer>
 </template>
+
+<style>
+.my-notification {
+    margin: 0 5px 5px;
+    padding: 10px;
+    font-size: 12px;
+    color: #ffffff;
+
+    background: #44a4fc;
+    border-left: 5px solid #187fe7;
+
+    &.success {
+        background: #10b981;
+        border-left-color: #047857;
+        border-top-left-radius: 5px;
+    }
+
+    &.warn {
+        background: #fb923c;
+        border-left-color: #d97706;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+    }
+
+    &.error {
+        background: #ef4444;
+        border-left-color: #7f1d1d;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+    }
+}
+</style>

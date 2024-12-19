@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import client from "@/client";
+import { handleErrors } from "@/stores/utils";
 
 import router from "@/router";
 import type { KonarrProjects } from "@/types";
@@ -37,9 +38,7 @@ export const useProjectsStore = defineStore("projects", {
                     this.loading = false;
                 })
                 .catch((error) => {
-                    if (error.response.status === 401) {
-                        router.push({ name: "Login" });
-                    }
+                    handleErrors(error);
                 });
         },
 
@@ -53,9 +52,7 @@ export const useProjectsStore = defineStore("projects", {
                     this.loading = false;
                 })
                 .catch((error) => {
-                    if (error.response.status === 401) {
-                        router.push({ name: "Login" });
-                    }
+                    handleErrors(error);
                 });
         },
 
@@ -86,9 +83,7 @@ export const useProjectsStore = defineStore("projects", {
                     }
                 })
                 .catch((error) => {
-                    if (error.response.status === 401) {
-                        router.push({ name: "Login" });
-                    }
+                    handleErrors(error);
                 });
 
         },
@@ -114,7 +109,7 @@ export const useProjectsStore = defineStore("projects", {
                     this.data[index]['parents'] = response.data.data;
                 })
                 .catch((error) => {
-                    console.error("Error fetching parents", error);
+                    handleErrors(error);
                 });
         },
 
@@ -126,9 +121,7 @@ export const useProjectsStore = defineStore("projects", {
                     router.push({ name: "Project", params: { id: response.data.id } });
                 })
                 .catch((error) => {
-                    if (error.response.status === 401) {
-                        router.push({ name: "Login" });
-                    }
+                    handleErrors(error);
                 });
         },
 
@@ -144,9 +137,7 @@ export const useProjectsStore = defineStore("projects", {
                     router.push({ name: "Project", params: { id: project.id } });
                 })
                 .catch((error) => {
-                    if (error.response.status === 401) {
-                        router.push({ name: "Login" });
-                    }
+                    handleErrors(error);
                 });
         },
 
@@ -158,10 +149,7 @@ export const useProjectsStore = defineStore("projects", {
                     router.push({ name: "Projects" });
                 })
                 .catch((error) => {
-                    if (error.response.status === 401) {
-                        router.push({ name: "Login" });
-                    }
-                    router.push({ name: "Projects" });
+                    handleErrors(error);
                 });
         },
     },

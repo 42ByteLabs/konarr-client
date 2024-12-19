@@ -36,7 +36,11 @@ export default {
                 malware: colors.red,
                 unmaintained: colors.gray,
                 other: colors.gray,
-            }
+            },
+
+            error: colors.red,
+            warning: colors.yellow,
+            success: colors.green,
         },
         extend: {
             gridTemplateColumns: {

@@ -56,6 +56,9 @@ onMounted(() => {
                                 :to="{ name: 'Dependency', params: { id: dependency.id }, query: { snapshot: snapid } }">
                                 {{ dependency.namespace ? dependency.namespace + "/" : "" }}{{ dependency.name }}
                             </router-link>
+                            <span class="block text-xs text-gray-500 dark:text-gray-400">
+                                {{ dependency.purl }}
+                            </span>
                         </td>
                         <td class="border px-4 py-2">{{ dependency.version || "" }}</td>
                     </tr>

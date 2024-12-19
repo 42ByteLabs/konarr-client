@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import client from "@/client";
+import { handleErrors } from "@/stores/utils";
 
 import type { KonarrSecurityAlerts } from "@/types";
 import router from "@/router";
@@ -51,9 +52,7 @@ export const useSecurityStore = defineStore("security", {
                     this.page = page;
                 })
                 .catch((error) => {
-                    if (error.response.status === 401) {
-                        router.push({ name: "Login" });
-                    }
+                    handleErrors(error);
                 });
         },
         async fetchAlert(id: number) {
@@ -72,9 +71,7 @@ export const useSecurityStore = defineStore("security", {
 
                 })
                 .catch((error) => {
-                    if (error.response.status === 401) {
-                        router.push({ name: "Login" });
-                    }
+                    handleErrors(error);
                 });
         },
         async fetchSnapshotAlerts(snapshot: number, page?: number, limit?: number, severity?: string) {
@@ -94,9 +91,7 @@ export const useSecurityStore = defineStore("security", {
                     this.pages = response.data.pages;
                 })
                 .catch((error) => {
-                    if (error.response.status === 401) {
-                        router.push({ name: "Login" });
-                    }
+                    handleErrors(error);
                 });
         },
         async fetchNextPage() {

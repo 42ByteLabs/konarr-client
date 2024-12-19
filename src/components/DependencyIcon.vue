@@ -15,7 +15,7 @@ const icon = computed(() => {
         return i.mdiPackageVariantClosed;
     }
 
-    if (props.dep.type === "operating_system") {
+    if (props.dep.type === "OperatingSystem") {
         switch (props.dep.name) {
             case "debian":
                 return i.mdiDebian;
@@ -28,8 +28,7 @@ const icon = computed(() => {
             default:
                 return i.mdiLinux;
         }
-    }
-    else if (props.dep.type === "programming_language") {
+    } else if (props.dep.type === "ProgrammingLanguage") {
         switch (props.dep.name) {
             case "cargo" | "rust":
                 return i.mdiLanguageRust;
@@ -48,21 +47,18 @@ const icon = computed(() => {
             default:
                 return i.mdiApplicationEditOutline;
         }
-    }
-    else if (props.dep.type === "application") {
+    } else if (props.dep.type === "Application") {
         return i.mdiApplicationBrackets;
-    }
-    else if (props.dep.type === "package_manager") {
+    } else if (props.dep.type === "PackageManager") {
         return i.mdiPackageVariant;
-    }
-    else if (props.dep.type === "cryptography_library") {
+    } else if (props.dep.type === "CryptographyLibrary") {
         return i.mdiSecurityNetwork;
-    }
-    else if (props.dep.type === "library") {
-        return i.mdiPackageVariantClosed;
-    }
-    else if (props.dep.type === "database") {
+    } else if (props.dep.type === "Database") {
         return i.mdiDatabase
+    } else if (props.dep.type === "CompressionLibrary") {
+        return i.mdiZipBox;
+    } else if (props.dep.type === "OperatingEnvironment") {
+        return i.mdiCloudCog;
     }
     return i.mdiPackageVariantClosed;
 });

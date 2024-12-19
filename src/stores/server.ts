@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import router from "@/router";
 import client from "@/client";
 import { useNotification } from "@kyvg/vue3-notification";
+import { handleErrors } from "@/stores/utils";
 
 import type { KonarrServer } from "@/types";
 
@@ -46,9 +47,7 @@ export const useServerStore = defineStore("konarr", {
 
                 })
                 .catch((error) => {
-                    if (error.response.status === 401) {
-                        router.push({ name: "Login" });
-                    }
+                    handleErrors(error);
                 });
         },
 
@@ -64,15 +63,11 @@ export const useServerStore = defineStore("konarr", {
                     if (response.data.status === "success") {
                         this.fetchInfo();
                         router.push({ name: "Home" });
-                    } else {
-                        console.error(response.data);
-                    }
+                    } 
                 })
                 .catch((error) => {
-                    if (error.response.status === 401) {
-                        router.push({ name: "Login" });
-                    }
-                    notify({ type: "error", text: "Failed to login to Konarr, please try again."});
+                    this.logging_in = false;
+                    handleErrors(error);
                 });
         },
 
@@ -89,9 +84,7 @@ export const useServerStore = defineStore("konarr", {
                     window.location.reload();
                 })
                 .catch((error) => {
-                    if (error.response.status === 401) {
-                        router.push({ name: "Login" });
-                    }
+                    handleErrors(error);
                 });
         },
 
@@ -111,10 +104,7 @@ export const useServerStore = defineStore("konarr", {
                         console.error(response.data);
                     }
                 }).catch((error) => {
-                    if (error.response.status === 401) {
-                        router.push({ name: "Login" });
-                    }
-                    notify({ type: "error", text: "Failed to register with Konarr, please try again."});
+                    handleErrors(error);
                 });
         },
     },

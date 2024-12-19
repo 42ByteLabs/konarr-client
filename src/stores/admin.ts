@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import client from "@/client";
 import router from "@/router";
+import { handleErrors } from "@/stores/utils";
+
 import type { KonarrAdmin } from "@/types";
 
 export const useAdminStore = defineStore("admin", {
@@ -34,9 +36,7 @@ export const useAdminStore = defineStore("admin", {
                     this.loading = false;
                 })
                 .catch((error) => {
-                    if (error.response.status === 401) {
-                        router.push({ name: "Login" });
-                    }
+                    handleErrors(error);
                 });
         },
 
@@ -59,9 +59,7 @@ export const useAdminStore = defineStore("admin", {
                     this.settings = response.data.settings;
                 })
                 .catch((error) => {
-                    if (error.response.status === 401) {
-                        router.push({ name: "Login" });
-                    }
+                    handleErrors(error);
                 });
         },
 
@@ -72,9 +70,7 @@ export const useAdminStore = defineStore("admin", {
                     this.users = response.data.users;
                 })
                 .catch((error) => {
-                    if (error.response.status === 401) {
-                        router.push({ name: "Login" });
-                    }
+                    handleErrors(error);
                 });
         },
 
@@ -95,9 +91,7 @@ export const useAdminStore = defineStore("admin", {
 
                 })
                 .catch((error) => {
-                    if (error.response.status === 401) {
-                        router.push({ name: "Login" });
-                    }
+                    handleErrors(error);
                 });
         }, 
     },

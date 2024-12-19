@@ -11,6 +11,7 @@ import type { KonarrDependency } from "@/types";
 import { useDependenciesStore } from "@/stores/dependencies";
 import ProjectTile from "@/components/ProjectTile.vue";
 import DependencyIcon from "@/components/DependencyIcon.vue";
+import Feedback from "@/components/Feedback.vue";
 
 const dependencies = useDependenciesStore();
 
@@ -40,6 +41,24 @@ var dependency = computed(() => {
     return dependencies.data.find(
         (c: KonarrDependency) => c.id === dependencies.current,
     );
+});
+var dependency_type = computed(() => {
+    switch (dependency.value?.type) {
+        case "OperatingSystem":
+            return "Operating System";
+        case "PackageManager":
+            return "Package Manager";
+        case "CryptographyLibrary":
+            return "Cryptography Library";
+        case "ProgrammingLanguage":
+            return "Programming Language";
+        case "OperatingEnvironment":
+            return "OS Environment";
+        case "CompressionLibrary":
+            return "Compression Library";
+        default:
+            return dependency.value?.type;
+    }
 });
 
 </script>
@@ -77,7 +96,8 @@ var dependency = computed(() => {
                 <div class="col-span-8 sm:col-span-6">
                     <Title :title="dependency.name" />
                 </div>
-                <div class="col-span-10 sm:col-span-2 dark:text-white flex justify-center content-center pt-2">
+                <div
+                    class="col-span-10 sm:col-span-2 dark:text-white flex justify-center items-center content-center pt-2">
                     <DependencyIcon :dep="dependency" size="96" />
                 </div>
                 <div class="col-span-10 md:col-span-2 flex justify-center content-center">
@@ -87,33 +107,20 @@ var dependency = computed(() => {
                         </a>
                     </div>
                 </div>
-                <div class="col-span-10 sm:grid-cols-2">
+                <div class="col-span-10 sm:col-span-6 mt-2">
                     <h4 class="text-2xl text-center">
                         {{ dependency.purl }}
                     </h4>
                 </div>
-                <div class="col-span-10 sm:grid-cols-2 flex justify-center content-center text-2xl text-center mt-2">
-                    <span v-if="dependency.type == 'library'">
-                        Library
+                <div class="col-span-10 sm:col-span-2 flex justify-center items-center content-center text-center mt-2">
+                    <span class="text-2xl text-center w-2/3">
+                        {{ dependency_type }}
                     </span>
-                    <span v-else-if="dependency.type == 'operating_system'">
-                        Operating System
-                    </span>
-                    <span v-else-if="dependency.type == 'application'">
-                        Application
-                    </span>
-                    <span v-else-if="dependency.type == 'package_manager'">
-                        Package Manager
-                    </span>
-                    <span v-else-if="dependency.type == 'cryptography_library'">
-                        Cryptography Library
-                    </span>
-                    <span v-else-if="dependency.type == 'programming_language'">
-                        Programming Language
-                    </span>
-                    <span v-else>
-                        {{ dependency.type }}
-                    </span>
+                    <div class="text-center w-1/3">
+                        <Feedback class="ml-4 text-sm" issue_template="catalogue-request"
+                            info="Request a component catalogue entry or update for this dependency"
+                            labels="comp-catalogue" :input="'[Catalogue]:+' + dependency.name" />
+                    </div>
                 </div>
             </div>
 

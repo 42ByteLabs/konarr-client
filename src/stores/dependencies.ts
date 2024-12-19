@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import client from "@/client";
+import { handleErrors } from "@/stores/utils";
 
 import type { KonarrDependencies } from "@/types";
 import router from "@/router";
@@ -64,9 +65,7 @@ export const useDependenciesStore = defineStore("dependencies", {
                         this.page = page;
                     })
                     .catch((error) => {
-                        if (error.response.status === 401) {
-                            router.push({ name: "Login" });
-                        }
+                        handleErrors(error);
                     });
             } else {
                 await client
@@ -83,9 +82,7 @@ export const useDependenciesStore = defineStore("dependencies", {
                         this.page = page;
                     })
                     .catch((error) => {
-                        if (error.response.status === 401) {
-                            router.push({ name: "Login" });
-                        }
+                        handleErrors(error);
                     });
             }
         },
@@ -100,9 +97,7 @@ export const useDependenciesStore = defineStore("dependencies", {
                         this.count = response.data.count;
                     })
                     .catch((error) => {
-                        if (error.response.status === 401) {
-                            router.push({ name: "Login" });
-                        }
+                        handleErrors(error);
                     });
             } else {
                 await client
@@ -114,9 +109,7 @@ export const useDependenciesStore = defineStore("dependencies", {
                         this.data = response.data.data;
                     })
                     .catch((error) => {
-                        if (error.response.status === 401) {
-                            router.push({ name: "Login" });
-                        }
+                        handleErrors(error);
                     });
             }
         },
@@ -143,9 +136,7 @@ export const useDependenciesStore = defineStore("dependencies", {
                     }
                 })
                 .catch((error) => {
-                    if (error.response.status === 401) {
-                        router.push({ name: "Login" });
-                    }
+                    handleErrors(error);
                 });
         },
 
