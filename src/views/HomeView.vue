@@ -49,9 +49,47 @@ const server = useServerStore();
                         <p class="text-sm text-gray-500 dark:text-gray-200">Summary of the dependencies</p>
                         <div class="grid-cols-3 gap-4 mt-6">
                             <!-- Count of dependencies -->
-                            <div class="flex items center justify-between mt-4 px-6">
+                            <div class="flex items center justify-between mt-2 px-6">
                                 <span class="text-sm text-gray-500 dark:text-gray-200">Total Dependencies</span>
-                                <span class="text-lg font-semibold">{{ server.dependencies.total }}</span>
+                                <span class="text-lg font-semibold">{{ server.dependencies.total || 0 }}</span>
+                            </div>
+                            <div class="flex items center justify-between mt-2 px-6">
+                                <span class="text-sm text-gray-500 dark:text-gray-200">Libraries</span>
+                                <span class="text-lg font-semibold">{{ server.dependencies.libraries || 0 }}</span>
+                            </div>
+                            <div class="flex items center justify-between mt-2 px-6">
+                                <span class="text-sm text-gray-500 dark:text-gray-200">Applications</span>
+                                <span class="text-lg font-semibold">{{ server.dependencies.applications || 0 }}</span>
+                            </div>
+                            <div class="flex items center justify-between mt-2 px-6">
+                                <span class="text-sm text-gray-500 dark:text-gray-200">Operating Systems</span>
+                                <span class="text-lg font-semibold">
+                                    {{ server.dependencies['operating-systems'] || 0 }}
+                                </span>
+                            </div>
+                            <div class="flex items center justify-between mt-2 px-6">
+                                <span class="text-sm text-gray-500 dark:text-gray-200">Programming Languages</span>
+                                <span class="text-lg font-semibold">{{ server.dependencies.languages || 0 }}</span>
+                            </div>
+                            <div class="flex items center justify-between mt-2 px-6">
+                                <span class="text-sm text-gray-500 dark:text-gray-200">Package Manager</span>
+                                <span class="text-lg font-semibold">{{ server.dependencies['package-managers'] }}</span>
+                            </div>
+                            <div class="flex items center justify-between mt-2 px-6">
+                                <span class="text-sm text-gray-500 dark:text-gray-200">Cryptography</span>
+                                <span class="text-lg font-semibold">
+                                    {{ server.dependencies['cryptographic-libraries'] || 0 }}
+                                </span>
+                            </div>
+                            <div class="flex items center justify-between mt-2 px-6">
+                                <span class="text-sm text-gray-500 dark:text-gray-200">Databases</span>
+                                <span class="text-lg font-semibold">{{ server.dependencies.databases || 0 }}</span>
+                            </div>
+                            <div class="flex items center justify-between mt-2 px-6">
+                                <span class="text-sm text-gray-500 dark:text-gray-200">Compression Libraries</span>
+                                <span class="text-lg font-semibold">
+                                    {{ server.dependencies['compression-libraries'] || 0 }}
+                                </span>
                             </div>
                         </div>
                     </div>
