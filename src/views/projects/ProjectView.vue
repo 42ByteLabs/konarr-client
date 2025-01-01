@@ -93,18 +93,18 @@ let container_sha = computed(() => {
                         </div>
 
                         <div v-if="project.type === 'Container' && project.snapshot">
-                            <ProjectInfo :value="project.snapshot.metadata['container.image']" />
+                            <ProjectInfo name="Container Image" :value="project.snapshot.metadata['container.image']" />
 
-                            <ProjectInfo name="Tool" :value="project.snapshot.metadata['bom.tool']"
-                                :version="project.snapshot.metadata['bom.tool.version']" />
-                            <!-- <ProjectInfo name="Container Version" -->
-                            <!--     :value="project.snapshot.metadata['container.version']" /> -->
                             <ProjectInfo name="Container SHA(256)" :value="container_sha" />
+
+                            <ProjectInfo name="Tool"
+                                :value="project.snapshot.metadata['bom.tool.name'] || project.snapshot.metadata['bom.tool']"
+                                :version="project.snapshot.metadata['bom.tool.version']" />
+
                             <ProjectInfo name="License(s)" :value="project.snapshot.metadata['container.licenses']" />
                             <ProjectInfo name="Author(s)" :value="project.snapshot.metadata['container.authors']" />
 
-                            <ProjectInfo name="Snapshot BOM Type" :value="project.snapshot.metadata.bom"
-                                :version="project.snapshot.metadata.bom_version" />
+                            <ProjectInfo name="Snapshot BOM Type" :value="project.snapshot.metadata['bom.type']" />
                         </div>
                         <div v-if="project.type === 'Server' && project.snapshot">
                             <ProjectInfo name="Operating System" :value="project.snapshot.metadata.os"

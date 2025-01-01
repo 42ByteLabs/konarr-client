@@ -53,6 +53,13 @@ const tools = [
                         :data="admin.settings['security.tools.name']" setting="security.tools.name"
                         :select_current="admin.settings['security.tools.name']" :select="tools" />
 
+                    <AdminSetting title="Tool Auto-Install"
+                        description="Enable to automatically install the selected security tool on the agent."
+                        :data="admin.settings['agent.tool.auto-install']" setting="agent.tool.auto-install" toggle />
+                    <AdminSetting title="Tool Auto-Update"
+                        description="Enable to automatically update the selected security tool on the agent."
+                        :data="admin.settings['agent.tool.auto-update']" setting="agent.tool.auto-update" toggle />
+
                     <AdminSetting title="Allow Tool Alerts"
                         description="Enable to receive alerts from security tools. This includes alerts from tools like Trivy, Grype, and other security scanners."
                         :data="admin.settings['security.tools.alerts']" setting="security.tools.alerts" toggle />
@@ -83,8 +90,14 @@ const tools = [
 
                             <AdminSetting title="Manually Pull Database"
                                 description="Manually trigger a pull of the advisory database."
+                                v-if="admin.settings['security.advisories.polling'] == 'disabled'"
                                 :data="admin.settings['security.advisories.pull']" setting="security.advisories.pull"
                                 button />
+
+                            <AdminSetting title="Rescan all Projects"
+                                description="Rescan all projects for security vulnerabilities. This might take some time. If you have `Allow Tool Alerts` enabled, it won't run on those projects that have alerts from the tools."
+                                :data="admin.settings['security.rescan']" setting="security.rescan" button />
+
                         </div>
                     </div>
                 </div>

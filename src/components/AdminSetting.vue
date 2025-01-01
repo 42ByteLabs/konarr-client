@@ -3,6 +3,10 @@ import { onMounted, computed, ref } from "vue";
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiPencil, mdiEyeOffOutline, mdiRefresh, mdiInformationBox, mdiRadioboxBlank } from "@mdi/js";
 import { Switch } from '@headlessui/vue'
+import { useNotification } from "@kyvg/vue3-notification";
+
+const { notify } = useNotification();
+
 
 import { useServerStore } from "@/stores/server";
 import { useAdminStore } from "@/stores/admin";
@@ -52,7 +56,17 @@ const toggle = () => {
     enabled.value = !enabled.value;
     admin.updateSetting(props.setting, enabled.value);
 }
-
+const onclick = () => {
+    if (!props.setting) {
+        console.error("No setting key provided");
+        return;
+    };
+    notify({
+        type: "success",
+        text: "Setting updated successfully",
+    });
+    admin.updateSetting(props.setting, "enabled");
+}
 const hidedata = (data: any) => {
     hidden.value = !hidden.value;
 }
@@ -92,7 +106,7 @@ onMounted(() => {
             </div>
             <div v-else-if="props.button" class="col-span-2 sm:col-span-1">
                 <div class="flex items-center justify-center">
-                    <button @click="toggle"
+                    <button @click="onclick"
                         class="bg-accent-500 hover:bg-accent-700 text-white font-bold py-1 px-3 rounded">
                         <svg-icon type="mdi" :path="mdiRadioboxBlank" class="h-4 w-4" />
                     </button>
