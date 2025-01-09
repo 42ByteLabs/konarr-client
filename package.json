@@ -1,6 +1,6 @@
 {
     "name": "konarr-client",
-    "version": "0.3.0",
+    "version": "0.3.2",
     "type": "module",
     "scripts": {
         "dev": "vite --cors --config vite.config.ts",
@@ -18,13 +18,12 @@
         "@jamescoyle/vue-icon": "^0.1.2",
         "@kyvg/vue3-notification": "^3.4.1",
         "@mdi/js": "^7.4.47",
+        "ag-charts-vue3": "^11.0.3",
         "axios": "^1.7.3",
-        "chart.js": "^4.4.6",
         "dompurify": "^3.1.6",
         "markdown-it": "^14.1.0",
         "pinia": "^2.1.7",
         "vue": "^3.4.29",
-        "vue-chartjs": "^5.3.2",
         "vue-router": "^4.3.3"
     },
     "devDependencies": {

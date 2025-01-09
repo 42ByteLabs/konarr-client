@@ -1,33 +1,66 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import colors from "tailwindcss/colors";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Pie } from 'vue-chartjs';
+import { AgCharts } from 'ag-charts-vue3';
 
-import type { KonarrAlerts } from "@/types";
-
-ChartJS.register(ArcElement, Tooltip, Legend)
+import type { KonarrSecuritySummary } from "@/types";
 
 const props = defineProps<{
-    alerts: KonarrAlerts;
+    alerts: KonarrSecuritySummary;
 }>();
 
 const data = computed(() => {
     return {
-        labels: ["Critical", "High", "Medium", "Low", "Info", "Malware", "Unmaintained", "Unknown"],
-        datasets: [
+        data: [
             {
-                data: [
-                    props.alerts.critical,
-                    props.alerts.high,
-                    props.alerts.medium,
-                    props.alerts.low,
-                    props.alerts.informational,
-                    props.alerts.malware,
-                    props.alerts.unmaintained,
-                    props.alerts.other,
+                label: "Critical",
+                amount: props.alerts.critical,
+            },
+            {
+                label: "High",
+                amount: props.alerts.high,
+            },
+            {
+                label: "Medium",
+                amount: props.alerts.medium,
+            },
+            {
+                label: "Low",
+                amount: props.alerts.low,
+            },
+            {
+                label: "Info",
+                amount: props.alerts.informational,
+            },
+            {
+                label: "Malware",
+                amount: props.alerts.malware,
+            },
+            {
+                label: "Unmaintained",
+                amount: props.alerts.unmaintained,
+            },
+            {
+                label: "Unknown",
+                amount: props.alerts.other,
+            },
+        ],
+        series: [
+            {
+                type: 'donut',
+                calloutLabelKey: 'label',
+                angleKey: 'amount',
+                innerRadiusRatio: 0.6,
+                innerLabels: [
+                    {
+                        text: 'Total',
+                        fontWeight: 'bold',
+                    },
+                    {
+                        text: props.alerts.total.toString(),
+                    },
                 ],
-                backgroundColor: [
+                fills: [
                     colors.red[500],
                     colors.orange[500],
                     colors.blue[500],
@@ -45,6 +78,6 @@ const data = computed(() => {
 
 <template>
     <div class="text-black dark:text-white">
-        <Pie :data="data" />
+        <ag-charts :options="data"> </ag-charts>
     </div>
 </template>
