@@ -1,6 +1,6 @@
 {
     "name": "konarr-client",
-    "version": "0.3.2",
+    "version": "0.4.2",
     "type": "module",
     "scripts": {
         "dev": "vite --cors --config vite.config.ts",
@@ -45,8 +45,8 @@
         "prettier": "^3.2.5",
         "tailwindcss": "^3.4.9",
         "typescript": "~5.4.0",
-        "vite": "^5.3.1",
-        "vitest": "^1.6.0",
+        "vite": "^6.2.2",
+        "vitest": "^3.0.9",
         "vue-tsc": "^2.0.21"
     }
 }
