@@ -36,7 +36,7 @@ const severity = computed(() => {
 </script>
 
 <template>
-    <div class="bg-white dark:bg-gray-700 shadow-md rounded-lg hover:bg-accent-500 py-2">
+    <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg hover:bg-accent-500 py-2">
         <router-link :to="{ name: 'Project', params: { id: project.id } }"
             class="dark:text-white hover:bg-pink-500 hover:shadow-lg">
             <h3 class="flex justify-center text-lg font-semibold">

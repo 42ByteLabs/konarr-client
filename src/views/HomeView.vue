@@ -18,7 +18,7 @@ const server = useServerStore();
                 <Title title="Konarr Home" />
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                    <div class="bg-white dark:bg-gray-700 dark:text-white shadow-md rounded-md p-4 text-center pb-6">
+                    <div class="bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-md p-4 text-center pb-6">
                         <h2 class="text-lg font-semibold">Projects</h2>
                         <p class="text-sm text-gray-500 dark:text-gray-200">
                             Summary of the projects
@@ -42,7 +42,7 @@ const server = useServerStore();
                         </div>
                     </div>
 
-                    <div class="bg-white dark:bg-gray-700 dark:text-white shadow-md rounded-md p-4 text-center pb-6">
+                    <div class="bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-md p-4 text-center pb-6">
                         <h2 class="text-lg font-semibold">
                             Dependencies
                         </h2>
@@ -94,7 +94,7 @@ const server = useServerStore();
                         </div>
                     </div>
 
-                    <div class="bg-white dark:bg-gray-700 dark:text-white shadow-md rounded-md p-4 text-center pb-6">
+                    <div class="bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-md p-4 text-center pb-6">
                         <h2 class="text-lg font-semibold">
                             Security
                         </h2>
