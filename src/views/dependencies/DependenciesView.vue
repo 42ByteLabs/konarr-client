@@ -56,7 +56,7 @@ const selectables = {
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 my-4 mt-8">
                     <router-link :to="{ name: 'Dependency', params: { id: dep.id } }" v-for="dep in dependencies.data"
                         :key="dep.id"
-                        class="bg-white dark:bg-gray-800 dark:text-white hover:bg-accent-500 shadow-md rounded-lg p-4">
+                        class="bg-gray-50 dark:bg-gray-800 dark:text-white hover:bg-accent-500 shadow-md rounded-lg p-4">
                         <div class="grid grid-cols-8">
                             <div class="col-span-1">
                                 <DependencyIcon :dep="dep" />
@@ -65,7 +65,7 @@ const selectables = {
                                 <h3 class="ml-2 text-lg font-semibold">
                                     {{ dep.name }}
                                 </h3>
-                                <h5 class="ml-2 text-sm text-gray-400">
+                                <h5 class="ml-2 text-sm text-gray-500 hover:text-gray-800">
                                     {{ dep.purl }}
                                 </h5>
                             </div>

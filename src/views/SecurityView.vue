@@ -49,22 +49,22 @@ onMounted(() => {
                     <SecuritySummaryTile name="Critical" :count="server.security.critical"
                         class="col-span-1 bg-sec-critical-500 hover:bg-sec-critical-500" />
                     <SecuritySummaryTile name="High" :count="server.security.high"
-                        class="col-span-1 bg-sec-high-400 hover:bg-sec-high-500" />
+                        class="col-span-1 bg-sec-high-500 hover:bg-sec-high-500" />
                     <SecuritySummaryTile name="Medium" :count="server.security.medium"
-                        class="col-span-1 bg-sec-medium-400 hover:bg-sec-medium-500" />
+                        class="col-span-1 bg-sec-medium-500 hover:bg-sec-medium-500" />
                     <SecuritySummaryTile name="Low" :count="server.security.low"
-                        class="col-span-1 bg-sec-low-400 hover:bg-sec-low-500" />
+                        class="col-span-1 bg-sec-low-500 hover:bg-sec-low-600" />
                     <SecuritySummaryTile name="Informational" :count="server.security.informational"
-                        class="col-span-1 bg-sec-information-300 dark:bg-sec-information-500" />
+                        class="col-span-1 bg-sec-information-500 hover:bg-sec-information-600" />
                 </div>
                 <div v-if="!security.current"
                     class="grid lg:grid-cols-3 sm:grid-cols-1 gap-2 w-full mx-auto dark:text-black my-0 md:mt-4 md:mb-8">
                     <SecuritySummaryTile name="Malware" :count="server.security.malware"
-                        class="col-span-1 bg-sec-malware-400 dark:bg-sec-malware-400" />
+                        class="col-span-1 bg-sec-malware-500 hover:bg-sec-malware-600" />
                     <SecuritySummaryTile name="Unmaintained" :count="server.security.unmaintained"
-                        class="col-span-1 bg-sec-unmaintained-300" />
+                        class="col-span-1 bg-sec-unmaintained-400 hover:bg-sec-unmaintained-500" />
                     <SecuritySummaryTile name="Unknown" :count="server.security.unknown"
-                        class="col-span-1 bg-sec-unknown-400 dark:bg-sec-unknown-400" />
+                        class="col-span-1 bg-sec-unknown-400 dark:bg-sec-unknown-400 hover:bg-sec-unknown-500" />
                 </div>
 
                 <Search searching="security" placeholder="Find alerts..." :total="security.total" :limit="24"

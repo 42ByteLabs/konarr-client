@@ -28,7 +28,7 @@ const icon = computed(() => {
 });
 const color = computed(() => {
     if (!props.color) {
-        return "text-gray-300 dark:text-gray-200";
+        return "text-gray-800 dark:text-gray-200";
     }
     switch (props.severity) {
         case "Total":
