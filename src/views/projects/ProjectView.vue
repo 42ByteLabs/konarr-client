@@ -167,8 +167,16 @@ let container_sha = computed(() => {
                 <div v-if="server.user.role === 'Admin'"
                     class="col-span-6 md:col-span-2 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4">
                     <h3 class="text-xl font-semibold text-center my-2">Admin Actions</h3>
+
+                    <ProjectInfo v-if="project.snapshot" name="Snapshots (ID / count)" :value="project.snapshot.id"
+                        :version="project.snapshots" />
+
+                    <ProjectInfo v-if="project.snapshot" name="Snapshots Creation"
+                        :value="project.snapshot.createdAt" />
+
                     <!-- Delete Project Button -->
-                    <div class="mt-4">
+                    <div
+                        class="mt-857ac3f0a4d8chttps://github.com/42ByteLabs/konarr/blob/main/server/src/api/snapshots.rs#L178">
                         <div class="grid grid-cols-8 gap-2">
                             <router-link :to="{ name: 'Edit Project', params: { id: project.id } }"
                                 class="col-span-3 col-start-2 flex justify-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
@@ -181,8 +189,6 @@ let container_sha = computed(() => {
                             </button>
                         </div>
                     </div>
-                    <ProjectInfo v-if="project.snapshot" name="Snapshots (ID / count)" :value="project.snapshot.id"
-                        :version="project.snapshots" />
                 </div>
             </div>
         </div>
