@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, computed, onUpdated } from "vue";
+import { onMounted, computed, onUpdated, ref } from "vue";
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiGraph, mdiPencil, mdiArchive, mdiCloudOffOutline, mdiCloudCheckOutline } from "@mdi/js";
 import MarkdownIt from "markdown-it";
@@ -62,6 +62,17 @@ let container_sha = computed(() => {
     }
 });
 
+// On keypress `e`, set the `admin_mode` variable to `true`
+const admin_mode = ref(false);
+const setAdminMode = (e: KeyboardEvent) => {
+    if (e.key === "`") {
+        if (server.user.role === 'Admin') {
+            admin_mode.value = !admin_mode.value;
+        }
+    }
+}
+window.addEventListener("keypress", setAdminMode);
+
 </script>
 
 <template>
@@ -69,7 +80,7 @@ let container_sha = computed(() => {
         <div v-if="project" class="container mt-4 mb-6 px-2 w-full mx-auto">
             <div class="grid grid-cols-6 md:gap-2 w-full mx-auto">
                 <div
-                    class="col-span-6 md:col-span-2 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4 mb-4 md:mb-0">
+                    class="col-span-6 md:col-span-2 bg-white dark:bg-gray-900 dark:text-white shadow-md rounded-lg p-4 mb-4 md:mb-0">
                     <div class="flex flex-col items-center pb-6 pt-2">
                         <!-- Project Icons -->
                         <div class="grid grid-cols-6 w-full mb-6">
@@ -118,7 +129,7 @@ let container_sha = computed(() => {
                 </div>
 
                 <div v-if="project.snapshot"
-                    class="col-span-6 md:col-span-4 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4 mb-4 md:mb-0">
+                    class="col-span-6 md:col-span-4 bg-white dark:bg-gray-900 dark:text-white shadow-md rounded-lg p-4 mb-4 md:mb-0">
 
                     <ProjectNav :title="title" :id="project.id" :parent="project.parent" edit />
 
@@ -127,7 +138,7 @@ let container_sha = computed(() => {
 
                     <hr class="my-6 bg-gray-400" v-if="project.snapshot" />
 
-                    <DependenciesList v-if="project.snapshot && project.snapshot.dependencies"
+                    <DependenciesList v-if="project.type === 'Container' && project.snapshot.dependencies"
                         :snapid="project.snapshot.id" :projectid="project.id" :total="project.snapshot.dependencies" />
 
                     <div v-if="project.children">
@@ -164,8 +175,8 @@ let container_sha = computed(() => {
                         </div>
                     </div>
                 </div>
-                <div v-if="server.user.role === 'Admin'"
-                    class="col-span-6 md:col-span-2 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4">
+                <div v-if="admin_mode"
+                    class="col-span-6 md:col-span-2 bg-white dark:bg-gray-900 dark:text-white shadow-md rounded-lg p-4">
                     <h3 class="text-xl font-semibold text-center my-2">Admin Actions</h3>
 
                     <ProjectInfo v-if="project.snapshot" name="Snapshots (ID / count)" :value="project.snapshot.id"
@@ -174,9 +185,8 @@ let container_sha = computed(() => {
                     <ProjectInfo v-if="project.snapshot" name="Snapshots Creation"
                         :value="project.snapshot.createdAt" />
 
-                    <!-- Delete Project Button -->
-                    <div
-                        class="mt-857ac3f0a4d8chttps://github.com/42ByteLabs/konarr/blob/main/server/src/api/snapshots.rs#L178">
+                    <!-- Edit and Delete Project Button -->
+                    <div class="mt-8">
                         <div class="grid grid-cols-8 gap-2">
                             <router-link :to="{ name: 'Edit Project', params: { id: project.id } }"
                                 class="col-span-3 col-start-2 flex justify-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
