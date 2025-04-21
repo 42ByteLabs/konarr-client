@@ -1,10 +1,10 @@
 {
     "name": "konarr-client",
-    "version": "0.4.2",
+    "version": "0.5.0",
     "type": "module",
     "scripts": {
         "dev": "vite --cors --config vite.config.ts",
-        "build": "run-p type-check \"build-only {@}\" --",
+        "build": "vite build",
         "preview": "vite preview",
         "test:unit": "vitest",
         "build-only": "vite build",
@@ -13,18 +13,18 @@
         "format": "prettier --write src/"
     },
     "dependencies": {
-        "@headlessui/vue": "^1.7.22",
-        "@heroicons/vue": "^2.1.5",
-        "@jamescoyle/vue-icon": "^0.1.2",
-        "@kyvg/vue3-notification": "^3.4.1",
-        "@mdi/js": "^7.4.47",
-        "ag-charts-vue3": "^11.0.3",
-        "axios": "^1.7.3",
-        "dompurify": "^3.1.6",
-        "markdown-it": "^14.1.0",
-        "pinia": "^2.1.7",
-        "vue": "^3.4.29",
-        "vue-router": "^4.3.3"
+        "@headlessui/vue": "^1.7",
+        "@heroicons/vue": "^2.1",
+        "@jamescoyle/vue-icon": "^0.1",
+        "@kyvg/vue3-notification": "^3.4",
+        "@mdi/js": "^7.4",
+        "ag-charts-vue3": "^11.0",
+        "axios": "^1.7",
+        "dompurify": "^3.1",
+        "markdown-it": "^14.1",
+        "pinia": "^2.1",
+        "vue": "^3.4",
+        "vue-router": "^4.3"
     },
     "devDependencies": {
         "@rushstack/eslint-patch": "^1.8.0",
