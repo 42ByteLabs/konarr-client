@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { KonarrServer } from "@/types";
 import DarkModeButton from "@/components/DarkModeButton.vue";
+import AdminModeButton from "@/components/AdminModeButton.vue";
 
 const props = defineProps<{
     server: KonarrServer;
@@ -23,14 +24,23 @@ const props = defineProps<{
             </p>
 
             <p class="text-center text-gray-500 dark:text-gray-100 text-xs">
-                <a href="https://42bytelabs.com">42ByteLabs</a> &copy; 2024 All rights
+                <a href="https://42bytelabs.com">42ByteLabs</a> &copy; 2025 All rights
                 reserved
             </p>
         </div>
         <!-- Dark mode toggle -->
-        <div class="col-span-1"></div>
         <div class="col-span-1 text-center">
+            <p class="text-center text-gray-500 dark:text-gray-100 text-xs pb-2">
+                Display Mode
+            </p>
             <DarkModeButton />
+        </div>
+        <!-- Site Admin toggle button -->
+        <div class="col-span-1 text-center" v-if="props.server.user?.role == 'Admin'">
+            <p class="text-center text-gray-500 dark:text-gray-100 text-xs pb-2">
+                Admin Mode
+            </p>
+            <AdminModeButton />
         </div>
     </footer>
 </template>
