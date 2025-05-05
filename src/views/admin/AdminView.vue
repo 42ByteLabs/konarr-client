@@ -30,7 +30,7 @@ onMounted(() => {
                 <AdminSettingMenu current="general" :icon="mdiServer" class="col-span-6 md:col-span-2" />
 
                 <div v-if="!admin.loading"
-                    class="col-span-6 md:col-span-4 bg-white dark:bg-gray-700 dark:text-white shadow-md rounded-lg p-4 pt-6">
+                    class="col-span-6 md:col-span-4 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4 pt-6">
 
                     <AdminSetting title="Registration Active"
                         description="Allow users to register for an account. When disabled, no new users can register."

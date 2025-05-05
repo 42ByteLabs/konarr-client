@@ -36,7 +36,7 @@ const tools = [
                 <AdminSettingMenu current="security" :icon="mdiServer" class="col-span-6 md:col-span-2" />
 
                 <div v-if="!admin.loading"
-                    class="col-span-6 md:col-span-4 bg-white dark:bg-gray-700 dark:text-white shadow-md rounded-lg p-4 pt-6">
+                    class="col-span-6 md:col-span-4 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4 pt-6">
 
                     <AdminSetting title="Enable Security"
                         info="Enable the security feature inside Konarr. This includes automatically discovering security alerts, update advisory database, etc."
