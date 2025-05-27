@@ -22,7 +22,6 @@ import {
 import { useServerStore } from "@/stores/server";
 import { router, navigation } from "@/router";
 import type { KonarrUser } from "@/types";
-import DarkModeButton from "@/components/DarkModeButton.vue";
 
 const server = useServerStore();
 
@@ -149,15 +148,6 @@ const props = defineProps<{
                                 ]">
                                     Admin Panel
                                 </router-link>
-                                </MenuItem>
-
-                                <MenuItem v-slot="{ active }">
-                                <div class="grid grid-cols-2">
-                                    <span class="px-4 py-2 text-sm text-gray-700">
-                                        Theme
-                                    </span>
-                                    <DarkModeButton />
-                                </div>
                                 </MenuItem>
 
                                 <MenuItem v-slot="{ active }">

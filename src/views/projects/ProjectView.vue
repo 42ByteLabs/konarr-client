@@ -62,17 +62,6 @@ let container_sha = computed(() => {
     }
 });
 
-// On keypress `e`, set the `admin_mode` variable to `true`
-const admin_mode = ref(false);
-const setAdminMode = (e: KeyboardEvent) => {
-    if (e.key === "`") {
-        if (server.user.role === 'Admin') {
-            admin_mode.value = !admin_mode.value;
-        }
-    }
-}
-window.addEventListener("keypress", setAdminMode);
-
 </script>
 
 <template>
@@ -175,7 +164,7 @@ window.addEventListener("keypress", setAdminMode);
                         </div>
                     </div>
                 </div>
-                <div v-if="admin_mode"
+                <div v-if="server.adminMode"
                     class="col-span-6 md:col-span-2 bg-white dark:bg-gray-900 dark:text-white shadow-md rounded-lg p-4">
                     <h3 class="text-xl font-semibold text-center my-2">Admin Actions</h3>
 

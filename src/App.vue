@@ -3,6 +3,7 @@ import { onMounted } from "vue";
 import { RouterLink, RouterView } from "vue-router";
 
 import NavBar from "@/components/NavBar.vue";
+import Footer from "@/components/Footer.vue";
 import { useServerStore } from "@/stores/server";
 import router from "@/router";
 
@@ -31,23 +32,8 @@ onMounted(() => {
 
     <RouterView />
 
-    <footer class="mx-auto bg-gray-100 dark:bg-black pt-4 pb-6">
-        <p class="text-center text-gray-500 dark:text-gray-100 text-xs pb-2">
-            <a :href="'https://github.com/42ByteLabs/konarr/releases/tag/' + server.version
-                ">
-                v{{ server.version }}
-            </a>
-            -
-            <a :href="'https://github.com/42ByteLabs/konarr/commit/' + server.commit">
-                {{ server.commit }}
-            </a>
-        </p>
+    <Footer :server="server" />
 
-        <p class="text-center text-gray-500 dark:text-gray-100 text-xs">
-            <a href="https://42bytelabs.com">42ByteLabs</a> &copy; 2024 All rights
-            reserved
-        </p>
-    </footer>
 </template>
 
 <style>

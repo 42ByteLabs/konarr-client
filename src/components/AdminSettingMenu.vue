@@ -9,7 +9,7 @@ const props = defineProps<{
 </script>
 
 <template>
-    <div class="bg-white dark:bg-gray-700 shadow-md rounded-lg p-4">
+    <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-4">
         <div class="flex flex-col items-center">
             <h3 class="dark:text-gray-200 text-lg font-semibold">Server Settings</h3>
 

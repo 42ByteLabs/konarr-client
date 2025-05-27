@@ -19,6 +19,8 @@ export const useServerStore = defineStore("konarr", {
             },
             // Is the user is logging in
             logging_in: false,
+            // Admin mode
+            adminMode: false,
         }) as KonarrServer,
 
     actions: {
@@ -36,6 +38,8 @@ export const useServerStore = defineStore("konarr", {
                         this.projects = response.data.projects;
                         this.dependencies = response.data.dependencies;
                         this.security = response.data.security;
+
+                        this.adminMode();
                     } else {
                         if (!this.config.initialised) {
                             router.push({ name: "Login" });
@@ -107,5 +111,27 @@ export const useServerStore = defineStore("konarr", {
                     handleErrors(error);
                 });
         },
+
+        adminMode() {
+            // Check local storage for admin mode
+            const adminMode = localStorage.getItem("adminMode");
+            if (adminMode === "true") {
+                this.adminMode = true;
+            } else {
+                this.adminMode = false;
+            }
+        },
+
+        toggleAdminMode() {
+            if (this.user?.role === "Admin") {
+                this.adminMode = !this.adminMode;
+                // Save admin mode to local storage
+                localStorage.setItem("adminMode", this.adminMode.toString());
+
+                console.log("Toggling admin mode: ", this.adminMode);
+            } else {
+                console.log("User is not an admin, cannot toggle admin mode");
+            }
+        }
     },
 });
