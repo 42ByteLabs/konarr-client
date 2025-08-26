@@ -1,6 +1,6 @@
 {
     "name": "konarr-client",
-    "version": "0.5.0",
+    "version": "0.4.4",
     "type": "module",
     "scripts": {
         "dev": "vite --cors --config vite.config.ts",
