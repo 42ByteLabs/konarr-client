@@ -23,18 +23,21 @@ const icon = computed(() => {
                 return i.mdiLinux;
             case "ubuntu":
                 return i.mdiUbuntu;
-            case "rpm" | "fedora":
+            case "rpm":
+            case "fedora":
                 return i.mdiFedora;
             default:
                 return i.mdiLinux;
         }
     } else if (props.dep.type === "ProgrammingLanguage") {
         switch (props.dep.name) {
-            case "cargo" | "rust":
+            case "cargo":
+            case "rust":
                 return i.mdiLanguageRust;
             case "composer":
                 return i.mdiLanguagePhp;
-            case "go" | "golang":
+            case "go":
+            case "golang":
                 return i.mdiLanguageGo;
             case "pypi":
                 return i.mdiLanguagePython;
@@ -42,7 +45,8 @@ const icon = computed(() => {
                 return i.mdiDotNet;
             case "lua":
                 return i.mdiLanguageLua;
-            case "gem" | "ruby":
+            case "gem":
+            case "ruby":
                 return i.mdiLanguageRuby;
             default:
                 return i.mdiApplicationEditOutline;
@@ -64,7 +68,10 @@ const icon = computed(() => {
 });
 
 const link = computed(() => {
-    return `/dependencies/${props.id || ""}?select=${props.dep.type}`;
+    if (typeof props.dep === "object" && props.dep.type) {
+        return `/dependencies/${props.id || ""}?select=${props.dep.type}`;
+    }
+    return `/dependencies/${props.id || ""}`;
 });
 const size = computed(() => {
     return props.size || 24;
@@ -72,7 +79,7 @@ const size = computed(() => {
 </script>
 <template>
     <router-link :to="link" class="">
-        <svg-icon type="mdi" :path="icon" :alt="props.dep.manager" :style="{ width: `${size}px`, height: `${size}px` }">
+        <svg-icon type="mdi" :path="icon" :alt="typeof props.dep === 'object' ? props.dep.manager : ''" :style="{ width: `${size}px`, height: `${size}px` }">
         </svg-icon>
     </router-link>
 </template>

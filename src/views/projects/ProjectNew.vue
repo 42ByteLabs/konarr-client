@@ -11,7 +11,7 @@ const type = ref(0);
 const parent = ref(0);
 
 const create = async () => {
-    await projects.create(title.value, type.value, description.value, parent.value);
+    await projects.create(title.value, type.value.toString(), description.value, parent.value);
 };
 
 onMounted(() => {

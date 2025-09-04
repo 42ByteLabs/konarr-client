@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { router } from "@/router";
 import Title from "@/components/Title.vue";
 import { useServerStore } from "@/stores/server";
 

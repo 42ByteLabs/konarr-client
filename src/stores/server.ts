@@ -39,7 +39,7 @@ export const useServerStore = defineStore("konarr", {
                         this.dependencies = response.data.dependencies;
                         this.security = response.data.security;
 
-                        this.adminMode();
+                        this.setAdminMode();
                     } else {
                         if (!this.config.initialised) {
                             router.push({ name: "Login" });
@@ -112,10 +112,10 @@ export const useServerStore = defineStore("konarr", {
                 });
         },
 
-        adminMode() {
+        setAdminMode() {
             // Check local storage for admin mode
-            const adminMode = localStorage.getItem("adminMode");
-            if (adminMode === "true") {
+            const adminModeValue = localStorage.getItem("adminMode");
+            if (adminModeValue === "true") {
                 this.adminMode = true;
             } else {
                 this.adminMode = false;

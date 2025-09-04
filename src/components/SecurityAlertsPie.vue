@@ -14,52 +14,42 @@ const data = computed(() => {
         data: [
             {
                 label: "Critical",
-                amount: props.alerts.critical,
+                amount: props.alerts.critical || 0,
             },
             {
                 label: "High",
-                amount: props.alerts.high,
+                amount: props.alerts.high || 0,
             },
             {
                 label: "Medium",
-                amount: props.alerts.medium,
+                amount: props.alerts.medium || 0,
             },
             {
                 label: "Low",
-                amount: props.alerts.low,
+                amount: props.alerts.low || 0,
             },
             {
                 label: "Info",
-                amount: props.alerts.informational,
+                amount: props.alerts.informational || 0,
             },
             {
                 label: "Malware",
-                amount: props.alerts.malware,
+                amount: props.alerts.malware || 0,
             },
             {
                 label: "Unmaintained",
-                amount: props.alerts.unmaintained,
+                amount: props.alerts.unmaintained || 0,
             },
             {
                 label: "Unknown",
-                amount: props.alerts.other,
+                amount: props.alerts.other || 0,
             },
         ],
         series: [
             {
-                type: 'donut',
+                type: 'pie' as const,
                 calloutLabelKey: 'label',
                 angleKey: 'amount',
-                innerRadiusRatio: 0.6,
-                innerLabels: [
-                    {
-                        text: 'Total',
-                        fontWeight: 'bold',
-                    },
-                    {
-                        text: props.alerts.total.toString(),
-                    },
-                ],
                 fills: [
                     colors.red[500],
                     colors.orange[500],
@@ -72,7 +62,7 @@ const data = computed(() => {
                 ],
             },
         ],
-    };
+    } as any;
 });
 </script>
 

@@ -11,11 +11,11 @@ const server = useServerStore();
 
 onMounted(() => {
     // Dark mode
-    var darkMode = localStorage.getItem("dark-mode");
+    var darkMode: string | boolean | null = localStorage.getItem("dark-mode");
     if (darkMode === null) {
         darkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
     }
-    document.documentElement.className = darkMode === "true" ? "dark" : "";
+    document.documentElement.className = (darkMode === "true" || darkMode === true) ? "dark" : "";
 
     server.fetchInfo();
 });

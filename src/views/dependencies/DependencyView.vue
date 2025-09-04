@@ -21,7 +21,8 @@ const props = defineProps<{
 }>();
 
 onMounted(() => {
-    const snapshot = router.currentRoute.value.query.snapshot;
+    const snapshotParam = router.currentRoute.value.query.snapshot;
+    const snapshot = Array.isArray(snapshotParam) ? parseInt(snapshotParam[0] || "0") : (snapshotParam ? parseInt(snapshotParam) : undefined);
 
     if (props.id) {
         dependencies.getDependency(props.id, snapshot);
@@ -33,7 +34,8 @@ onMounted(() => {
 });
 
 onUpdated(() => {
-    const snapshot = router.currentRoute.value.query.snapshot;
+    const snapshotParam = router.currentRoute.value.query.snapshot;
+    const snapshot = Array.isArray(snapshotParam) ? parseInt(snapshotParam[0] || "0") : (snapshotParam ? parseInt(snapshotParam) : undefined);
     dependencies.getDependency(props.id, snapshot);
 });
 
@@ -117,7 +119,7 @@ var dependency_type = computed(() => {
                         {{ dependency_type }}
                     </span>
                     <div class="text-center w-1/3">
-                        <Feedback class="ml-4 text-sm" issue_template="catalogue-request"
+                        <Feedback title="Catalogue Request" class="ml-4 text-sm" issue_template="catalogue-request"
                             info="Request a component catalogue entry or update for this dependency"
                             labels="comp-catalogue" :input="'[Catalogue]:+' + dependency.name" />
                     </div>

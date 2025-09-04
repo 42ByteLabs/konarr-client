@@ -28,7 +28,7 @@ const current = computed(() => {
                     {{ title }}
                 </strong>
             </span>
-            <svg-icon type="mdi" :path="icon" class="dark:text-white"></svg-icon>
+            <svg-icon v-if="icon" type="mdi" :path="icon" class="dark:text-white"></svg-icon>
         </router-link>
         <button v-else disabled
             class="flex items-left justify-between w-full p-2 rounded-lg mt-4 pl-6 bg-gray-100 hover:bg-accent-200">
@@ -37,7 +37,7 @@ const current = computed(() => {
                     {{ title }}
                 </strong>
             </span>
-            <svg-icon type="mdi" :path="icon"></svg-icon>
+            <svg-icon v-if="icon" type="mdi" :path="icon"></svg-icon>
         </button>
     </div>
 </template>

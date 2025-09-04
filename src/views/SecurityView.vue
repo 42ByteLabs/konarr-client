@@ -19,10 +19,12 @@ const server = useServerStore();
 const security = useSecurityStore();
 
 onMounted(() => {
-    const squery = router.currentRoute.value.query.search;
-    const qseverity = router.currentRoute.value.query.severity;
-    const qsnapshot = router.currentRoute.value.query.snapshot;
-    const qpage = parseInt(router.currentRoute.value.query.page || 1) - 1;
+    const squery = router.currentRoute.value.query.search as string;
+    const qseverity = router.currentRoute.value.query.severity as string;
+    const qsnapshotParam = router.currentRoute.value.query.snapshot;
+    const qsnapshot = Array.isArray(qsnapshotParam) ? parseInt(qsnapshotParam[0] || "0") : (qsnapshotParam ? parseInt(qsnapshotParam) : undefined);
+    const qpageParam = router.currentRoute.value.query.page;
+    const qpage = parseInt((Array.isArray(qpageParam) ? qpageParam[0] : qpageParam) || "1") - 1;
 
     if (qsnapshot) {
         security.fetchSnapshotAlerts(qsnapshot, qpage, 24, qseverity);

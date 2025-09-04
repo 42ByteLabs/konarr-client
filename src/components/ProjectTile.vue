@@ -17,36 +17,38 @@ const props = defineProps<{
 const project = computed(() => {
     if (props.project) {
         return props.project;
-    } else {
+    } else if (props.id) {
         projects.getCurrentProject(props.id);
-        return projects.projects.find(
+        return projects.data.find(
             (p: KonarrProject) => p.id === projects.current,
         );
     }
+    return null;
 });
 
 const link = computed(() => {
-    return `/projects/${props.project.id}`;
+    return `/projects/${props.project?.id}`;
 });
 const severity = computed(() => {
-    if (props.project.security) {
-        return mdi
+    if (props.project?.security) {
+        return mdiSecurity;
     }
+    return null;
 });
 </script>
 
 <template>
-    <div class="bg-gray-50 dark:bg-gray-800 shadow-md rounded-lg hover:bg-accent-500 py-2">
+    <div class="bg-gray-50 dark:bg-gray-800 shadow-md rounded-lg hover:bg-accent-500 py-2" v-if="project">
         <router-link :to="{ name: 'Project', params: { id: project.id } }"
             class="dark:text-white hover:bg-pink-500 hover:shadow-lg">
             <h3 class="flex justify-center text-lg font-semibold">
-                {{ props.project.title || props.project.name }}
+                {{ props.project?.title || props.project?.name }}
             </h3>
 
             <div class="grid grid-cols-3 mt-4 mb-2">
                 <!-- Type -->
                 <div class="flex items-center justify-center col-span-1">
-                    <ProjectIcon :type="project.type" />
+                    <ProjectIcon :type="project.type || ''" />
                     <span v-if="project.children" class="ml-1">
                         {{ project.children.length || 0 }}
                     </span>

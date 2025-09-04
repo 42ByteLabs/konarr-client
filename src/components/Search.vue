@@ -27,11 +27,12 @@ const props = defineProps<{
 const count = ref(props.count || 0);
 const total = ref(props.total || 0);
 
-const typeSearch = (event) => {
-    search(event.target.value);
+const typeSearch = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    search(target.value);
 };
 
-const search = (value) => {
+const search = (value: string) => {
     // Search for projects
     if (props.searching === "projects") {
         if (value === "") {
@@ -63,8 +64,9 @@ const search = (value) => {
 
 const selected = ref("Top");
 
-const select = (value) => {
-    selected.value = value.target.value;
+const select = (value: Event) => {
+    const target = value.target as HTMLSelectElement;
+    selected.value = target.value;
 
     if (props.searching === "projects") {
         if (selected.value === "Top") {
@@ -96,13 +98,14 @@ var current = ref();
 
 onMounted(() => {
     const squery = router.currentRoute.value.query.search;
-    selected.value = router.currentRoute.value.query.select || "Top";
+    const selectParam = router.currentRoute.value.query.select;
+    selected.value = (Array.isArray(selectParam) ? selectParam[0] : selectParam) || "Top";
 
     if (squery) {
         // Update the search input
-        const input = document.getElementById("search");
+        const input = document.getElementById("search") as HTMLInputElement;
         if (input) {
-            input.value = squery;
+            input.value = Array.isArray(squery) ? (squery[0] ?? "") : (squery ?? "");
         }
     }
 });

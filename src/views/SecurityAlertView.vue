@@ -40,19 +40,19 @@ var alert = computed(() => {
                     <Title :title="alert.name" :subtitle="alert.severity" />
                 </div>
             </div>
-            <div v-if="alert.dependency">
+            <div v-if="alert.dependency && typeof alert.dependency === 'object'">
                 <h3 class="text-xl font-semibold text-center">Dependencies</h3>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4 mt-8">
-                    <router-link :to="{ name: 'Dependency', params: { id: alert.dependency.id } }"
+                    <router-link :to="{ name: 'Dependency', params: { id: (alert.dependency as any).id } }"
                         class="bg-white dark:bg-gray-700 dark:text-white hover:bg-accent-500 shadow-md rounded-lg p-4">
                         <div class="grid grid-cols-8">
                             <div class="col-span-1">
-                                <DependencyIcon :dep="alert.dependency.type" />
+                                <DependencyIcon :dep="(alert.dependency as any).type" />
                             </div>
                             <div class="col-span-6">
                                 <h3 class="ml-2 text-lg font-semibold">
-                                    {{ alert.dependency.name }} @ {{ alert.dependency.version }}
+                                    {{ (alert.dependency as any).name }} @ {{ (alert.dependency as any).version }}
                                 </h3>
                             </div>
                             <div class="col-span-1">

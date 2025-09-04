@@ -38,10 +38,11 @@ export const useDependenciesStore = defineStore("dependencies", {
             }
         },
 
-        async fetchDependencies(page: number = 0, limit: number = 10, top: boolean = true, deptype?: string = null) {
+        async fetchDependencies(page: number = 0, limit: number = 10, top: boolean = true, deptype: string | undefined = undefined) {
             // Get from URL if null
             if (deptype === undefined) {
-                deptype = router.currentRoute.value.query.select;
+                const selectParam = router.currentRoute.value.query.select;
+                deptype = Array.isArray(selectParam) ? (selectParam[0] || undefined) : (selectParam || undefined);
             }
 
             var params = `page=${page}&limit=${limit}`;
@@ -119,7 +120,7 @@ export const useDependenciesStore = defineStore("dependencies", {
 
             // Optional snapshot
             let params = "";
-            if (!isNaN(snapshot)) {
+            if (snapshot !== undefined && !isNaN(snapshot)) {
                 params += `snapshot=${snapshot}`
             }
     
@@ -149,26 +150,29 @@ export const useDependenciesStore = defineStore("dependencies", {
                     await this.fetchDependencies(this.page + 1);
                 }
                 else {
-                    await this.fetchDependencies(this.page + 1, 24, top, sselect);
-                    router.push({ query: { page: this.page + 1, select: sselect } });
+                    const selectParam = router.currentRoute.value.query.select;
+                    const sselectStr = Array.isArray(selectParam) ? (selectParam[0] || undefined) : (selectParam || undefined);
+                    await this.fetchDependencies(this.page + 1, 24, top, sselectStr);
+                    router.push({ query: { page: this.page + 1, select: sselectStr } });
                 }
             }
         },
 
         async fetchPrevPage() {
-            const sselect = router.currentRoute.value.query.select;
-            const top = sselect === undefined
+            const selectParam = router.currentRoute.value.query.select;
+            const sselectStr = Array.isArray(selectParam) ? (selectParam[0] || undefined) : (selectParam || undefined);
+            const top = sselectStr === undefined
 
             if (this.page !== 0) {
                 if (this.current) {
                     await this.fetchDependencies(this.page - 1);
                 } else {
-                    await this.fetchDependencies(this.page - 1, 24, top, sselect);
+                    await this.fetchDependencies(this.page - 1, 24, top, sselectStr);
                     if (this.isFirstPage()) {
                         // Remove page if first
-                        router.push({ query: { page: undefined, select: sselect } });
+                        router.push({ query: { page: undefined, select: sselectStr } });
                     } else {
-                        router.push({ query: { page: this.page + 1, select: sselect } });
+                        router.push({ query: { page: this.page + 1, select: sselectStr } });
                     }
                 }
             }

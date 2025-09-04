@@ -28,16 +28,16 @@ const server = useServerStore();
                             <!-- Count of projects -->
                             <div class="flex items center justify-between mt-4 px-6">
                                 <span class="text-sm text-gray-500 dark:text-gray-200">Total Projects</span>
-                                <span class="text-lg font-semibold">{{ server.projects.total
-                                    }}</span>
+                                <span class="text-lg font-semibold">{{ server.projects?.total
+                                    || 0 }}</span>
                             </div>
                             <div class="flex items center justify-between mt-4 px-6">
                                 <span class="text-sm text-gray-500 dark:text-gray-200">Total Servers</span>
-                                <span class="text-lg font-semibold">{{ server.projects.servers }}</span>
+                                <span class="text-lg font-semibold">{{ server.projects?.servers || 0 }}</span>
                             </div>
                             <div class="flex items center justify-between mt-4 px-6">
                                 <span class="text-sm text-gray-500 dark:text-gray-200">Total Containers</span>
-                                <span class="text-lg font-semibold">{{ server.projects.containers }}</span>
+                                <span class="text-lg font-semibold">{{ server.projects?.containers || 0 }}</span>
                             </div>
                         </div>
                     </div>
@@ -51,44 +51,44 @@ const server = useServerStore();
                             <!-- Count of dependencies -->
                             <div class="flex items center justify-between mt-2 px-6">
                                 <span class="text-sm text-gray-500 dark:text-gray-200">Total Dependencies</span>
-                                <span class="text-lg font-semibold">{{ server.dependencies.total || 0 }}</span>
+                                <span class="text-lg font-semibold">{{ server.dependencies?.total || 0 }}</span>
                             </div>
                             <div class="flex items center justify-between mt-2 px-6">
                                 <span class="text-sm text-gray-500 dark:text-gray-200">Libraries</span>
-                                <span class="text-lg font-semibold">{{ server.dependencies.libraries || 0 }}</span>
+                                <span class="text-lg font-semibold">{{ server.dependencies?.libraries || 0 }}</span>
                             </div>
                             <div class="flex items center justify-between mt-2 px-6">
                                 <span class="text-sm text-gray-500 dark:text-gray-200">Applications</span>
-                                <span class="text-lg font-semibold">{{ server.dependencies.applications || 0 }}</span>
+                                <span class="text-lg font-semibold">{{ server.dependencies?.applications || 0 }}</span>
                             </div>
                             <div class="flex items center justify-between mt-2 px-6">
                                 <span class="text-sm text-gray-500 dark:text-gray-200">Operating Systems</span>
                                 <span class="text-lg font-semibold">
-                                    {{ server.dependencies['operating-systems'] || 0 }}
+                                    {{ server.dependencies?.['operating-systems'] || 0 }}
                                 </span>
                             </div>
                             <div class="flex items center justify-between mt-2 px-6">
                                 <span class="text-sm text-gray-500 dark:text-gray-200">Programming Languages</span>
-                                <span class="text-lg font-semibold">{{ server.dependencies.languages || 0 }}</span>
+                                <span class="text-lg font-semibold">{{ server.dependencies?.languages || 0 }}</span>
                             </div>
                             <div class="flex items center justify-between mt-2 px-6">
                                 <span class="text-sm text-gray-500 dark:text-gray-200">Package Manager</span>
-                                <span class="text-lg font-semibold">{{ server.dependencies['package-managers'] }}</span>
+                                <span class="text-lg font-semibold">{{ server.dependencies?.['package-managers'] || 0 }}</span>
                             </div>
                             <div class="flex items center justify-between mt-2 px-6">
                                 <span class="text-sm text-gray-500 dark:text-gray-200">Cryptography</span>
                                 <span class="text-lg font-semibold">
-                                    {{ server.dependencies['cryptographic-libraries'] || 0 }}
+                                    {{ server.dependencies?.['cryptographic-libraries'] || 0 }}
                                 </span>
                             </div>
                             <div class="flex items center justify-between mt-2 px-6">
                                 <span class="text-sm text-gray-500 dark:text-gray-200">Databases</span>
-                                <span class="text-lg font-semibold">{{ server.dependencies.databases || 0 }}</span>
+                                <span class="text-lg font-semibold">{{ server.dependencies?.databases || 0 }}</span>
                             </div>
                             <div class="flex items center justify-between mt-2 px-6">
                                 <span class="text-sm text-gray-500 dark:text-gray-200">Compression Libraries</span>
                                 <span class="text-lg font-semibold">
-                                    {{ server.dependencies['compression-libraries'] || 0 }}
+                                    {{ server.dependencies?.['compression-libraries'] || 0 }}
                                 </span>
                             </div>
                         </div>

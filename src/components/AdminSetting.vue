@@ -71,10 +71,14 @@ const hidedata = (data: any) => {
     hidden.value = !hidden.value;
 }
 const regenerate = () => {
-    admin.updateSetting(props.setting, true);
+    if (props.setting) {
+        admin.updateSetting(props.setting, true);
+    }
 }
 const onselect = (data: any) => {
-    admin.updateSetting(props.setting, data);
+    if (props.setting) {
+        admin.updateSetting(props.setting, data);
+    }
 }
 const toggle_help = () => {
     description_help.value = !description_help.value;
@@ -157,7 +161,7 @@ onMounted(() => {
                 </div>
             </div>
             <div v-else-if="props.select" class="col-span-12 md:col-span-5 mt-2">
-                <select @change="onselect($event.target.value)"
+                <select @change="onselect(($event.target as HTMLSelectElement).value)"
                     class="bg-gray-200 dark:bg-gray-500 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-1 focus:ring-accent-500 focus:border-accent-500 sm:text-sm rounded-md">
                     <option :value="opt.value" v-for="opt in select" :key="opt.label" :selected="opt.value === data">
                         {{ opt.label }}

@@ -13,28 +13,35 @@ import { useServerStore } from "@/stores/server";
 const server = useServerStore();
 const projects = useProjectsStore();
 
-const project_id = parseInt(router.currentRoute.value.params.id);
+const project_id = parseInt(Array.isArray(router.currentRoute.value.params.id) ? router.currentRoute.value.params.id[0] : router.currentRoute.value.params.id);
 var parent = ref(0);
+var type = ref('Server');
 
 const update = async () => {
     await projects.update({
         id: project_id,
-        title: project.value.title,
-        type: project.value.type,
-        description: project.value.description,
+        title: project.value?.title || '',
+        type: type.value,
+        description: project.value?.description || '',
         parent: parent.value || 0,
     } as KonarrProject);
 };
 
 const project = computed(() => {
     // Check if the project is already present in the store
-    return projects.data.find((p: KonarrProject) => p.id === project_id)
-        || {
+    const foundProject = projects.data.find((p: KonarrProject) => p.id === project_id);
+    if (foundProject) {
+        // Add available parent projects (all projects except this one and its children)
+        foundProject.parents = projects.data.filter((p: KonarrProject) => p.id !== project_id);
+        return foundProject;
+    }
+    return {
         id: project_id,
         title: "Untitled Project",
         type: "Server",
         description: "",
         parent: 0,
+        parents: projects.data.filter((p: KonarrProject) => p.id !== project_id),
     };
 });
 

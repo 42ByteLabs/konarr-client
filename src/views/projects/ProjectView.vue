@@ -44,17 +44,17 @@ let project = computed(() => {
 });
 
 let title = computed(() => {
-    return project.value.title || project.value.name;
+    return project.value?.title || project.value?.name || '';
 });
 
 const description = computed(() => {
-    const result = md.render(project.value.description || "");
+    const result = md.render(project.value?.description || "");
     return DOMPurify.sanitize(result);
 });
 
 let container_sha = computed(() => {
     // Truncate the container sha to 12 characters
-    if (project.value.snapshot !== undefined && project.value.snapshot.metadata['container.sha'] !== undefined) {
+    if (project.value?.snapshot !== undefined && project.value.snapshot.metadata['container.sha'] !== undefined) {
         var sha = project.value.snapshot.metadata['container.sha'].replace('sha256:', '');
         return sha.substring(0, 12);
     } else {
@@ -122,7 +122,7 @@ let container_sha = computed(() => {
 
                     <ProjectNav :title="title" :id="project.id" :parent="project.parent" edit />
 
-                    <SecuritySummary v-if="project.snapshot" :summary="project.security"
+                    <SecuritySummary v-if="project.snapshot && project.security" :summary="project.security"
                         :snapshot="project.snapshot.id" />
 
                     <hr class="my-6 bg-gray-400" v-if="project.snapshot" />
@@ -169,10 +169,10 @@ let container_sha = computed(() => {
                     <h3 class="text-xl font-semibold text-center my-2">Admin Actions</h3>
 
                     <ProjectInfo v-if="project.snapshot" name="Snapshots (ID / count)" :value="project.snapshot.id"
-                        :version="project.snapshots" />
+                        :version="project.snapshot.id" />
 
                     <ProjectInfo v-if="project.snapshot" name="Snapshots Creation"
-                        :value="project.snapshot.createdAt" />
+                        :value="project.snapshot.created_at" />
 
                     <!-- Edit and Delete Project Button -->
                     <div class="mt-8">

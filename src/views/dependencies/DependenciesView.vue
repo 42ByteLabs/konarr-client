@@ -13,12 +13,13 @@ import Loading from "@/components/Loading.vue";
 import { useDependenciesStore } from "@/stores/dependencies";
 
 const dependencies = useDependenciesStore();
-const qselect = router.currentRoute.value.query.select;
+const qselect = router.currentRoute.value.query.select as string;
 
 onMounted(() => {
     dependencies.setSnapshot(0);
-    const qquery = router.currentRoute.value.query.search;
-    const qpage = parseInt(router.currentRoute.value.query.page || 1) - 1;
+    const qquery = router.currentRoute.value.query.search as string;
+    const qpageParam = router.currentRoute.value.query.page;
+    const qpage = parseInt((Array.isArray(qpageParam) ? qpageParam[0] : qpageParam) || "1") - 1;
 
     if (qquery) {
         dependencies.searchDependencies(qquery);
@@ -47,7 +48,7 @@ const selectables = {
 <template>
     <main>
         <div class="container mt-4 mb-6 w-full mx-auto dark:text-white px-2">
-            <Title title="Dependencies" description="List of Global Components & Dependencies" :subtitle="qselect" />
+            <Title title="Dependencies" description="List of Global Components & Dependencies" :subtitle="qselect as string || undefined" />
 
             <div class="w-full">
                 <Search searching="dependencies" placeholder="Find dependency..." :selectables="selectables"

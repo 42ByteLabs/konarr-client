@@ -2,6 +2,7 @@
 // https://www.creative-tim.com/twcomponents/component/indeterminate-progress-bar
 
 import { onMounted } from "vue";
+import { router } from "@/router";
 import Title from "@/components/Title.vue";
 import LoginPanel from "@/components/LoginPanel.vue";
 import Loading from "@/components/Loading.vue";

@@ -15,6 +15,11 @@ export const useAdminStore = defineStore("admin", {
             inactive: 0,
             archived: 0,
         },
+        project_stats: {
+            total: 0,
+            inactive: 0,
+            archived: 0,
+        },
         users: [],
         userStats: {
             total: 0,
@@ -50,7 +55,7 @@ export const useAdminStore = defineStore("admin", {
                 value = value.toString();
             }
             // Set the key as the name and the value as the value
-            var data = {};
+            var data: { [key: string]: any } = {};
             data[name] = value;
 
             await client
@@ -75,7 +80,7 @@ export const useAdminStore = defineStore("admin", {
         },
 
         async updateUser(id: number, role?: string, state?: string) {
-            var payload = {};
+            var payload: { [key: string]: any } = {};
 
             if (role !== undefined) {
                 payload['role'] = role;

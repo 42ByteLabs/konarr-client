@@ -8,6 +8,16 @@ import { useServerStore } from "@/stores/server";
 
 const server = useServerStore();
 
+// Computed property for admin mode status
+const adminModeEnabled = computed({
+    get: () => server.adminMode,
+    set: (value: boolean) => {
+        if (value !== server.adminMode) {
+            server.toggleAdminMode();
+        }
+    }
+});
+
 // On keypress `e`, set the `admin_mode` variable to `true`
 const setAdminMode = (e: KeyboardEvent) => {
     if (e.key === "`") {
@@ -19,12 +29,12 @@ window.addEventListener("keypress", setAdminMode);
 </script>
 <template>
     <div class="mx-4 mt-1.5">
-        <Switch v-model="server.adminMode" :class="server.adminMode ? 'bg-accent-500' : 'bg-gray-500'"
-            class="relative inline-flex h-6 w-11 items-center rounded-full" @click="server.toggleAdminMode()">
+        <Switch v-model="adminModeEnabled" :class="adminModeEnabled ? 'bg-accent-500' : 'bg-gray-500'"
+            class="relative inline-flex h-6 w-11 items-center rounded-full">
 
-            <span :class="server.adminMode ? 'translate-x-6' : 'translate-x-1'"
+            <span :class="adminModeEnabled ? 'translate-x-6' : 'translate-x-1'"
                 class="inline-block h-4 w-4 transform rounded-full transition">
-                <div v-if="server.adminMode">
+                <div v-if="adminModeEnabled">
                     <svg-icon type="mdi" :path="mdiShieldAccountOutline" class="w-4 h-4 text-black" />
                 </div>
                 <div v-else>
@@ -32,5 +42,5 @@ window.addEventListener("keypress", setAdminMode);
                 </div>
             </span>
         </Switch>
-    </div class="mx-4">
+    </div>
 </template>

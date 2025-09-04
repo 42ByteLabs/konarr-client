@@ -9,6 +9,8 @@ export interface KonarrServer {
     security?: KonarrSecuritySummary;
     // Is the user in the process of logging in
     logging_in: boolean;
+    // Admin mode
+    adminMode: boolean;
 }
 
 export interface KonarrConfig {
@@ -18,9 +20,10 @@ export interface KonarrConfig {
 
 export interface KonarrAdmin {
     loading: boolean;
-    settings: [string, string][];
+    settings: { [key: string]: any };
+    projectStats: KonarrAdminProjectStats;
     project_stats: KonarrAdminProjectStats;
-    users: KonarrUser[];
+    users: KonarrAdminUser[];
     userStats: KonarrAdminUserStats;
 }
 
@@ -37,9 +40,11 @@ export interface KonarrAdminProjectStats {
 }
 
 export interface KonarrUser {
+    id: number;
     username: string;
     avatar?: string;
     role: string;
+    state?: string;
 }
 
 export interface KonarrAdminUser {
@@ -58,6 +63,8 @@ export interface KonarrProjectsSummary {
 
 export interface KonarrDependenciesSummary {
     total: number;
+    // Additional dynamic properties for dependency categories
+    [key: string]: any;
 }
 
 export interface KonarrSecuritySummary {
@@ -71,6 +78,7 @@ export interface KonarrSecuritySummary {
     unmaintained: number;
     informational: number;
     unknown: number;
+    other?: number;
 }
 
 export interface Pagination<T> {
@@ -128,6 +136,8 @@ export interface KonarrSnapshotMetadata {
     bom_version?: string;
     container_image?: string;
     container_version?: string;
+    // Additional dynamic properties
+    [key: string]: any;
 }
 
 export type KonarrDependencies = Pagination<KonarrDependency>;
@@ -142,6 +152,7 @@ export interface KonarrDependency {
     versions?: string[];
     purl?: string;
     logo?: string;
+    projects?: KonarrProject[];
 }
 
 export type KonarrSecurityAlerts = Pagination<KonarrSecurityAlert>;
@@ -150,5 +161,6 @@ export interface KonarrSecurityAlert {
     id: number;
     name: string;
     severity: string;
-    dependency?: string;
+    description?: string;
+    dependency?: string | KonarrDependency;
 }

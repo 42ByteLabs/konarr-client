@@ -29,7 +29,8 @@ export const useSecurityStore = defineStore("security", {
 
             let result = this.data.find((dep) => dep.id === this.current);
             if (!result) {
-                await this.fetchDependency(this.current, snapshot);
+                // TODO: Implement fetchDependency method or remove this call
+                // await this.fetchDependency(this.current);
             }
         },
 
@@ -96,6 +97,7 @@ export const useSecurityStore = defineStore("security", {
         },
         async fetchNextPage() {
             const sselect = router.currentRoute.value.query.select;
+            const sseverity = router.currentRoute.value.query.severity;
             const top = sselect === undefined
 
             if (this.page < this.pages) {
@@ -103,7 +105,9 @@ export const useSecurityStore = defineStore("security", {
                     await this.fetchAlerts(this.page + 1);
                 }
                 else {
-                    await this.fetchAlerts(this.page + 1, 24, top, sselect);
+                    const severityStr = Array.isArray(sseverity) ? sseverity[0] : (sseverity ?? undefined);
+                    const severityParam = severityStr ?? undefined;
+                    await this.fetchAlerts(this.page + 1, 24, severityParam);
                     router.push({
                         query: { 
                             page: this.page + 1,
@@ -118,13 +122,16 @@ export const useSecurityStore = defineStore("security", {
 
         async fetchPrevPage() {
             const sselect = router.currentRoute.value.query.select;
+            const sseverity = router.currentRoute.value.query.severity;
             const top = sselect === undefined
 
             if (this.page !== 0) {
                 if (this.current) {
                     await this.fetchAlerts(this.page - 1);
                 } else {
-                    await this.fetchAlerts(this.page - 1, 24, top, sselect);
+                    const severityStr = Array.isArray(sseverity) ? sseverity[0] : (sseverity ?? undefined);
+                    const severityParam = severityStr ?? undefined;
+                    await this.fetchAlerts(this.page - 1, 24, severityParam);
                     if (this.isFirstPage()) {
                         // Remove page if first
                         router.push({ 

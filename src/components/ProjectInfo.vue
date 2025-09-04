@@ -11,7 +11,7 @@ const props = defineProps<{
 }>();
 
 const value = computed(() => {
-    if (props.value && props.value.length > 42) {
+    if (props.value && typeof props.value === 'string' && props.value.length > 42) {
         return props.value.slice(0, 42) + "...";
     }
     return props.value;

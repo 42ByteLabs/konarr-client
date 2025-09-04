@@ -3,7 +3,7 @@ import client from "@/client";
 import { handleErrors } from "@/stores/utils";
 
 import router from "@/router";
-import type { KonarrProjects } from "@/types";
+import type { KonarrProjects, KonarrProject } from "@/types";
 
 export const useProjectsStore = defineStore("projects", {
     state: () =>
@@ -11,6 +11,7 @@ export const useProjectsStore = defineStore("projects", {
             data: [],
             loading: true,
             current: null,
+            count: 0,
             total: 0,
             pages: 0,
             page: 0,
@@ -70,7 +71,7 @@ export const useProjectsStore = defineStore("projects", {
             }
         },
 
-        async fetchProject(id: number, parents?: boolean = false) {
+        async fetchProject(id: number, parents: boolean = false) {
             await client
                 .get(`/projects/${id}`)
                 .then(async (response) => {

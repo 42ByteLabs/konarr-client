@@ -18,8 +18,11 @@ const selectables = {
 const projects = useProjectsStore();
 
 onMounted(() => {
-    const squery = router.currentRoute.value.query.search;
-    const sselect = router.currentRoute.value.query.select;
+    const squeryParam = router.currentRoute.value.query.search;
+    const sselectParam = router.currentRoute.value.query.select;
+    
+    const squery = Array.isArray(squeryParam) ? squeryParam[0] : squeryParam;
+    const sselect = Array.isArray(sselectParam) ? sselectParam[0] : sselectParam;
 
     if (squery) {
         projects.searchProjects(squery);

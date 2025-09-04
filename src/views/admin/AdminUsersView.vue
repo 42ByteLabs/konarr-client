@@ -16,13 +16,13 @@ const server = useServerStore();
 const admin = useAdminStore();
 
 
-const updateState = (event, id) => {
-    let state = event.target.value;
+const updateState = (event: Event, id: number) => {
+    let state = (event.target as HTMLSelectElement).value;
     console.log(state, id);
-    admin.updateUser(id, null, state);
+    admin.updateUser(id, undefined, state);
 };
-const updateRole = (event, id) => {
-    let role = event.target.value;
+const updateRole = (event: Event, id: number) => {
+    let role = (event.target as HTMLSelectElement).value;
     admin.updateUser(id, role);
 };
 

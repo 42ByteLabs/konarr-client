@@ -5,21 +5,21 @@ import { mdiWhiteBalanceSunny, mdiWeatherNight } from "@mdi/js";
 import { Switch } from '@headlessui/vue'
 
 var darkMode = localStorage.getItem("dark-mode");
-const enabled = ref(darkMode === true);
+const enabled = ref(darkMode === "true");
 
 const toggle = () => {
     enabled.value = !enabled.value;
 
-    localStorage.setItem("dark-mode", enabled.value);
+    localStorage.setItem("dark-mode", enabled.value.toString());
     document.documentElement.className = enabled.value === true ? "dark" : "";
 }
 
 onMounted(() => {
-    let mode = localStorage.getItem("dark-mode");
+    let mode: string | boolean | null = localStorage.getItem("dark-mode");
     if (mode === null) {
         mode = window.matchMedia("(prefers-color-scheme: dark)").matches;
     }
-    enabled.value = mode;
+    enabled.value = mode === "true" || mode === true;
 });
 </script>
 <template>
