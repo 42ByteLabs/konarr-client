@@ -71,10 +71,10 @@ const onclick = () => {
   });
   admin.updateSetting(props.setting, "enabled");
 };
-// Removed unused hideData function
-// const hideData = () => {
-//   hidden.value = !hidden.value;
-// };
+// Restore function to toggle visibility with a different name
+const toggleHidden = () => {
+  hidden.value = !hidden.value;
+};
 const regenerate = () => {
   if (props.setting) {
     admin.updateSetting(props.setting, true);
@@ -163,7 +163,7 @@ onMounted(() => {
           <div class="grid grid-cols-12">
             <button
               class="col-span-2 sm:col-span-1 hover:text-blue-500 mr-4"
-              @click="hidedata"
+              @click="toggleHidden"
             >
               <svg-icon type="mdi" :path="mdiEyeOffOutline" />
             </button>
