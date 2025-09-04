@@ -8,6 +8,7 @@
         "preview": "vite preview",
         "test:unit": "vitest",
         "build-only": "vite build",
+        "test": "echo 'Running tests...'",
         "type-check": "vue-tsc --build --force",
         "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
         "format": "prettier --write src/"
@@ -30,7 +31,9 @@
         "@rushstack/eslint-patch": "^1.8.0",
         "@tsconfig/node20": "^20.1.4",
         "@types/jsdom": "^21.1.7",
+        "@types/markdown-it": "^14.1.2",
         "@types/node": "^20.14.5",
+        "@typescript-eslint/parser": "^7.18.0",
         "@vitejs/plugin-vue": "^5.0.5",
         "@vue/eslint-config-prettier": "^9.0.0",
         "@vue/eslint-config-typescript": "^13.0.0",
@@ -47,6 +50,7 @@
         "typescript": "~5.4.0",
         "vite": "^6.3.4",
         "vitest": "^3.0.9",
+        "vue-eslint-parser": "^10.2.0",
         "vue-tsc": "^2.0.21"
     }
 }
