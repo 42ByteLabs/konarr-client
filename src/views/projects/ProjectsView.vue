@@ -10,51 +10,67 @@ import Pagination from "@/components/Pagination.vue";
 import { useProjectsStore } from "@/stores/projects";
 
 const selectables = {
-    "servers": "Servers",
-    "containers": "Containers",
-    "groups": "Groups",
+  servers: "Servers",
+  containers: "Containers",
+  groups: "Groups",
 };
 
 const projects = useProjectsStore();
 
 onMounted(() => {
-    const squeryParam = router.currentRoute.value.query.search;
-    const sselectParam = router.currentRoute.value.query.select;
-    
-    const squery = Array.isArray(squeryParam) ? squeryParam[0] : squeryParam;
-    const sselect = Array.isArray(sselectParam) ? sselectParam[0] : sselectParam;
+  const squeryParam = router.currentRoute.value.query.search;
+  const sselectParam = router.currentRoute.value.query.select;
 
-    if (squery) {
-        projects.searchProjects(squery);
-    } else if (sselect && sselect === "") {
-        projects.fetchProjects(0, 24, true)
-    } else if (sselect && sselect !== "" && sselect !== "All") {
-        projects.fetchProjects(0, 24, false, sselect)
-    } else {
-        projects.fetchProjects(0, 24, true);
-    }
+  const squery = Array.isArray(squeryParam) ? squeryParam[0] : squeryParam;
+  const sselect = Array.isArray(sselectParam) ? sselectParam[0] : sselectParam;
+
+  if (squery) {
+    projects.searchProjects(squery);
+  } else if (sselect && sselect === "") {
+    projects.fetchProjects(0, 24, true);
+  } else if (sselect && sselect !== "" && sselect !== "All") {
+    projects.fetchProjects(0, 24, false, sselect);
+  } else {
+    projects.fetchProjects(0, 24, true);
+  }
 });
-
 </script>
 
 <template>
-    <main>
-        <div class="container mt-4 mb-6 w-full mx-auto px-2">
-            <Title title="Projects" description="List of Projects" />
+  <main>
+    <div class="container mt-4 mb-6 w-full mx-auto px-2">
+      <Title title="Projects" description="List of Projects" />
 
-            <Loading v-if="projects.loading" />
+      <Loading v-if="projects.loading" />
 
-            <div v-else class="w-full">
-                <Search searching="projects" placeholder="Find projects..." :total="projects.total" :limit="24"
-                    :selectables="selectables" :count="projects.data.length" />
+      <div v-else class="w-full">
+        <Search
+          searching="projects"
+          placeholder="Find projects..."
+          :total="projects.total"
+          :limit="24"
+          :selectables="selectables"
+          :count="projects.data.length"
+        />
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 my-12">
-                    <ProjectTile v-for="project in projects.data" :key="project.id" :project="project" />
-                </div>
-
-                <Pagination v-if="projects.pages !== 1" :page="projects.page" :pages="projects.pages"
-                    :next="projects.fetchNextPage" :prev="projects.fetchPrevPage" />
-            </div>
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 my-12"
+        >
+          <ProjectTile
+            v-for="project in projects.data"
+            :key="project.id"
+            :project="project"
+          />
         </div>
-    </main>
+
+        <Pagination
+          v-if="projects.pages !== 1"
+          :page="projects.page"
+          :pages="projects.pages"
+          :next="projects.fetchNextPage"
+          :prev="projects.fetchPrevPage"
+        />
+      </div>
+    </div>
+  </main>
 </template>
