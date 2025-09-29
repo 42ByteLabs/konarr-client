@@ -20,7 +20,7 @@
         "@kyvg/vue3-notification": "^3.4",
         "@mdi/js": "^7.4",
         "ag-charts-vue3": "^11.0",
-        "axios": "^1.7",
+        "axios": "^1.12",
         "dompurify": "^3.1",
         "markdown-it": "^14.1",
         "pinia": "^2.1",
