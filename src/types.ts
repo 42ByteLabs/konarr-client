@@ -121,9 +121,19 @@ export type KonarrSnapshots = Pagination<KonarrSnapshot>;
 
 export interface KonarrSnapshot {
   id: number;
-  created_at: string;
+  // Status of the snapshot processing
+  status: string | null;
+  // Error message if snapshot processing failed
+  error?: string | null;
+  // ISO 8601 timestamp
+  createdAt: string;
+  // ISO 8601 timestamp
+  updatedAt: string;
+  // Number of associated dependencies
   dependencies: number;
+  // Number of associated security alerts
   security: KonarrSecuritySummary;
+  // Metadata extracted from the SBOM
   metadata: KonarrSnapshotMetadata;
 }
 

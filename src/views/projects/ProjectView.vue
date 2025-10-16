@@ -21,6 +21,7 @@ import ProjectInfo from "@/components/ProjectInfo.vue";
 import ProjectTile from "@/components/ProjectTile.vue";
 import ProjectNav from "@/components/ProjectNav.vue";
 import SecuritySummary from "@/components/SecuritySummary.vue";
+import SbomUpload from "@/components/SbomUpload.vue";
 
 import { useProjectsStore } from "@/stores/projects";
 import { useServerStore } from "@/stores/server";
@@ -171,6 +172,16 @@ let container_sha = computed(() => {
             edit
           />
 
+          <!-- Snapshot Error Alert -->
+          <div
+            v-if="project.snapshot.status === 'Failed' && project.snapshot.error"
+            class="bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-200 px-4 py-3 rounded relative my-4"
+            role="alert"
+          >
+            <strong class="font-bold">Snapshot Processing Failed</strong>
+            <span class="block sm:inline ml-2">{{ project.snapshot.error }}</span>
+          </div>
+
           <SecuritySummary
             v-if="project.snapshot && project.security"
             :summary="project.security"
@@ -244,6 +255,11 @@ let container_sha = computed(() => {
             name="Snapshots Creation"
             :value="project.snapshot.created_at"
           />
+
+          <!-- SBOM Upload Component -->
+          <div class="mt-4">
+            <SbomUpload :project-id="project.id" />
+          </div>
 
           <!-- Edit and Delete Project Button -->
           <div class="mt-8">
