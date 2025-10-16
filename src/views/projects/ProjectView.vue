@@ -253,7 +253,7 @@ let container_sha = computed(() => {
           <ProjectInfo
             v-if="project.snapshot"
             name="Snapshots Creation"
-            :value="project.snapshot.created_at"
+            :value="project.snapshot.createdAt"
           />
 
           <!-- SBOM Upload Component -->
