@@ -23,7 +23,7 @@ export const useProjectsStore = defineStore("projects", {
       page: number = 0,
       limit: number = 24,
       top: boolean = true,
-      select?: string,
+      select?: string
     ) {
       this.page = page;
 
@@ -63,12 +63,26 @@ export const useProjectsStore = defineStore("projects", {
     },
 
     async getCurrentProject(id?: number) {
-      // Get ID from the URL
-      if (!id) {
-        this.current = parseInt(window.location.pathname.split("/").pop()!);
+      // Determine project id from argument or from the router's current route params
+      let projectId: number | undefined;
+      if (id !== undefined && id !== null) {
+        projectId = id;
       } else {
-        this.current = id;
+        // router.currentRoute is a reactive ref; read the params safely
+        const route = router.currentRoute && (router.currentRoute as any).value;
+        const raw =
+          route?.params?.id ??
+          route?.params?.project_id ??
+          route?.params?.projectId;
+        if (raw !== undefined) {
+          projectId = parseInt(String(raw));
+          if (Number.isNaN(projectId)) projectId = undefined;
+        }
       }
+
+      if (!projectId) return;
+
+      this.current = projectId;
 
       const result = this.data.find((project) => project.id === this.current);
       if (!result) {
@@ -105,24 +119,36 @@ export const useProjectsStore = defineStore("projects", {
       }
     },
 
-    async fetchParents() {
-      await client
-        .get("/projects?parents=true")
-        .then((response) => {
-          // Update `parents`
-          const index = this.data.findIndex((p) => p.id === this.current);
+    async fetchParents(): Promise<KonarrProject[] | undefined> {
+      try {
+        const response = await client.get("/projects?parents=true");
+        const index = this.data.findIndex((p) => p.id === this.current);
+        if (index !== -1) {
           this.data[index]["parents"] = response.data.data;
-        })
-        .catch((error) => {
-          handleErrors(error);
-        });
+        }
+        return response.data.data;
+      } catch (error) {
+        handleErrors(error);
+        return undefined;
+      }
+    },
+
+    // Fetch a global parents list (used by the New Project view)
+    async fetchParentsList(): Promise<any[]> {
+      try {
+        const response = await client.get("/projects?parents=true");
+        return response.data?.data || [];
+      } catch (error) {
+        handleErrors(error);
+        return [];
+      }
     },
 
     async create(
       name: string,
       type: string,
       description?: string,
-      parent?: number,
+      parent?: number
     ) {
       await client
         .post("/projects", { name, type, description, parent })
