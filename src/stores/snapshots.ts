@@ -89,7 +89,7 @@ export const useSnapshotsStore = defineStore("snapshots", {
           url: `/snapshots/${snapshotId}/bom`,
           data: await file.text(),
           headers: {
-            "Content-Type": "application/octet-stream",
+            "Content-Type": file.type || "application/octet-stream",
           },
         })
         .then((response) => {
