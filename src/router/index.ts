@@ -50,6 +50,22 @@ export const router = createRouter({
       name: "Project",
       component: ProjectView,
     },
+    // Project tab routes (route updates will keep the same ProjectView component)
+    {
+      path: "/projects/:id/security",
+      name: "Project Security",
+      component: ProjectView,
+    },
+    {
+      path: "/projects/:id/dependencies",
+      name: "Project Dependencies",
+      component: ProjectView,
+    },
+    {
+      path: "/projects/:id/setup",
+      name: "Project Setup",
+      component: ProjectView,
+    },
     {
       path: "/projects/:project_id/dependencies/:dep_id",
       name: "Project Dependency",

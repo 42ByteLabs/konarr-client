@@ -16,7 +16,7 @@ const create = async () => {
     title.value,
     type.value,
     description.value,
-    parent.value,
+    parent.value
   );
 };
 
@@ -38,7 +38,9 @@ onMounted(async () => {
       <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
         <form>
           <div class="flex items-center justify-between mb-4">
-            <h2 class="text-lg font-semibold text-gray-800 dark:text-white">New Project</h2>
+            <h2 class="text-lg font-semibold text-gray-800 dark:text-white">
+              New Project
+            </h2>
             <div class="flex gap-2">
               <button
                 type="button"
@@ -59,7 +61,10 @@ onMounted(async () => {
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="md:col-span-2">
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Project Title <span class="text-red-500">*</span></label>
+              <label
+                class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2"
+                >Project Title <span class="text-red-500">*</span></label
+              >
               <input
                 id="title"
                 v-model="title"
@@ -71,7 +76,10 @@ onMounted(async () => {
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Project Type</label>
+              <label
+                class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2"
+                >Project Type</label
+              >
               <select
                 id="type"
                 v-model="type"
@@ -86,7 +94,10 @@ onMounted(async () => {
           </div>
 
           <div class="mt-4">
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Project Description</label>
+            <label
+              class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2"
+              >Project Description</label
+            >
             <textarea
               id="description"
               v-model="description"
@@ -97,7 +108,10 @@ onMounted(async () => {
           </div>
 
           <div class="mt-4">
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Parent Project</label>
+            <label
+              class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2"
+              >Parent Project</label
+            >
             <select
               id="parent"
               v-model.number="parent"
@@ -105,7 +119,9 @@ onMounted(async () => {
               class="block w-full rounded-md border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 px-3 py-2"
             >
               <option :value="0">None</option>
-              <option v-for="p in parents" :key="p.id" :value="p.id">{{ p.name }}</option>
+              <option v-for="p in parents" :key="p.id" :value="p.id">
+                {{ p.name }}
+              </option>
             </select>
           </div>
         </form>

@@ -15,16 +15,19 @@ const md = new MarkdownIt();
 import type { KonarrProject } from "@/types";
 
 import Title from "@/components/Title.vue";
-import DependenciesList from "@/components/DependenciesList.vue";
 import ProjectIcon from "@/components/ProjectIcon.vue";
 import ProjectInfo from "@/components/ProjectInfo.vue";
 import ProjectTile from "@/components/ProjectTile.vue";
 import ProjectNav from "@/components/ProjectNav.vue";
-import SecuritySummary from "@/components/SecuritySummary.vue";
+import ProjectSummary from "@/views/projects/ProjectSummary.vue";
+import ProjectSecurity from "@/views/projects/ProjectSecurity.vue";
+import ProjectDependencies from "@/views/projects/ProjectDependencies.vue";
+import ProjectSetup from "@/views/projects/ProjectSetup.vue";
 import SbomUpload from "@/components/SbomUpload.vue";
 
 import { useProjectsStore } from "@/stores/projects";
 import { useServerStore } from "@/stores/server";
+import { useRoute } from "vue-router";
 
 const props = defineProps<{
   id?: number;
@@ -54,6 +57,29 @@ const description = computed(() => {
   return DOMPurify.sanitize(result);
 });
 
+const route = useRoute();
+
+// derive active tab from route path (e.g., /projects/:id/security)
+const activeTab = computed(() => {
+  if (route.path.includes("/security")) return "security";
+  if (route.path.includes("/dependencies")) return "dependencies";
+  if (route.path.includes("/setup")) return "setup";
+  return "summary";
+});
+
+const subviewComponent = computed(() => {
+  switch (activeTab.value) {
+    case "summary":
+      return ProjectSummary;
+    case "dependencies":
+      return ProjectDependencies;
+    case "setup":
+      return ProjectSetup;
+    default:
+      return ProjectSecurity;
+  }
+});
+
 let container_sha = computed(() => {
   // Truncate the container sha to 12 characters
   if (
@@ -62,7 +88,7 @@ let container_sha = computed(() => {
   ) {
     var sha = project.value.snapshot.metadata["container.sha"].replace(
       "sha256:",
-      "",
+      ""
     );
     return sha.substring(0, 12);
   } else {
@@ -167,35 +193,21 @@ let container_sha = computed(() => {
         >
           <ProjectNav
             :id="project.id"
+            :project="project"
             :title="title"
             :parent="project.parent"
             edit
+            :active="activeTab"
           />
 
-          <!-- Snapshot Error Alert -->
-          <div
-            v-if="project.snapshot.status === 'Failed' && project.snapshot.error"
-            class="bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-200 px-4 py-3 rounded relative my-4"
-            role="alert"
-          >
-            <strong class="font-bold">Snapshot Processing Failed</strong>
-            <span class="block sm:inline ml-2">{{ project.snapshot.error }}</span>
+          <div class="mt-4">
+            <!-- pass the project id explicitly to subviews that expect it -->
+            <component
+              :is="subviewComponent"
+              :project="project"
+              :id="project.id"
+            />
           </div>
-
-          <SecuritySummary
-            v-if="project.snapshot && project.security"
-            :summary="project.security"
-            :snapshot="project.snapshot.id"
-          />
-
-          <hr v-if="project.snapshot" class="my-6 bg-gray-400" />
-
-          <DependenciesList
-            v-if="project.type === 'Container' && project.snapshot.dependencies"
-            :snapid="project.snapshot.id"
-            :projectid="project.id"
-            :total="project.snapshot.dependencies"
-          />
 
           <div v-if="project.children">
             <h2 class="text-2xl font-bold text-center my-6 dark:text-white">
