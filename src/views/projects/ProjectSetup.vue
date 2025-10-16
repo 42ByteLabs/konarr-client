@@ -37,7 +37,7 @@ const dockerCmd = computed(() => {
     `  -e "${instanceToken.value}" \\`,
     `  -e "${pid}" \\`,
     '  -v "/var/run/docker.sock:/var/run/docker.sock:ro" \\',
-    "  ghrc.io/42bytelabs/konarr-agent:latest",
+    "  ghcr.io/42bytelabs/konarr-agent:latest",
   ];
   return lines.join("\n");
 });
@@ -57,7 +57,7 @@ const k8sManifest = computed(() => {
     "    spec:",
     "      containers:",
     "        - name: konarr-agent",
-    "          image: ghrc.io/42bytelabs/konarr-agent:latest",
+    "          image: ghcr.io/42bytelabs/konarr-agent:latest",
     "          env:",
     "            - name: KONARR_INSTANCE",
     `              value: "${instance}"`,
