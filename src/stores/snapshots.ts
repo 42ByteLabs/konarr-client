@@ -47,8 +47,32 @@ export const useSnapshotsStore = defineStore("snapshots", {
       this.loading = true;
       let snapshotId = null;
 
-      // TODO: file validation
+      // File validation
+      const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+      const allowedMimeTypes = [
+        "application/json",
+        "application/xml",
+        "text/xml",
+        "text/json"
+      ];
+      const allowedExtensions = [".json", ".xml"];
 
+      // Check file size
+      if (file.size > MAX_FILE_SIZE) {
+        this.loading = false;
+        throw new Error("File size exceeds the 5MB limit.");
+      }
+
+      // Check MIME type
+      const fileTypeValid = allowedMimeTypes.includes(file.type);
+      // Check extension
+      const fileName = file.name.toLowerCase();
+      const fileExtensionValid = allowedExtensions.some(ext => fileName.endsWith(ext));
+
+      if (!fileTypeValid && !fileExtensionValid) {
+        this.loading = false;
+        throw new Error("Invalid file type. Only .json and .xml files are allowed.");
+      }
       if (this.snapshot && this.snapshot.status === "Failed") {
         snapshotId = this.snapshot.id;
       } else {
