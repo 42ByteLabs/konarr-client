@@ -1,124 +1,115 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import Title from "@/components/Title.vue";
 import { useProjectsStore } from "@/stores/projects";
+import type { KonarrProject } from "@/types";
 
 const projects = useProjectsStore();
 
 const title = ref("");
 const description = ref("");
-const type = ref(0);
+const type = ref("Server");
 const parent = ref(0);
+const parents = ref<KonarrProject[]>([]);
 
 const create = async () => {
   await projects.create(
     title.value,
-    type.value.toString(),
+    type.value,
     description.value,
     parent.value,
   );
 };
 
-onMounted(() => {
+const cancel = () => {
+  // Go back to the projects list
+  window.history.back();
+};
+
+onMounted(async () => {
+  // Fetch projects and parents list via the store
   projects.fetchProjects(0, 24, false);
+  parents.value = await projects.fetchParentsList();
 });
 </script>
 
 <template>
   <main>
-    <div class="container mt-4 mb-6 w-full mx-auto">
-      <Title title="New Project" />
-    </div>
-    <div class="container mt-4 mb-6 w-full max-w-xl mx-auto">
-      <form>
-        <!-- Project Name -->
-        <div class="mb-4 grid grid-cols-6">
-          <div class="col-span-4">
-            <label
-              for="username"
-              class="block text-gray-700 dark:text-white text-sm font-bold mb-2"
-            >
-              <span class="text-red-500">*</span>
-              Project Title
-            </label>
-            <input
-              id="title"
-              v-model="title"
-              type="text"
-              name="title"
-              placeholder="Project title..."
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
+    <div class="container mt-6 mb-10 w-full max-w-2xl mx-auto">
+      <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
+        <form>
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-semibold text-gray-800 dark:text-white">New Project</h2>
+            <div class="flex gap-2">
+              <button
+                type="button"
+                class="px-4 py-2 rounded-md border border-gray-200 dark:border-gray-700 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700"
+                @click="cancel"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                class="inline-flex items-center gap-2 bg-accent-500 hover:bg-accent-600 text-white text-sm font-medium px-4 py-2 rounded-md"
+                @click="create"
+              >
+                Create
+              </button>
+            </div>
           </div>
-          <div class="col-span-2 pl-6">
-            <!-- Project Type -->
-            <label
-              for="type"
-              class="block text-gray-700 dark:text-white text-sm font-bold mb-2"
-            >
-              <span class="text-red-500">*</span>
-              Project Type
-            </label>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Project Title <span class="text-red-500">*</span></label>
+              <input
+                id="title"
+                v-model="title"
+                type="text"
+                name="title"
+                placeholder="Project title..."
+                class="block w-full rounded-md border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-300"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Project Type</label>
+              <select
+                id="type"
+                v-model="type"
+                name="type"
+                class="block w-full rounded-md border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 px-3 py-2"
+              >
+                <option value="Server">Server</option>
+                <option value="Group">Group</option>
+                <option value="Container">Container</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Project Description</label>
+            <textarea
+              id="description"
+              v-model="description"
+              name="description"
+              placeholder="Project description..."
+              class="block w-full rounded-md border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 px-3 py-2 h-40 resize-vertical"
+            ></textarea>
+          </div>
+
+          <div class="mt-4">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">Parent Project</label>
             <select
-              id="type"
-              v-model="type"
-              name="type"
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="parent"
+              v-model.number="parent"
+              name="parent"
+              class="block w-full rounded-md border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 px-3 py-2"
             >
-              <option value="Server" selected>Server</option>
-              <option value="Group">Group</option>
-              <option value="Container">Container</option>
+              <option :value="0">None</option>
+              <option v-for="p in parents" :key="p.id" :value="p.id">{{ p.name }}</option>
             </select>
           </div>
-        </div>
-        <!-- Project Description (optional) -->
-        <div class="mb-4">
-          <label
-            for="description"
-            class="block text-gray-700 dark:text-white text-sm font-bold mb-2"
-          >
-            Project Description
-          </label>
-          <textarea
-            id="description"
-            v-model="description"
-            name="description"
-            placeholder="Project description..."
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          >
-          </textarea>
-        </div>
-        <!-- Parent Project (optional) -->
-        <div class="mb-4">
-          <label
-            for="parent"
-            class="block text-gray-700 dark:text-white text-sm font-bold mb-2"
-          >
-            Parent Project
-          </label>
-          <select
-            id="parent"
-            v-model="parent"
-            name="parent"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          >
-            <option value="0">None</option>
-            <option v-for="p in projects.data" :key="p.id" :value="p.id">
-              {{ p.name }}
-            </option>
-          </select>
-        </div>
-        <!-- Create Project Button -->
-        <div class="grid grid-cols-6 mt-6">
-          <button
-            class="col-span-2 col-start-3 bg-accent-500 hover:bg-accent-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            type="button"
-            @click="create"
-          >
-            Create Project
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </main>
 </template>

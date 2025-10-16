@@ -23,7 +23,7 @@ export const useProjectsStore = defineStore("projects", {
       page: number = 0,
       limit: number = 24,
       top: boolean = true,
-      select?: string,
+      select?: string
     ) {
       this.page = page;
 
@@ -105,24 +105,37 @@ export const useProjectsStore = defineStore("projects", {
       }
     },
 
-    async fetchParents() {
+    async fetchParents(): Promise<KonarrProject[] | undefined> {
       await client
         .get("/projects?parents=true")
         .then((response) => {
           // Update `parents`
           const index = this.data.findIndex((p) => p.id === this.current);
           this.data[index]["parents"] = response.data.data;
+          return response.data.data;
         })
         .catch((error) => {
           handleErrors(error);
+          return undefined;
         });
+    },
+
+    // Fetch a global parents list (used by the New Project view)
+    async fetchParentsList(): Promise<any[]> {
+      try {
+        const response = await client.get("/projects?parents=true");
+        return response.data?.data || [];
+      } catch (error) {
+        handleErrors(error);
+        return [];
+      }
     },
 
     async create(
       name: string,
       type: string,
       description?: string,
-      parent?: number,
+      parent?: number
     ) {
       await client
         .post("/projects", { name, type, description, parent })
