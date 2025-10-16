@@ -42,7 +42,7 @@ const dependencyCount = computed(() => {
 
 <template>
   <div class="space-y-6">
-    <div class>
+    <div>
       <h2 class="text-4xl mt-2 text-center">
         {{ project.title }}
       </h2>
