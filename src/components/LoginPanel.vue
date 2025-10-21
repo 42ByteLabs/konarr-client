@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { router } from "@/router";
 import { useServerStore } from "@/stores/server";
+import { primaryButton } from "@/utils/buttonClasses";
 
 const server = useServerStore();
 
@@ -54,11 +55,7 @@ const login = async () => {
       </div>
       <!-- Make center -->
       <div class="flex items-center justify-between">
-        <button
-          class="bg-accent-500 hover:bg-accent-600 text-white font-bold py-2 px-8 rounded focus:outline-none focus:shadow-outline"
-          type="button"
-          @click="login"
-        >
+        <button :class="primaryButton() + ' px-8'" type="button" @click="login">
           Sign In
         </button>
       </div>

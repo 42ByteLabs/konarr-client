@@ -34,12 +34,15 @@ const handleUpload = async () => {
     await snapshots.uploadSbom(props.projectId, selectedFile.value);
     selectedFile.value = null;
     // Reset file input
-    const fileInput = document.getElementById("sbom-file-input") as HTMLInputElement;
+    const fileInput = document.getElementById(
+      "sbom-file-input",
+    ) as HTMLInputElement;
     if (fileInput) {
       fileInput.value = "";
     }
   } catch (error) {
-    uploadError.value = error instanceof Error ? error.message : "Failed to upload SBOM";
+    uploadError.value =
+      error instanceof Error ? error.message : "Failed to upload SBOM";
   } finally {
     uploading.value = false;
   }
@@ -73,8 +76,15 @@ const triggerFileInput = () => {
         class="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-700 rounded"
       >
         <div class="flex items-center space-x-2">
-          <svg-icon type="mdi" :path="mdiFileDocument" :size="24" class="text-blue-500" />
-          <span class="text-sm dark:text-white truncate">{{ selectedFile.name }}</span>
+          <svg-icon
+            type="mdi"
+            :path="mdiFileDocument"
+            :size="24"
+            class="text-blue-500"
+          />
+          <span class="text-sm dark:text-white truncate">{{
+            selectedFile.name
+          }}</span>
         </div>
         <button
           class="text-red-500 hover:text-red-700 text-sm"
@@ -99,7 +109,12 @@ const triggerFileInput = () => {
           :disabled="uploading"
           @click="triggerFileInput"
         >
-          <svg-icon type="mdi" :path="mdiFileDocument" :size="20" class="mr-2" />
+          <svg-icon
+            type="mdi"
+            :path="mdiFileDocument"
+            :size="20"
+            class="mr-2"
+          />
           {{ selectedFile ? "Change File" : "Select SBOM File" }}
         </button>
 

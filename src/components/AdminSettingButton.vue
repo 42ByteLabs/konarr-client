@@ -15,6 +15,7 @@ const props = defineProps<{
 const current = computed(() => {
   return router.currentRoute.value.name == props.link;
 });
+import { primaryButton, neutralButton } from "@/utils/buttonClasses";
 </script>
 
 <template>
@@ -23,9 +24,7 @@ const current = computed(() => {
       v-if="!props.disabled"
       :to="{ name: props.link }"
       :class="[
-        current
-          ? 'bg-accent-500 hover:bg-accent-600'
-          : 'bg-gray-100 dark:bg-gray-700 hover:bg-accent-400 hover:dark:bg-accent-600',
+        current ? primaryButton() : neutralButton(),
         'flex items-left justify-between w-full p-2 rounded-lg mt-2 sm:mt-4 pl-6',
       ]"
     >
@@ -51,7 +50,10 @@ const current = computed(() => {
     <button
       v-else
       disabled
-      class="flex items-left justify-between w-full p-2 rounded-lg mt-4 pl-6 bg-gray-100 hover:bg-accent-200"
+      :class="
+        'flex items-left justify-between w-full p-2 rounded-lg mt-4 pl-6 ' +
+        neutralButton()
+      "
     >
       <span
         :class="[current ? 'text-gray-500' : 'text-gray-700']"

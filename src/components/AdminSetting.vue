@@ -9,6 +9,7 @@ import {
 } from "@mdi/js";
 import { Switch } from "@headlessui/vue";
 import { useNotification } from "@kyvg/vue3-notification";
+import { primaryButton } from "@/utils/buttonClasses";
 
 const { notify } = useNotification();
 
@@ -122,10 +123,9 @@ onMounted(() => {
       <div v-else-if="props.button" class="col-span-2 sm:col-span-1">
         <div class="flex items-center justify-center">
           <button
-            class="bg-accent-500 hover:bg-accent-700 text-white font-bold py-1 px-3 rounded"
+            :class="primaryButton() + ' py-1 px-3 rounded'"
             @click="props.button ? onclick : undefined"
           >
-            >
             <svg-icon type="mdi" :path="mdiRadioboxBlank" class="h-4 w-4" />
           </button>
         </div>
