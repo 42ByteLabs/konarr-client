@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onMounted, watch } from "vue";
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiGraph } from "@mdi/js";
 
 import { useDependenciesStore } from "@/stores/dependencies";
+import { router } from "@/router";
 import DependencyIcon from "@/components/DependencyIcon.vue";
 import Loading from "@/components/Loading.vue";
 import Search from "@/components/Search.vue";
@@ -21,8 +22,41 @@ const dependencies = useDependenciesStore();
 onMounted(() => {
   dependencies.setSnapshot(props.snapid);
   // Fetch dependencies
-  dependencies.fetchDependencies(0, props.limit || 10);
+  // Read page from URL (1-based in query) and convert to zero-based
+  const qpageParam = router.currentRoute.value.query.page;
+  let qpageStr = "1";
+  if (Array.isArray(qpageParam)) qpageStr = qpageParam[0] || "1";
+  else if (qpageParam) qpageStr = qpageParam as string;
+  const qpage = parseInt(qpageStr) - 1;
+  const page = isNaN(qpage) || qpage < 0 ? 0 : qpage;
+  dependencies.fetchDependencies(page, props.limit || 10);
 });
+
+// When the store's page changes, update the URL so the page is preserved
+watch(
+  () => dependencies.page,
+  (newPage) => {
+    // Keep other existing query params (like select/search)
+    const currentQuery = {
+      ...(router.currentRoute.value.query as Record<string, any>),
+    };
+    if (newPage === 0) {
+      // Remove page param for first page
+      delete currentQuery.page;
+    } else {
+      // Use 1-based page in the URL
+      currentQuery.page = String(newPage + 1);
+    }
+    // Use replace so we don't add a new history entry and explicitly keep
+    // the current route name/params — this ensures only the `page` query
+    // parameter is updated in-place.
+    router.replace({
+      name: router.currentRoute.value.name as any,
+      params: router.currentRoute.value.params,
+      query: currentQuery,
+    });
+  }
+);
 </script>
 
 <template>
