@@ -19,7 +19,7 @@ export default defineConfig(({ mode }) => {
   // Use localhost in development, and '/api' in production. This replacement
   // is applied at build time so it's safe to stringify here.
   const defaultServerBase =
-    mode === "development" ? "http://localhost:8000" : "/api";
+    mode === "development" ? "http://localhost:8000/api" : "/api";
 
   return {
     ...viteBaseConfig,

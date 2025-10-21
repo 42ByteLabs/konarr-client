@@ -6,6 +6,7 @@ import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiLanguageMarkdown, mdiContentSave } from "@mdi/js";
 
 import ProjectNav from "@/components/ProjectNav.vue";
+import { primaryButton, outlineButton } from "@/utils/buttonClasses";
 import { useProjectsStore } from "@/stores/projects";
 
 const projects = useProjectsStore();
@@ -82,18 +83,10 @@ onMounted(() => {
               Edit Project
             </h2>
             <div class="flex gap-2">
-              <button
-                type="button"
-                @click="cancel"
-                class="px-4 py-2 rounded-md border border-gray-200 dark:border-gray-700 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700"
-              >
+              <button type="button" :class="outlineButton()" @click="cancel">
                 Cancel
               </button>
-              <button
-                type="button"
-                @click="update"
-                class="inline-flex items-center gap-2 bg-accent-500 hover:bg-accent-600 text-white text-sm font-medium px-4 py-2 rounded-md"
-              >
+              <button type="button" :class="primaryButton()" @click="update">
                 <svg-icon type="mdi" :path="mdiContentSave" />
                 Save
               </button>

@@ -2,6 +2,7 @@
 import { ref, onMounted } from "vue";
 import { useProjectsStore } from "@/stores/projects";
 import type { KonarrProject } from "@/types";
+import { primaryButton, outlineButton } from "@/utils/buttonClasses";
 
 const projects = useProjectsStore();
 
@@ -25,6 +26,8 @@ const cancel = () => {
   window.history.back();
 };
 
+// use button helper functions directly in the template (call with ())
+
 onMounted(async () => {
   // Fetch projects and parents list via the store
   projects.fetchProjects(0, 24, false);
@@ -42,18 +45,10 @@ onMounted(async () => {
               New Project
             </h2>
             <div class="flex gap-2">
-              <button
-                type="button"
-                class="px-4 py-2 rounded-md border border-gray-200 dark:border-gray-700 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700"
-                @click="cancel"
-              >
+              <button type="button" :class="outlineButton()" @click="cancel">
                 Cancel
               </button>
-              <button
-                type="button"
-                class="inline-flex items-center gap-2 bg-accent-500 hover:bg-accent-600 text-white text-sm font-medium px-4 py-2 rounded-md"
-                @click="create"
-              >
+              <button type="button" :class="primaryButton()" @click="create">
                 Create
               </button>
             </div>
