@@ -16,6 +16,8 @@ import DependencyView from "@/views/dependencies/DependencyView.vue";
 // Security Views
 import SecurityView from "@/views/SecurityView.vue";
 import SecurityAlertView from "@/views/SecurityAlertView.vue";
+// User views
+import UserProfileView from "@/views/users/UserProfile.vue";
 // Admin Views
 import AdminView from "@/views/admin/AdminView.vue";
 import AdminUsersView from "@/views/admin/AdminUsersView.vue";
@@ -120,6 +122,11 @@ export const router = createRouter({
       path: "/admin/agents",
       name: "Admin Agents",
       component: AdminAgentsView,
+    },
+    {
+      path: "/profile",
+      name: "Profile",
+      component: UserProfileView,
     },
   ],
 });

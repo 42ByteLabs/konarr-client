@@ -59,6 +59,14 @@ export interface KonarrAdminUser {
   createdAt: string;
 }
 
+export interface SessionSummary {
+  id: number;
+  token: string;
+  createdAt: string;
+  lastAccessed: string;
+  state: string;
+}
+
 export interface KonarrProjectsSummary {
   total: number;
   containers: number;
