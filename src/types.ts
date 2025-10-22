@@ -24,6 +24,11 @@ export interface KonarrAdmin {
   project_stats: KonarrAdminProjectStats;
   users: KonarrAdminUser[];
   userStats: KonarrAdminUserStats;
+  // Pagination state for users list
+  page?: number;
+  pages?: number;
+  limit?: number;
+  total?: number;
 }
 
 export interface KonarrAdminUserStats {

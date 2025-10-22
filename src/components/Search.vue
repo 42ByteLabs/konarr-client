@@ -7,9 +7,11 @@ import { mdiTextSearchVariant } from "@mdi/js";
 
 import { useProjectsStore } from "@/stores/projects";
 import { useDependenciesStore } from "@/stores/dependencies";
+import { useAdminStore } from "@/stores/admin";
 
 const projects = useProjectsStore();
 const dependencies = useDependenciesStore();
+const admin = useAdminStore();
 
 const props = defineProps<{
   searching: string;
@@ -40,6 +42,7 @@ const search = (value: string) => {
     }
     count.value = projects.count;
     total.value = projects.total;
+
     // Search for dependencies
   } else if (props.searching === "dependencies") {
     if (value === "") {
@@ -53,6 +56,18 @@ const search = (value: string) => {
     }
     count.value = dependencies.count || 0;
     total.value = dependencies.total || 0;
+
+    // Search for users (admin store)
+  } else if (props.searching === "users") {
+    if (value === "") {
+      router.push({ query: {} });
+      admin.getUsers({ page: 0, limit: props.limit || 10 });
+    } else {
+      router.push({ query: { search: value } });
+      admin.getUsers({ page: 0, limit: props.limit || 10, search: value });
+    }
+    count.value = admin.userStats?.active || 0;
+    total.value = admin.userStats?.total || 0;
   } else {
     console.error("Unknown searching type: " + props.searching);
   }
@@ -88,7 +103,7 @@ const select = (value: Event) => {
         0,
         props.limit || 10,
         false,
-        selected.value,
+        selected.value
       );
     }
   }
@@ -120,7 +135,7 @@ onMounted(() => {
         type="mdi"
         :path="mdiTextSearchVariant"
         class="w-6 h-6 text-gray-500 dark:text-gray-200"
-      ></svg-icon>
+      />
     </div>
     <div
       class="col-span-1 mb-2 justify-center items-center dark:text-white text-center hidden sm:block"

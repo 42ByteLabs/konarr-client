@@ -86,6 +86,33 @@ const onselect = (data: any) => {
     admin.updateSetting(props.setting, data);
   }
 };
+
+// Input editing for editable settings
+const inputValue = ref<string | number | null>(null);
+const validateUrl = (val: string) => {
+  try {
+    const u = new URL(val);
+    return u.protocol === "http:" || u.protocol === "https:";
+  } catch (e) {
+    return false;
+  }
+};
+const saveInput = () => {
+  if (!props.setting) {
+    console.error("No setting key provided");
+    return;
+  }
+  const val = inputValue.value ?? "";
+  // If this looks like a server URL setting, validate it
+  if (props.setting === "server.url") {
+    if (!validateUrl(String(val))) {
+      notify({ type: "error", text: "Invalid URL provided" });
+      return;
+    }
+  }
+  admin.updateSetting(props.setting, val);
+  notify({ type: "success", text: "Setting updated successfully" });
+};
 const toggle_help = () => {
   description_help.value = !description_help.value;
 };
@@ -95,6 +122,10 @@ onMounted(() => {
     enabled.value = true;
   } else {
     enabled.value = false;
+  }
+  // initialize editable input value
+  if (props.editable) {
+    inputValue.value = props.data ?? "";
   }
 });
 </script>
@@ -175,6 +206,17 @@ onMounted(() => {
           </div>
         </div>
       </div>
+      <div v-else-if="props.editable" class="col-span-12 md:col-span-5 mt-2">
+        <input
+          v-model="inputValue"
+          type="text"
+          :placeholder="props.data || ''"
+          class="bg-gray-200 dark:bg-gray-500 block w-full pl-3 pr-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-1 focus:ring-accent-500 focus:border-accent-500 sm:text-sm rounded-md"
+          @blur="saveInput"
+          @keyup.enter="saveInput"
+        />
+      </div>
+
       <div v-else-if="props.select" class="col-span-12 md:col-span-5 mt-2">
         <select
           class="bg-gray-200 dark:bg-gray-500 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-1 focus:ring-accent-500 focus:border-accent-500 sm:text-sm rounded-md"
