@@ -23,7 +23,7 @@ export const useProjectsStore = defineStore("projects", {
       page: number = 0,
       limit: number = 24,
       top: boolean = true,
-      select?: string
+      select?: string,
     ) {
       this.page = page;
 
@@ -148,7 +148,7 @@ export const useProjectsStore = defineStore("projects", {
       name: string,
       type: string,
       description?: string,
-      parent?: number
+      parent?: number,
     ) {
       await client
         .post("/projects", { name, type, description, parent })
