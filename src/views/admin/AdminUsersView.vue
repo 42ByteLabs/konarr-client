@@ -6,6 +6,8 @@ import Title from "@/components/Title.vue";
 import Loading from "@/components/Loading.vue";
 import AdminSettingMenu from "@/components/AdminSettingMenu.vue";
 import AdminSetting from "@/components/AdminSetting.vue";
+import Search from "@/components/Search.vue";
+import Pagination from "@/components/Pagination.vue";
 
 import { useAdminStore } from "@/stores/admin";
 
@@ -21,8 +23,29 @@ const updateRole = (event: Event, id: number) => {
   admin.updateUser(id, role);
 };
 
+// search is handled by the Search component which calls admin.getUsers
+
+const nextPage = () => {
+  if ((admin.page || 0) < (admin.pages || 0)) {
+    admin.getUsers({
+      page: (admin.page || 0) + 1,
+      limit: admin.limit || 24,
+    });
+  }
+};
+
+const prevPage = () => {
+  if ((admin.page || 0) > 0) {
+    admin.getUsers({
+      page: (admin.page || 0) - 1,
+      limit: admin.limit || 24,
+    });
+  }
+};
+
 onMounted(() => {
   admin.fetchInfo();
+  admin.getUsers({ page: 0, limit: 10 });
 });
 </script>
 
@@ -45,9 +68,6 @@ onMounted(() => {
           v-if="!admin.loading"
           class="col-span-6 md:col-span-4 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4 pt-6"
         >
-          <h3 class="text-lg font-semibold my-4 text-center">
-            User Summary Information
-          </h3>
           <div class="grid grid-cols-3 text-center">
             <div class="">
               <span>Total</span>
@@ -71,7 +91,52 @@ onMounted(() => {
 
           <hr class="my-6 border-gray-300" />
 
+          <div class="mb-4">
+            <h3 class="text-lg font-semibold my-4 text-center">
+              Session Timeouts
+            </h3>
+            <div class="space-y-2">
+              <AdminSetting
+                title="Admin Sessions"
+                description="Session expiration for admin users"
+                :select="[
+                  { value: '1', label: '1 hour' },
+                  { value: '8', label: '8 hours' },
+                  { value: '24', label: '24 hours' },
+                  { value: '720', label: '30 days' },
+                  { value: '2160', label: '90 days' },
+                ]"
+                :data="admin.settings['sessions.admins.expires']"
+                setting="sessions.admins.expires"
+              />
+
+              <AdminSetting
+                title="User Sessions"
+                description="Session expiration for normal users"
+                :select="[
+                  { value: '1', label: '1 hour' },
+                  { value: '8', label: '8 hours' },
+                  { value: '24', label: '24 hours' },
+                  { value: '720', label: '30 days' },
+                  { value: '2160', label: '90 days' },
+                ]"
+                :data="admin.settings['sessions.users.expires']"
+                setting="sessions.users.expires"
+              />
+            </div>
+          </div>
+
+          <hr class="my-6 border-gray-300" />
+
           <h4 class="text-lg font-semibold ml-4 text-center">System Users</h4>
+
+          <Search
+            searching="users"
+            :placeholder="'Search users by username'"
+            :limit="admin.limit || 24"
+            :count="admin.userStats.active"
+            :total="admin.userStats.total"
+          />
 
           <table class="min-w-full table-auto mt-4">
             <thead>
@@ -141,42 +206,12 @@ onMounted(() => {
             </tbody>
           </table>
 
-          <hr class="my-6 border-gray-300" />
-
-          <div class="mb-4">
-            <h3 class="text-lg font-semibold my-4 text-center">
-              Session Timeouts
-            </h3>
-            <div class="space-y-2">
-              <AdminSetting
-                title="Admin Sessions"
-                description="Session expiration for admin users"
-                :select="[
-                  { value: '1', label: '1 hour' },
-                  { value: '8', label: '8 hours' },
-                  { value: '24', label: '24 hours' },
-                  { value: '720', label: '30 days' },
-                  { value: '2160', label: '90 days' },
-                ]"
-                :data="admin.settings['sessions.admins.expires']"
-                setting="sessions.admins.expires"
-              />
-
-              <AdminSetting
-                title="User Sessions"
-                description="Session expiration for normal users"
-                :select="[
-                  { value: '1', label: '1 hour' },
-                  { value: '8', label: '8 hours' },
-                  { value: '24', label: '24 hours' },
-                  { value: '720', label: '30 days' },
-                  { value: '2160', label: '90 days' },
-                ]"
-                :data="admin.settings['sessions.users.expires']"
-                setting="sessions.users.expires"
-              />
-            </div>
-          </div>
+          <Pagination
+            :page="admin.page || 0"
+            :pages="admin.pages || 0"
+            :prev="prevPage"
+            :next="nextPage"
+          />
         </div>
         <Loading v-else />
       </div>

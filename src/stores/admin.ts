@@ -25,6 +25,11 @@ export const useAdminStore = defineStore("admin", {
         active: 0,
         inactive: 0,
       },
+      // pagination for users
+      page: 0,
+      pages: 0,
+      limit: 24,
+      total: 0,
     }) as KonarrAdmin,
 
   actions: {
@@ -66,11 +71,34 @@ export const useAdminStore = defineStore("admin", {
         });
     },
 
-    async getUsers() {
+    async getUsers(params?: {
+      page?: number;
+      limit?: number;
+      search?: string;
+    }) {
+      // Build query params
+      const query: { [key: string]: any } = {};
+      if (params) {
+        if (params.page !== undefined) query.page = params.page;
+        if (params.limit !== undefined) query.limit = params.limit;
+        if (params.search !== undefined && params.search !== "")
+          query.search = params.search;
+      }
+
       await client
-        .get("/admin/users")
+        .get("/admin/users", { params: query })
         .then((response) => {
-          this.users = response.data.users;
+          // Expecting an object with users list and pagination/stats
+          if (response.data.users) this.users = response.data.users;
+          if (response.data.userStats) this.userStats = response.data.userStats;
+          // Optional pagination fields from server
+          if (response.data.page !== undefined) this.page = response.data.page;
+          if (response.data.pages !== undefined)
+            this.pages = response.data.pages;
+          if (response.data.limit !== undefined)
+            this.limit = response.data.limit;
+          if (response.data.total !== undefined)
+            this.total = response.data.total;
         })
         .catch((error) => {
           handleErrors(error);

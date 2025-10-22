@@ -53,7 +53,7 @@ export const useSnapshotsStore = defineStore("snapshots", {
         "application/json",
         "application/xml",
         "text/xml",
-        "text/json"
+        "text/json",
       ];
       const allowedExtensions = [".json", ".xml"];
 
@@ -67,11 +67,15 @@ export const useSnapshotsStore = defineStore("snapshots", {
       const fileTypeValid = allowedMimeTypes.includes(file.type);
       // Check extension
       const fileName = file.name.toLowerCase();
-      const fileExtensionValid = allowedExtensions.some(ext => fileName.endsWith(ext));
+      const fileExtensionValid = allowedExtensions.some((ext) =>
+        fileName.endsWith(ext),
+      );
 
       if (!fileTypeValid && !fileExtensionValid) {
         this.loading = false;
-        throw new Error("Invalid file type. Only .json and .xml files are allowed.");
+        throw new Error(
+          "Invalid file type. Only .json and .xml files are allowed.",
+        );
       }
       if (this.snapshot && this.snapshot.status === "Failed") {
         snapshotId = this.snapshot.id;
