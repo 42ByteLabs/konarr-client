@@ -45,6 +45,33 @@ onMounted(() => {
             toggle
           />
 
+          <div class="my-6">
+            <h3 class="text-lg font-semibold my-4 text-center">
+              Server Configuration
+            </h3>
+            <div class="space-y-2">
+              <AdminSetting
+                title="Server URL"
+                description="Select the base URL that the frontend should use to contact the server."
+                :data="admin.settings['server.url']"
+                setting="server.url"
+                editable
+              />
+
+              <AdminSetting
+                title="Server Data Path"
+                description="Readonly path where server stores data"
+                :data="admin.settings['server.data']"
+              />
+
+              <AdminSetting
+                title="Server Frontend Path"
+                description="Readonly path to the frontend build on the server"
+                :data="admin.settings['server.frontend.path']"
+              />
+            </div>
+          </div>
+
           <hr class="my-6 border-gray-300" />
 
           <AdminSetting title="Server Version" :data="server.version" />

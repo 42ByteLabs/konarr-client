@@ -5,6 +5,7 @@ import { mdiServer } from "@mdi/js";
 import Title from "@/components/Title.vue";
 import Loading from "@/components/Loading.vue";
 import AdminSettingMenu from "@/components/AdminSettingMenu.vue";
+import AdminSetting from "@/components/AdminSetting.vue";
 
 import { useAdminStore } from "@/stores/admin";
 
@@ -139,6 +140,43 @@ onMounted(() => {
               </tr>
             </tbody>
           </table>
+
+          <hr class="my-6 border-gray-300" />
+
+          <div class="mb-4">
+            <h3 class="text-lg font-semibold my-4 text-center">
+              Session Timeouts
+            </h3>
+            <div class="space-y-2">
+              <AdminSetting
+                title="Admin Sessions"
+                description="Session expiration for admin users"
+                :select="[
+                  { value: '1', label: '1 hour' },
+                  { value: '8', label: '8 hours' },
+                  { value: '24', label: '24 hours' },
+                  { value: '720', label: '30 days' },
+                  { value: '2160', label: '90 days' },
+                ]"
+                :data="admin.settings['sessions.admins.expires']"
+                setting="sessions.admins.expires"
+              />
+
+              <AdminSetting
+                title="User Sessions"
+                description="Session expiration for normal users"
+                :select="[
+                  { value: '1', label: '1 hour' },
+                  { value: '8', label: '8 hours' },
+                  { value: '24', label: '24 hours' },
+                  { value: '720', label: '30 days' },
+                  { value: '2160', label: '90 days' },
+                ]"
+                :data="admin.settings['sessions.users.expires']"
+                setting="sessions.users.expires"
+              />
+            </div>
+          </div>
         </div>
         <Loading v-else />
       </div>
