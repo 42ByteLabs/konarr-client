@@ -44,11 +44,12 @@ export interface KonarrAdminProjectStats {
 }
 
 export interface KonarrUser {
-  id: number;
   username: string;
   avatar?: string;
   role: string;
-  state?: string;
+  state: string;
+  createdAt: string;
+  lastLogin: string;
 }
 
 export interface KonarrAdminUser {
@@ -61,7 +62,6 @@ export interface KonarrAdminUser {
 
 export interface SessionSummary {
   id: number;
-  token: string;
   createdAt: string;
   lastAccessed: string;
   state: string;

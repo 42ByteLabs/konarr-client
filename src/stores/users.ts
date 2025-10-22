@@ -47,18 +47,7 @@ export const useUsersStore = defineStore("users", {
       try {
         const res = await client.get("/user/sessions");
         const data: SessionSummary[] = res.data;
-        this.sessions = data.map((s) => {
-          const createdAt = (s as any).created_at ?? (s as any).createdAt;
-          const lastAccessed =
-            (s as any).last_accessed ?? (s as any).lastAccessed;
-          return {
-            id: s.id,
-            token: s.token,
-            createdAt,
-            lastAccessed,
-            state: s.state,
-          } as SessionSummary;
-        });
+        this.sessions = data;
         return this.sessions;
       } catch (e) {
         handleErrors(e as any);

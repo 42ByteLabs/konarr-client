@@ -1,20 +1,21 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { useServerStore } from "@/stores/server";
 import { useUsersStore } from "@/stores/users";
 import { notify } from "@kyvg/vue3-notification";
 import Title from "@/components/Title.vue";
 import Loading from "@/components/Loading.vue";
 import PasswordStrengthMeter from "@/components/PasswordStrengthMeter.vue";
 
-const server = useServerStore();
 const users = useUsersStore();
 const loading = ref(false);
 
 // Profile fields
 const username = ref("");
 const role = ref("");
-const userId = ref(0);
+const state = ref("");
+const createdAt = ref("");
+const lastLogin = ref("");
+const avatar = ref("");
 
 // Password update fields
 const currentPassword = ref("");
@@ -22,10 +23,15 @@ const newPassword = ref("");
 const confirmPassword = ref("");
 
 onMounted(async () => {
-  if (server.user) {
-    username.value = server.user.username;
-    role.value = server.user.role;
-    userId.value = server.user.id;
+  const user = await users.whoami();
+
+  if (user) {
+    username.value = user.username;
+    role.value = user.role;
+    state.value = user.state;
+    createdAt.value = user.createdAt;
+    lastLogin.value = user.lastLogin;
+    avatar.value = user.avatar || "";
   }
   loading.value = false;
 
@@ -67,7 +73,7 @@ async function updatePassword() {
   const result = await users.changePassword(
     currentPassword.value,
     newPassword.value,
-    confirmPassword.value,
+    confirmPassword.value
   );
 
   if (result) {
@@ -123,6 +129,15 @@ function formatDate(dateString: string) {
               Profile Information
             </h3>
             <div class="mt-6 space-y-6">
+              <!-- Avatar -->
+              <div v-if="avatar" class="flex items-center space-x-4">
+                <img
+                  :src="avatar"
+                  alt="User avatar"
+                  class="h-16 w-16 rounded-full"
+                />
+              </div>
+
               <!-- Username -->
               <div>
                 <label
@@ -140,21 +155,78 @@ function formatDate(dateString: string) {
                 />
               </div>
 
-              <!-- Role -->
-              <div>
-                <label
-                  for="role"
-                  class="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Role
-                </label>
-                <input
-                  id="role"
-                  v-model="role"
-                  type="text"
-                  disabled
-                  class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 shadow-sm dark:bg-gray-600 dark:border-gray-600 dark:text-gray-400 sm:text-sm px-3 py-2"
-                />
+              <!-- Role and State on same line -->
+              <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <!-- Role -->
+                <div>
+                  <label
+                    for="role"
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                  >
+                    Role
+                  </label>
+                  <input
+                    id="role"
+                    v-model="role"
+                    type="text"
+                    disabled
+                    class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 shadow-sm dark:bg-gray-600 dark:border-gray-600 dark:text-gray-400 sm:text-sm px-3 py-2"
+                  />
+                </div>
+
+                <!-- State -->
+                <div>
+                  <label
+                    for="state"
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                  >
+                    Account State
+                  </label>
+                  <input
+                    id="state"
+                    v-model="state"
+                    type="text"
+                    disabled
+                    class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 shadow-sm dark:bg-gray-600 dark:border-gray-600 dark:text-gray-400 sm:text-sm px-3 py-2"
+                  />
+                </div>
+              </div>
+
+              <!-- Created At and Last Login on same line -->
+              <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <!-- Created At -->
+                <div>
+                  <label
+                    for="created-at"
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                  >
+                    Account Created
+                  </label>
+                  <input
+                    id="created-at"
+                    :value="formatDate(createdAt)"
+                    type="text"
+                    disabled
+                    class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 shadow-sm dark:bg-gray-600 dark:border-gray-600 dark:text-gray-400 sm:text-sm px-3 py-2"
+                  />
+                </div>
+
+                <!-- Last Login -->
+                <div>
+                  <label
+                    for="last-login"
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                  >
+                    Last Login
+                  </label>
+                  <input
+                    id="last-login"
+                    :value="formatDate(lastLogin)"
+                    type="text"
+                    disabled
+                    class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 shadow-sm dark:bg-gray-600 dark:border-gray-600 dark:text-gray-400 sm:text-sm px-3 py-2"
+                  />
+                </div>
               </div>
             </div>
           </div>
