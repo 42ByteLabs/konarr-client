@@ -1,16 +1,29 @@
 <script setup lang="ts">
 import { computed } from "vue";
+import SvgIcon from "@jamescoyle/vue-icon";
+import { mdiCommentAlertOutline } from "@mdi/js";
 
 const assignees = "GeekMasher";
 
-const props = defineProps<{
-  title: string;
-  info?: string;
-
-  input?: string;
-  issueTemplate?: string;
-  labels?: string;
-}>();
+const props = withDefaults(
+  defineProps<{
+    title: string;
+    info?: string;
+    input?: string;
+    issueTemplate?: string;
+    labels?: string;
+    variant?: "button" | "link";
+    size?: "sm" | "md" | "lg";
+  }>(),
+  {
+    variant: "button",
+    size: "md",
+    info: undefined,
+    input: undefined,
+    issueTemplate: undefined,
+    labels: undefined,
+  },
+);
 
 const link = computed(() => {
   var input = props.input || "";
@@ -29,13 +42,50 @@ const link = computed(() => {
     return `https://github.com/42ByteLabs/konarr/issues/new/choose`;
   }
 });
+
+const buttonClasses = computed(() => {
+  const base =
+    "inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500";
+
+  const sizeClasses = {
+    sm: "px-2.5 py-1.5 text-xs rounded",
+    md: "px-3 py-2 text-sm rounded-md",
+    lg: "px-4 py-2 text-base rounded-md",
+  };
+
+  const variantClasses = {
+    button:
+      "bg-accent-500 hover:bg-accent-600 text-white shadow-sm hover:shadow-md",
+    link: "text-accent-600 hover:text-accent-700 dark:text-accent-400 dark:hover:text-accent-300 hover:underline",
+  };
+
+  return `${base} ${sizeClasses[props.size]} ${variantClasses[props.variant]}`;
+});
 </script>
 
 <template>
-  <div class="text-center">
+  <div>
     <a
+      v-if="props.variant === 'button'"
       :href="link"
-      class="text-accent-500 hover:underline"
+      :class="buttonClasses"
+      :title="props.info || props.title || 'Feedback'"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <svg-icon
+        type="mdi"
+        :path="mdiCommentAlertOutline"
+        class="h-4 w-4 mr-1.5"
+      ></svg-icon>
+      <slot>
+        {{ props.title || "Feedback" }}
+      </slot>
+    </a>
+    <a
+      v-else
+      :href="link"
+      :class="buttonClasses"
       target="_blank"
       rel="noopener noreferrer"
     >

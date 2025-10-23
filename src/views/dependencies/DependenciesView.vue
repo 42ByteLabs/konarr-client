@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 import { router } from "@/router";
-import SvgIcon from "@jamescoyle/vue-icon";
 
 import Title from "@/components/Title.vue";
-import DependencyIcon from "@/components/DependencyIcon.vue";
+import DependencyTile from "@/components/DependencyTile.vue";
 import Pagination from "@/components/Pagination.vue";
 import Search from "@/components/Search.vue";
 
@@ -64,35 +63,13 @@ const selectables = {
         />
 
         <div
-          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 my-4 mt-8"
+          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4 mt-8"
         >
-          <router-link
+          <DependencyTile
             v-for="dep in dependencies.data"
             :key="dep.id"
-            :to="{ name: 'Dependency', params: { id: dep.id } }"
-            class="bg-gray-50 dark:bg-gray-800 dark:text-white hover:bg-accent-500 shadow-md rounded-lg p-4"
-          >
-            <div class="grid grid-cols-8">
-              <div class="col-span-1">
-                <DependencyIcon :dep="dep" />
-              </div>
-              <div class="col-span-6">
-                <h3 class="ml-2 text-lg font-semibold">
-                  {{ dep.name }}
-                </h3>
-                <h5 class="ml-2 text-sm text-gray-500 hover:text-gray-800">
-                  {{ dep.purl }}
-                </h5>
-              </div>
-              <div class="col-span-1">
-                <svg-icon
-                  type="mdi"
-                  path="mdiCheckCircle"
-                  class="h-6 w-6 ml-2"
-                ></svg-icon>
-              </div>
-            </div>
-          </router-link>
+            :dependency="dep"
+          />
         </div>
 
         <Pagination
