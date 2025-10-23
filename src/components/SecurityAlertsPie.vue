@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, onMounted, ref } from "vue";
 import colors from "tailwindcss/colors";
 import { AgCharts } from "ag-charts-vue3";
 
@@ -9,7 +9,27 @@ const props = defineProps<{
   alerts: KonarrSecuritySummary;
 }>();
 
+const isDarkMode = ref(false);
+
+onMounted(() => {
+  // Check if dark mode is enabled
+  isDarkMode.value = document.documentElement.classList.contains("dark");
+
+  // Watch for dark mode changes
+  const observer = new MutationObserver(() => {
+    isDarkMode.value = document.documentElement.classList.contains("dark");
+  });
+
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["class"],
+  });
+});
+
 const data = computed(() => {
+  const textColor = isDarkMode.value ? colors.gray[300] : colors.gray[700];
+  const backgroundColor = isDarkMode.value ? colors.gray[800] : colors.white;
+
   return {
     data: [
       {
@@ -45,6 +65,9 @@ const data = computed(() => {
         amount: props.alerts.other || 0,
       },
     ],
+    background: {
+      fill: backgroundColor,
+    },
     series: [
       {
         type: "pie" as const,
@@ -60,8 +83,32 @@ const data = computed(() => {
           colors.gray[500],
           colors.gray[300],
         ],
+        calloutLabel: {
+          enabled: true,
+          color: textColor,
+        },
+        sectorLabel: {
+          enabled: false,
+        },
+        tooltip: {
+          renderer: (params: any) => ({
+            title: params.datum.label,
+            content: `${params.datum.amount} alerts`,
+            backgroundColor: isDarkMode.value ? colors.gray[700] : colors.white,
+            color: textColor,
+          }),
+        },
       },
     ],
+    legend: {
+      enabled: true,
+      position: "bottom" as const,
+      item: {
+        label: {
+          color: textColor,
+        },
+      },
+    },
   } as any;
 });
 </script>
