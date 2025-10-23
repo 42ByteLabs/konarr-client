@@ -73,7 +73,7 @@ async function updatePassword() {
   const result = await users.changePassword(
     currentPassword.value,
     newPassword.value,
-    confirmPassword.value
+    confirmPassword.value,
   );
 
   if (result) {
