@@ -6,7 +6,7 @@ import Title from "@/components/Title.vue";
 import Search from "@/components/Search.vue";
 import Loading from "@/components/Loading.vue";
 import Pagination from "@/components/Pagination.vue";
-import SecurityIcon from "@/components/SecurityIcon.vue";
+import SecurityAlertTile from "@/components/SecurityAlertTile.vue";
 import SecuritySummaryTile from "@/components/SecuritySummaryTile.vue";
 
 import { useServerStore } from "@/stores/server";
@@ -117,25 +117,13 @@ onMounted(() => {
         </h2>
 
         <div
-          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 my-4 mt-8"
+          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4 mt-8"
         >
-          <router-link
+          <SecurityAlertTile
             v-for="sec in security.data"
             :key="sec.id"
-            :to="{ name: 'Alert', params: { id: sec.id } }"
-            class="dark:text-white dark:bg-gray-800 hover:bg-accent-500 shadow-md rounded-lg p-4"
-          >
-            <div class="grid grid-cols-8">
-              <div class="col-span-7">
-                <h3 class="ml-2 text-lg font-semibold">
-                  {{ sec.name }}
-                </h3>
-              </div>
-              <div class="col-span-1">
-                <SecurityIcon :severity="sec.severity" color />
-              </div>
-            </div>
-          </router-link>
+            :alert="sec"
+          />
         </div>
 
         <Pagination

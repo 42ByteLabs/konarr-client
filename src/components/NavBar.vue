@@ -82,8 +82,16 @@ const props = defineProps<{
         >
           <!-- Logo -->
           <div class="flex flex-shrink-0 items-center">
-            <router-link to="/" class="flex items-center">
-              <img class="h-8 w-auto" src="/static/img/logo.png" alt="Konarr" />
+            <router-link
+              to="/"
+              class="flex items-center"
+              aria-label="Go to home page"
+            >
+              <img
+                class="h-8 w-auto"
+                src="/static/img/logo.png"
+                alt="Konarr Logo"
+              />
             </router-link>
           </div>
 
@@ -116,6 +124,7 @@ const props = defineProps<{
           <Menu as="div" class="relative ml-3">
             <MenuButton
               class="text-white rounded-md px-3 py-2 text-sm font-medium"
+              aria-label="Add new project"
             >
               <PlusCircleIcon class="h-7 w-7" aria-hidden="true" />
             </MenuButton>
@@ -155,6 +164,7 @@ const props = defineProps<{
           <Menu as="div" class="relative ml-3">
             <div>
               <MenuButton
+                aria-label="Open user menu"
                 class="relative flex rounded-full bg-accent-500 hover:bg-accent-600 text-sm px-6 py-1 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
               >
                 <span
@@ -163,12 +173,14 @@ const props = defineProps<{
                   {{ props.user.username }}
                 </span>
                 <span class="absolute -inset-1.5" />
-                <span class="sr-only"> Open user menu </span>
+                <span class="sr-only"
+                  >Open user menu for {{ props.user.username }}</span
+                >
                 <img
                   v-if="props.user.avatar"
                   class="h-8 w-8 rounded-full"
                   :src="props.user.avatar"
-                  :alt="props.user.username + ' avatar'"
+                  :alt="`${props.user.username} avatar`"
                 />
                 <UserCircleIcon
                   v-else

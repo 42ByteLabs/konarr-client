@@ -12,6 +12,7 @@ const props = defineProps<{ project: KonarrProject }>();
         :snapid="props.project.snapshot.id"
         :projectid="props.project.id"
         :total="props.project.snapshot.dependencies"
+        :limit="12"
       />
     </div>
     <div v-else class="text-center text-gray-500 dark:text-gray-400">

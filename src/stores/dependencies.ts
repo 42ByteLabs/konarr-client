@@ -40,9 +40,9 @@ export const useDependenciesStore = defineStore("dependencies", {
 
     async fetchDependencies(
       page: number = 0,
-      limit: number = 10,
+      limit: number = 12,
       top: boolean = true,
-      deptype: string | undefined = undefined,
+      deptype: string | undefined = undefined
     ) {
       // Get from URL if null
       if (deptype === undefined) {
@@ -108,7 +108,7 @@ export const useDependenciesStore = defineStore("dependencies", {
       } else {
         await client
           .get(
-            `/snapshots/${this.current}/dependencies?search=${search}&limit=10`,
+            `/snapshots/${this.current}/dependencies?search=${search}&limit=10`
           )
           .then((response) => {
             this.loading = false;
@@ -146,13 +146,13 @@ export const useDependenciesStore = defineStore("dependencies", {
         });
     },
 
-    async fetchNextPage() {
+    async fetchNextPage(limit?: number) {
       const sselect = router.currentRoute.value.query.select;
       const top = sselect === undefined;
 
       if (this.page < this.pages) {
         if (this.current) {
-          await this.fetchDependencies(this.page + 1);
+          await this.fetchDependencies(this.page + 1, limit);
         } else {
           const selectParam = router.currentRoute.value.query.select;
           const sselectStr = Array.isArray(selectParam)
@@ -164,7 +164,7 @@ export const useDependenciesStore = defineStore("dependencies", {
       }
     },
 
-    async fetchPrevPage() {
+    async fetchPrevPage(limit?: number) {
       const selectParam = router.currentRoute.value.query.select;
       const sselectStr = Array.isArray(selectParam)
         ? selectParam[0] || undefined
@@ -173,7 +173,7 @@ export const useDependenciesStore = defineStore("dependencies", {
 
       if (this.page !== 0) {
         if (this.current) {
-          await this.fetchDependencies(this.page - 1);
+          await this.fetchDependencies(this.page - 1, limit);
         } else {
           await this.fetchDependencies(this.page - 1, 24, top, sselectStr);
           if (this.isFirstPage()) {

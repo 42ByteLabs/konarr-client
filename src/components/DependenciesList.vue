@@ -5,7 +5,7 @@ import { mdiGraph } from "@mdi/js";
 
 import { useDependenciesStore } from "@/stores/dependencies";
 import { router } from "@/router";
-import DependencyIcon from "@/components/DependencyIcon.vue";
+import DependencyTile from "@/components/DependencyTile.vue";
 import Loading from "@/components/Loading.vue";
 import Search from "@/components/Search.vue";
 import Pagination from "@/components/Pagination.vue";
@@ -29,7 +29,7 @@ onMounted(() => {
   else if (qpageParam) qpageStr = qpageParam as string;
   const qpage = parseInt(qpageStr) - 1;
   const page = isNaN(qpage) || qpage < 0 ? 0 : qpage;
-  dependencies.fetchDependencies(page, props.limit || 10);
+  dependencies.fetchDependencies(page, props.limit || 12);
 });
 
 // When the store's page changes, update the URL so the page is preserved
@@ -62,8 +62,14 @@ watch(
 <template>
   <div>
     <div class="flex justify-center items-center mb-4">
-      <svg-icon type="mdi" :path="mdiGraph" class="mr-2"></svg-icon>
-      <h2 class="text-2xl font-semibold">Dependencies</h2>
+      <svg-icon
+        type="mdi"
+        :path="mdiGraph"
+        class="mr-2 text-accent-500"
+      ></svg-icon>
+      <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">
+        Dependencies
+      </h2>
     </div>
 
     <Loading v-if="dependencies.loading" />
@@ -76,45 +82,33 @@ watch(
         :count="dependencies.count"
       />
 
-      <table class="table-auto w-full">
-        <thead>
-          <tr>
-            <th class="px-4 py-2"></th>
-            <th class="px-4 py-2">Name</th>
-            <th class="px-4 py-2">Version</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="dependency in dependencies.data" :key="dependency.id">
-            <td class="border px-4 py-2 w-6">
-              <DependencyIcon :dep="dependency" />
-            </td>
-            <td class="border px-4 py-2">
-              <router-link
-                :to="{
-                  name: 'Dependency',
-                  params: { id: dependency.id },
-                  query: { snapshot: snapid },
-                }"
-              >
-                {{ dependency.namespace ? dependency.namespace + "/" : ""
-                }}{{ dependency.name }}
-              </router-link>
-              <span class="block text-xs text-gray-500 dark:text-gray-400">
-                {{ dependency.purl }}
-              </span>
-            </td>
-            <td class="border px-4 py-2">{{ dependency.version || "" }}</td>
-          </tr>
-          <tr v-if="dependencies.data.length === 0">
-            <td class="border px-4 py-2 text-center" colspan="3">
-              No dependencies found
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <!-- Card Grid Layout -->
+      <div
+        v-if="dependencies.data.length > 0"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 my-4"
+      >
+        <DependencyTile
+          v-for="dependency in dependencies.data"
+          :key="dependency.id"
+          :dependency="dependency"
+        />
+      </div>
+
+      <!-- Empty State -->
+      <div
+        v-else
+        class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-8 text-center"
+      >
+        <svg-icon
+          type="mdi"
+          :path="mdiGraph"
+          class="h-16 w-16 mx-auto mb-4 text-gray-400"
+        ></svg-icon>
+        <p class="text-gray-600 dark:text-gray-400">No dependencies found</p>
+      </div>
 
       <Pagination
+        v-if="dependencies.pages > 1"
         :page="dependencies.page"
         :pages="dependencies.pages"
         :next="dependencies.fetchNextPage"

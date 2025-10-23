@@ -103,7 +103,7 @@ const select = (value: Event) => {
         0,
         props.limit || 10,
         false,
-        selected.value
+        selected.value,
       );
     }
   }

@@ -22,18 +22,20 @@ const props = defineProps<{
 
 function tabClass(tab: string) {
   const base =
-    "inline-flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium";
-  const activeCls = "bg-accent-500 text-white";
+    "inline-flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors";
+  const activeCls = "bg-accent-500 text-white hover:bg-accent-600";
   const inactiveCls =
-    "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200";
+    "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600";
   return `${base} ${props.active === tab ? activeCls : inactiveCls}`;
 }
 
 function btnClass() {
   const base =
-    "inline-flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium";
-  const cls = "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200";
-  return `${base} ${cls}`;
+    "inline-flex items-center justify-center gap-2 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500";
+  const sizeAndStyle = "px-3 py-2 text-sm rounded-md";
+  const colors =
+    "bg-accent-500 hover:bg-accent-600 text-white shadow-sm hover:shadow-md";
+  return `${base} ${sizeAndStyle} ${colors}`;
 }
 </script>
 
@@ -43,20 +45,15 @@ function btnClass() {
       <router-link
         v-if="props.parent"
         :to="{ name: 'Project', params: { id: props.parent } }"
-        class="text-black hover:text-gray-600 dark:hover:text-gray-100 mt-4"
       >
         <button :class="btnClass()">
-          <svg-icon type="mdi" :path="mdiMenuLeft" class="h-5 w-5" />
+          <svg-icon type="mdi" :path="mdiMenuLeft" class="h-4 w-4" />
           <span class="hidden sm:block">Parent</span>
         </button>
       </router-link>
-      <router-link
-        v-else
-        :to="{ name: 'Projects' }"
-        class="text-black hover:text-gray-600 dark:hover:text-gray-100 mt-4"
-      >
+      <router-link v-else :to="{ name: 'Projects' }">
         <button :class="btnClass()">
-          <svg-icon type="mdi" :path="mdiMenuLeft" class="h-5 w-5" />
+          <svg-icon type="mdi" :path="mdiMenuLeft" class="h-4 w-4" />
           <span class="hidden sm:block">Projects</span>
         </button>
       </router-link>

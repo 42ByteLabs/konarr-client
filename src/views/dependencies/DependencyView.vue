@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import { onMounted, onUpdated, computed } from "vue";
 import SvgIcon from "@jamescoyle/vue-icon";
-import { mdiMenuLeft } from "@mdi/js";
+import {
+  mdiMenuLeft,
+  mdiPackageVariantClosed,
+  mdiCodeTags,
+  mdiSourceBranch,
+} from "@mdi/js";
 
 import { router } from "@/router";
 
@@ -78,124 +83,161 @@ var dependency_type = computed(() => {
       v-if="dependency"
       class="container mt-4 mb-12 w-full mx-auto dark:text-white px-2"
     >
-      <div class="grid grid-cols-10">
-        <div
-          class="col-span-2 text-black dark:text-white flex justify-center content-center"
+      <!-- Back Button and Catalogue Request -->
+      <div class="flex justify-between items-center mb-6">
+        <router-link
+          v-if="dependency.version"
+          :to="{ name: 'Dependency', params: { id: props.id } }"
+          class="inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500 px-3 py-2 text-sm rounded-md bg-accent-500 hover:bg-accent-600 text-white shadow-sm hover:shadow-md"
         >
-          <div v-if="dependency.version" class="mt-6">
-            <router-link
-              :to="{ name: 'Dependency', params: { id: props.id } }"
-              class="text-black hover:text-gray-600 dark:hover:text-gray-100 mt-4"
-            >
-              <button
-                class="flex items-center rounded-md bg-accent-400 hover:bg-accent-500 p-2 pr-6 mt-2"
+          <svg-icon
+            type="mdi"
+            :path="mdiMenuLeft"
+            class="h-4 w-4 mr-1.5"
+          ></svg-icon>
+          <span>Back to Dependency</span>
+        </router-link>
+        <router-link
+          v-else
+          :to="{ name: 'Dependencies' }"
+          class="inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500 px-3 py-2 text-sm rounded-md bg-accent-500 hover:bg-accent-600 text-white shadow-sm hover:shadow-md"
+        >
+          <svg-icon
+            type="mdi"
+            :path="mdiMenuLeft"
+            class="h-4 w-4 mr-1.5"
+          ></svg-icon>
+          <span>Back to Dependencies</span>
+        </router-link>
+        <Feedback
+          title="Catalogue Request"
+          issue_template="catalogue-request"
+          info="Request a component catalogue entry or update for this dependency"
+          labels="comp-catalogue"
+          :input="'[Catalogue]:+' + dependency.name"
+        />
+      </div>
+
+      <!-- Dependency Header Card -->
+      <div
+        class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 mb-6 border-l-4 border-accent-500"
+      >
+        <div class="flex items-start">
+          <div class="flex-shrink-0 mr-4">
+            <DependencyIcon :dep="dependency" size="64" />
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center justify-between mb-2">
+              <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+                {{ dependency.name }}
+              </h1>
+              <span
+                v-if="dependency.version"
+                class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-accent-100 text-accent-800 dark:bg-accent-900/30 dark:text-accent-300"
               >
-                <svg-icon
-                  type="mdi"
-                  :path="mdiMenuLeft"
-                  class="h-6 w-6 mr-1"
-                ></svg-icon>
-                <span class="hidden sm:block"> Dependency </span>
-              </button>
-            </router-link>
-          </div>
-          <div v-else class="mt-6">
-            <router-link
-              :to="{ name: 'Dependencies' }"
-              class="text-black hover:text-gray-600 dark:hover:text-gray-100 mt-4"
+                v{{ dependency.version }}
+              </span>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
+              {{ dependency.purl }}
+            </p>
+            <span
+              class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300"
             >
-              <button
-                class="flex items-center rounded-md bg-accent-400 hover:bg-accent-500 p-2 pr-6 mt-2"
-              >
-                <svg-icon
-                  type="mdi"
-                  :path="mdiMenuLeft"
-                  class="h-6 w-6 mr-1"
-                ></svg-icon>
-                <span class="hidden sm:block"> Dependency </span>
-              </button>
-            </router-link>
-          </div>
-        </div>
-        <div class="col-span-8 sm:col-span-6">
-          <Title :title="dependency.name" />
-        </div>
-        <div
-          class="col-span-10 sm:col-span-2 dark:text-white flex justify-center items-center content-center pt-2"
-        >
-          <DependencyIcon :dep="dependency" size="96" />
-        </div>
-        <div
-          class="col-span-10 md:col-span-2 flex justify-center content-center"
-        >
-          <div v-if="dependency.version" class="text-center">
-            <a class="text-2xl w-full">
-              <strong>{{ dependency.version }}</strong>
-            </a>
-          </div>
-        </div>
-        <div class="col-span-10 sm:col-span-6 mt-2">
-          <h4 class="text-2xl text-center">
-            {{ dependency.purl }}
-          </h4>
-        </div>
-        <div
-          class="col-span-10 sm:col-span-2 flex justify-center items-center content-center text-center mt-2"
-        >
-          <span class="text-2xl text-center w-2/3">
-            {{ dependency_type }}
-          </span>
-          <div class="text-center w-1/3">
-            <Feedback
-              title="Catalogue Request"
-              class="ml-4 text-sm"
-              issue_template="catalogue-request"
-              info="Request a component catalogue entry or update for this dependency"
-              labels="comp-catalogue"
-              :input="'[Catalogue]:+' + dependency.name"
-            />
+              {{ dependency_type }}
+            </span>
           </div>
         </div>
       </div>
 
-      <hr class="my-6 bg-gray-400" />
-
-      <div class="grid grid-cols-10 gap-6">
-        <div v-if="dependency.versions" class="col-span-10 sm:col-span-3">
-          <h3 class="text-2xl text-center dark:text-white mb-6 font-semibold">
-            Versions - {{ dependency.versions.length }}
-          </h3>
-
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div v-for="version in dependency.versions" :key="version">
-              <div
-                class="col-span-1 bg-white dark:bg-gray-700 shadow-md rounded-lg hover:bg-accent-500 dark:text-white py-2 text-center"
+      <!-- Versions and Projects Sections -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Versions Section -->
+        <div v-if="dependency.versions" class="lg:col-span-1">
+          <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
+            <h2
+              class="text-xl font-semibold mb-4 text-gray-900 dark:text-white flex items-center"
+            >
+              <svg-icon
+                type="mdi"
+                :path="mdiSourceBranch"
+                class="h-6 w-6 mr-2 text-accent-500"
+              ></svg-icon>
+              Versions
+              <span
+                class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
               >
-                <strong>{{ version }}</strong>
+                {{ dependency.versions.length }}
+              </span>
+            </h2>
+
+            <div class="space-y-2 max-h-96 overflow-y-auto">
+              <div
+                v-for="version in dependency.versions"
+                :key="version"
+                class="bg-gray-50 dark:bg-gray-700 rounded-md px-3 py-2 text-sm font-mono text-gray-700 dark:text-gray-300 hover:bg-accent-50 dark:hover:bg-accent-900/20 transition-colors"
+              >
+                {{ version }}
               </div>
             </div>
           </div>
         </div>
 
-        <div v-if="dependency.projects" class="col-span-10 sm:col-span-7">
-          <h3 class="text-2xl text-center dark:text-white mb-6 font-semibold">
-            Projects - {{ dependency.projects.length }}
-          </h3>
+        <!-- Projects Section -->
+        <div
+          v-if="dependency.projects"
+          :class="dependency.versions ? 'lg:col-span-2' : 'lg:col-span-3'"
+        >
+          <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
+            <h2
+              class="text-xl font-semibold mb-4 text-gray-900 dark:text-white flex items-center"
+            >
+              <svg-icon
+                type="mdi"
+                :path="mdiCodeTags"
+                class="h-6 w-6 mr-2 text-accent-500"
+              ></svg-icon>
+              Projects Using This Dependency
+              <span
+                class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+              >
+                {{ dependency.projects.length }}
+              </span>
+            </h2>
 
-          <div class="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
-            <div v-for="child in dependency.projects" :key="child.id">
-              <ProjectTile :id="child.id" :project="child" />
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"
+              :class="{ 'xl:grid-cols-2': dependency.versions }"
+            >
+              <div v-for="child in dependency.projects" :key="child.id">
+                <ProjectTile :id="child.id" :project="child" />
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div v-else class="container mt-4 mb-6 w-full max-w-xs mx-auto">
-      <Title
-        title="Dependency"
-        subtitle="Dependency not found"
-        description="Please try again with a correct id"
-      />
+    <div v-else class="container mt-4 mb-6 w-full max-w-2xl mx-auto px-2">
+      <div
+        class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-8 text-center"
+      >
+        <svg-icon
+          type="mdi"
+          :path="mdiPackageVariantClosed"
+          class="h-16 w-16 mx-auto mb-4 text-gray-400"
+        ></svg-icon>
+        <Title
+          title="Dependency Not Found"
+          subtitle="The requested dependency could not be found"
+          description="Please check the dependency ID and try again"
+        />
+        <router-link
+          :to="{ name: 'Dependencies' }"
+          class="inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500 px-3 py-2 text-sm rounded-md bg-accent-500 hover:bg-accent-600 text-white shadow-sm hover:shadow-md mt-4"
+        >
+          Back to Dependencies
+        </router-link>
+      </div>
     </div>
   </main>
 </template>

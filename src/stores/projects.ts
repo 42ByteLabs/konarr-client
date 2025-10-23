@@ -32,7 +32,7 @@ export const useProjectsStore = defineStore("projects", {
         params += "&top=true";
       }
       if (select !== undefined) {
-        params += `&type=${select}`;
+        params += `&select=${select}`;
       }
 
       await client
