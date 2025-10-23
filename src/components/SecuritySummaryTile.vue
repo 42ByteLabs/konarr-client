@@ -32,99 +32,104 @@ const snapshot = computed(() => {
 });
 
 // Compute color classes based on severity
+// Uses Tailwind color configuration for consistency
 const colorClasses = computed(() => {
   const severity = props.name.toLowerCase();
   switch (severity) {
     case "critical":
       return {
-        bg: "bg-red-400 dark:bg-red-400",
-        border: "border-l-4 border-red-700",
-        text: "text-red-900 dark:text-red-100",
-        count: "text-black dark:text-black",
-        icon: "text-red-900 dark:text-red-900",
-        hover: "hover:bg-red-500 dark:hover:bg-red-500",
+        bg: "bg-sec-critical-300 dark:bg-sec-critical-500",
+        border:
+          "border-l-4 border-sec-critical-600 dark:border-sec-critical-300",
+        text: "text-sec-critical-950 dark:text-white",
+        count: "text-sec-critical-950 dark:text-white",
+        icon: "text-sec-critical-900 dark:text-white",
+        hover: "hover:bg-sec-critical-400 dark:hover:bg-sec-critical-600",
       };
     case "high":
       return {
-        bg: "bg-orange-500 dark:bg-orange-500",
-        border: "border-l-4 border-orange-800",
-        text: "text-orange-950 dark:text-orange-100",
-        count: "text-black dark:text-black",
-        icon: "text-orange-950 dark:text-orange-950",
-        hover: "hover:bg-orange-600 dark:hover:bg-orange-600",
+        bg: "bg-sec-high-300 dark:bg-sec-high-500",
+        border: "border-l-4 border-sec-high-600 dark:border-sec-high-300",
+        text: "text-sec-high-950 dark:text-white",
+        count: "text-sec-high-950 dark:text-white",
+        icon: "text-sec-high-900 dark:text-white",
+        hover: "hover:bg-sec-high-400 dark:hover:bg-sec-high-600",
       };
     case "medium":
       return {
-        bg: "bg-yellow-500 dark:bg-yellow-500",
-        border: "border-l-4 border-yellow-800",
-        text: "text-yellow-950 dark:text-yellow-100",
-        count: "text-black dark:text-black",
-        icon: "text-yellow-900 dark:text-yellow-900",
-        hover: "hover:bg-yellow-600 dark:hover:bg-yellow-600",
+        bg: "bg-sec-medium-300 dark:bg-sec-medium-500",
+        border: "border-l-4 border-sec-medium-500 dark:border-sec-medium-300",
+        text: "text-sec-medium-950 dark:text-white",
+        count: "text-sec-medium-950 dark:text-white",
+        icon: "text-sec-medium-900 dark:text-white",
+        hover: "hover:bg-sec-medium-400 dark:hover:bg-sec-medium-600",
       };
     case "low":
       return {
-        bg: "bg-green-500 dark:bg-green-500",
-        border: "border-l-4 border-green-700",
-        text: "text-blue-950 dark:text-blue-100",
-        count: "text-black dark:text-black",
-        icon: "text-green-900 dark:text-green-900",
-        hover: "hover:bg-green-600 dark:hover:bg-green-600",
+        bg: "bg-sec-low-300 dark:bg-sec-low-500",
+        border: "border-l-4 border-sec-low-600 dark:border-sec-low-300",
+        text: "text-sec-low-950 dark:text-white",
+        count: "text-sec-low-950 dark:text-white",
+        icon: "text-sec-low-900 dark:text-white",
+        hover: "hover:bg-sec-low-400 dark:hover:bg-sec-low-600",
       };
     case "info":
     case "informational":
       return {
-        bg: "bg-purple-500 dark:bg-purple-500",
-        border: "border-l-4 border-purple-700",
-        text: "text-gray-950 dark:text-cyan-100",
-        count: "text-black dark:text-black",
-        icon: "text-purple-900 dark:text-purple-900",
-        hover: "hover:bg-purple-600 dark:hover:bg-purple-600",
+        bg: "bg-sec-information-50 dark:bg-sec-information-500",
+        border:
+          "border-l-4 border-sec-information-500 dark:border-sec-information-300",
+        text: "text-sec-information-900 dark:text-white",
+        count: "text-sec-information-700 dark:text-white",
+        icon: "text-sec-information-600 dark:text-white",
+        hover: "hover:bg-sec-information-100 dark:hover:bg-sec-information-600",
       };
     case "malware":
       return {
-        bg: "bg-pink-300 dark:bg-pink-300",
-        border: "border-l-4 border-pink-700",
-        text: "text-pink-950 dark:text-pink-100",
-        count: "text-black dark:text-black",
-        icon: "text-pink-900 dark:text-pink-900",
-        hover: "hover:bg-pink-400 dark:hover:bg-pink-400",
+        bg: "bg-sec-malware-300 dark:bg-sec-malware-500",
+        border: "border-l-4 border-sec-malware-600 dark:border-sec-malware-300",
+        text: "text-sec-malware-950 dark:text-white",
+        count: "text-sec-malware-950 dark:text-white",
+        icon: "text-sec-malware-900 dark:text-white",
+        hover: "hover:bg-sec-malware-400 dark:hover:bg-sec-malware-600",
       };
     case "unmaintained":
       return {
-        bg: "bg-slate-500 dark:bg-slate-500",
-        border: "border-l-4 border-slate-700",
-        text: "text-slate-950 dark:text-amber-100",
-        count: "text-black dark:text-black",
-        icon: "text-slate-900 dark:text-slate-900",
-        hover: "hover:bg-slate-600 dark:hover:bg-slate-600",
+        bg: "bg-sec-unmaintained-50 dark:bg-sec-unmaintained-500",
+        border:
+          "border-l-4 border-sec-unmaintained-500 dark:border-sec-unmaintained-300",
+        text: "text-sec-unmaintained-900 dark:text-white",
+        count: "text-sec-unmaintained-700 dark:text-white",
+        icon: "text-sec-unmaintained-600 dark:text-white",
+        hover:
+          "hover:bg-sec-unmaintained-100 dark:hover:bg-sec-unmaintained-600",
       };
     case "unknown":
       return {
-        bg: "bg-gray-600 dark:bg-gray-600",
-        border: "border-l-4 border-gray-800",
-        text: "text-gray-950 dark:text-slate-100",
-        count: "text-black dark:text-black",
-        icon: "text-gray-900 dark:text-gray-900",
-        hover: "hover:bg-gray-700 dark:hover:bg-gray-700",
+        bg: "bg-sec-unknown-50 dark:bg-sec-unknown-500",
+        border: "border-l-4 border-sec-unknown-400 dark:border-sec-unknown-300",
+        text: "text-sec-unknown-900 dark:text-white",
+        count: "text-sec-unknown-700 dark:text-white",
+        icon: "text-sec-unknown-600 dark:text-white",
+        hover: "hover:bg-sec-unknown-100 dark:hover:bg-sec-unknown-600",
       };
     case "total":
       return {
-        bg: "bg-blue-600 dark:bg-blue-600",
-        border: "border-l-4 border-blue-800",
-        text: "text-blue-950 dark:text-purple-100",
-        count: "text-black dark:text-black",
-        icon: "text-blue-900 dark:text-blue-900",
-        hover: "hover:bg-blue-700 dark:hover:bg-blue-700",
+        bg: "bg-sec-total-50 dark:bg-sec-total-500",
+        border: "border-l-4 border-sec-total-500 dark:border-sec-total-300",
+        text: "text-sec-total-900 dark:text-white",
+        count: "text-sec-total-700 dark:text-white",
+        icon: "text-sec-total-600 dark:text-white",
+        hover: "hover:bg-sec-total-100 dark:hover:bg-sec-total-600",
       };
     default:
       return {
-        bg: "bg-gray-700 dark:bg-gray-700",
-        border: "border-l-4 border-gray-800",
-        text: "text-gray-900 dark:text-gray-100",
-        count: "text-black dark:text-black",
-        icon: "text-gray-900 dark:text-gray-300",
-        hover: "hover:bg-gray-600 dark:hover:bg-gray-600",
+        bg: "bg-slate-50 dark:bg-slate-500",
+        border: "border-l-4 border-slate-400 dark:border-slate-300",
+        text: "text-slate-900 dark:text-white",
+        count: "text-slate-700 dark:text-white",
+        icon: "text-slate-600 dark:text-white",
+        hover: "hover:bg-slate-100 dark:hover:bg-slate-600",
       };
   }
 });
