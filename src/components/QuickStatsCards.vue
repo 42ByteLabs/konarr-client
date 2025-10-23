@@ -65,24 +65,37 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+  <div
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+    role="region"
+    aria-label="Dashboard Statistics"
+  >
     <!-- Projects Card -->
-    <div
-      class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-blue-500 hover:shadow-xl transition-shadow cursor-pointer"
+    <button
+      type="button"
+      aria-label="View all projects"
+      class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-blue-500 hover:shadow-xl transition-shadow cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
       @click="emit('navigate-to-projects')"
     >
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium text-gray-600 dark:text-gray-400">
+          <p
+            id="projects-label"
+            class="text-sm font-medium text-gray-600 dark:text-gray-400"
+          >
             Total Projects
           </p>
-          <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">
+          <p
+            class="text-3xl font-bold text-gray-900 dark:text-white mt-2"
+            aria-labelledby="projects-label"
+          >
             {{ totalProjects }}
           </p>
         </div>
         <svg-icon
           type="mdi"
           :path="mdiPackageVariant"
+          aria-hidden="true"
           class="text-blue-500"
           :size="48"
         ></svg-icon>
@@ -94,29 +107,39 @@ const emit = defineEmits<{
         <svg-icon
           type="mdi"
           :path="mdiChevronRight"
+          aria-hidden="true"
           class="text-gray-400"
           :size="16"
         ></svg-icon>
       </div>
-    </div>
+    </button>
 
     <!-- Dependencies Card -->
-    <div
-      class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-green-500 hover:shadow-xl transition-shadow cursor-pointer"
+    <button
+      type="button"
+      aria-label="View all dependencies"
+      class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-green-500 hover:shadow-xl transition-shadow cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
       @click="emit('navigate-to-dependencies')"
     >
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium text-gray-600 dark:text-gray-400">
+          <p
+            id="dependencies-label"
+            class="text-sm font-medium text-gray-600 dark:text-gray-400"
+          >
             Dependencies
           </p>
-          <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">
+          <p
+            class="text-3xl font-bold text-gray-900 dark:text-white mt-2"
+            aria-labelledby="dependencies-label"
+          >
             {{ totalDependencies }}
           </p>
         </div>
         <svg-icon
           type="mdi"
           :path="mdiGraph"
+          aria-hidden="true"
           class="text-green-500"
           :size="48"
         ></svg-icon>
@@ -128,36 +151,50 @@ const emit = defineEmits<{
         <svg-icon
           type="mdi"
           :path="mdiChevronRight"
+          aria-hidden="true"
           class="text-gray-400"
           :size="16"
         ></svg-icon>
       </div>
-    </div>
+    </button>
 
     <!-- Security Critical Card -->
-    <div
-      class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 hover:shadow-xl transition-shadow cursor-pointer"
-      :class="
+    <button
+      type="button"
+      :aria-label="
         criticalAlerts > 0
-          ? 'border-red-500'
-          : hasSecurityIssues
-            ? 'border-yellow-500'
-            : 'border-gray-300'
+          ? `View ${criticalAlerts} critical security alerts`
+          : 'View security alerts'
       "
+      class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 hover:shadow-xl transition-shadow cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-offset-2"
+      :class="[
+        criticalAlerts > 0
+          ? 'border-red-500 focus:ring-red-500'
+          : hasSecurityIssues
+            ? 'border-yellow-500 focus:ring-yellow-500'
+            : 'border-gray-300 focus:ring-gray-300',
+      ]"
       @click="emit('navigate-to-security')"
     >
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium text-gray-600 dark:text-gray-400">
+          <p
+            id="security-label"
+            class="text-sm font-medium text-gray-600 dark:text-gray-400"
+          >
             Critical Alerts
           </p>
-          <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">
+          <p
+            class="text-3xl font-bold text-gray-900 dark:text-white mt-2"
+            aria-labelledby="security-label"
+          >
             {{ criticalAlerts }}
           </p>
         </div>
         <svg-icon
           type="mdi"
           :path="mdiShieldAlert"
+          aria-hidden="true"
           :class="
             criticalAlerts > 0
               ? 'text-red-500'
@@ -175,28 +212,38 @@ const emit = defineEmits<{
         <svg-icon
           type="mdi"
           :path="mdiChevronRight"
+          aria-hidden="true"
           class="text-gray-400"
           :size="16"
         ></svg-icon>
       </div>
-    </div>
+    </button>
 
     <!-- Infrastructure Card -->
     <div
       class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-purple-500 hover:shadow-xl transition-shadow"
+      role="status"
+      aria-label="Infrastructure statistics"
     >
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm font-medium text-gray-600 dark:text-gray-400">
+          <p
+            id="infrastructure-label"
+            class="text-sm font-medium text-gray-600 dark:text-gray-400"
+          >
             Infrastructure
           </p>
-          <p class="text-3xl font-bold text-gray-900 dark:text-white mt-2">
+          <p
+            class="text-3xl font-bold text-gray-900 dark:text-white mt-2"
+            aria-labelledby="infrastructure-label"
+          >
             {{ servers + containers }}
           </p>
         </div>
         <svg-icon
           type="mdi"
           :path="mdiTrendingUp"
+          aria-hidden="true"
           class="text-purple-500"
           :size="48"
         ></svg-icon>
@@ -205,6 +252,7 @@ const emit = defineEmits<{
         <svg-icon
           type="mdi"
           :path="mdiServer"
+          aria-hidden="true"
           class="text-gray-400 mr-1"
           :size="16"
         ></svg-icon>
@@ -214,6 +262,7 @@ const emit = defineEmits<{
         <svg-icon
           type="mdi"
           :path="mdiDocker"
+          aria-hidden="true"
           class="text-gray-400 mr-1"
           :size="16"
         ></svg-icon>
