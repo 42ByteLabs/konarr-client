@@ -101,13 +101,15 @@ onMounted(() => {
           />
         </div>
 
-        <Search
-          searching="security"
-          placeholder="Find alerts..."
-          :total="security.total"
-          :limit="24"
-          :count="security.data.length"
-        />
+        <div class="mt-12 mb-12">
+          <Search
+            searching="security"
+            placeholder="Find alerts..."
+            :total="security.total"
+            :limit="24"
+            :count="security.data.length"
+          />
+        </div>
 
         <h2
           v-if="security.current"
@@ -117,7 +119,7 @@ onMounted(() => {
         </h2>
 
         <div
-          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4 mt-8"
+          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4 mt-8 mb-10"
         >
           <SecurityAlertTile
             v-for="sec in security.data"

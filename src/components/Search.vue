@@ -127,38 +127,46 @@ onMounted(() => {
 
 <template>
   <!-- Search -->
-  <div class="grid grid-cols-12 gap-4 mb-6 mt-4">
-    <div
-      class="col-span-2 sm:col-span-1 flex justify-center items-center dark:text-white"
-    >
-      <svg-icon
-        type="mdi"
-        :path="mdiTextSearchVariant"
-        class="w-6 h-6 text-gray-500 dark:text-gray-200"
+  <div class="flex flex-col sm:flex-row gap-4 mb-6 mt-4 items-stretch">
+    <!-- Search Input with Icon -->
+    <div class="relative flex-1 group">
+      <div
+        class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"
+      >
+        <svg-icon
+          type="mdi"
+          :path="mdiTextSearchVariant"
+          class="w-5 h-5 text-gray-400 dark:text-gray-500 group-focus-within:text-accent-500 dark:group-focus-within:text-accent-400 transition-colors duration-200"
+        />
+      </div>
+      <input
+        id="search"
+        type="text"
+        class="w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white pl-12 pr-4 py-3 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md hover:shadow-lg hover:border-gray-300 dark:hover:border-gray-600 focus:outline-none focus:ring-2 focus:ring-accent-500 dark:focus:ring-accent-400 focus:border-accent-500 dark:focus:border-accent-400 focus:shadow-xl transition-all duration-200 placeholder:text-gray-400 dark:placeholder:text-gray-500 transform focus:scale-[1.01]"
+        :placeholder="props.placeholder"
+        @input="typeSearch"
       />
     </div>
+
+    <!-- Stats Counter -->
     <div
-      class="col-span-1 mb-2 justify-center items-center dark:text-white text-center hidden sm:block"
+      class="hidden sm:flex items-center justify-center px-4 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md text-gray-700 dark:text-gray-300 font-semibold text-sm min-w-[100px] whitespace-nowrap"
     >
-      {{ props.count }} / {{ props.total }}
+      <span class="text-accent-600 dark:text-accent-400">
+        {{ props.count }}
+      </span>
+      <span class="mx-1.5">/</span>
+      <span class="text-gray-500 dark:text-gray-400">
+        {{ props.total }}
+      </span>
     </div>
 
-    <input
-      id="search"
-      type="text"
-      :class="[
-        selectables ? 'col-span-9 sm:col-span-8' : 'col-span-10 sm:col-span-9',
-      ]"
-      class="dark:bg-gray-800 dark:text-white col-start-3 px-4 py-2 border border-gray-600 rounded-md hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500"
-      :placeholder="props.placeholder"
-      @input="typeSearch"
-    />
-
-    <div v-if="selectables" class="col-span-12 sm:col-span-2 mt-0.5">
+    <!-- Filter Dropdown -->
+    <div v-if="selectables" class="sm:min-w-[140px]">
       <select
-        id="countries"
+        id="search-filter"
         v-model="selected"
-        class="bg-gray-50 border border-gray-600 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 text-center"
+        class="w-full h-[50px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white text-sm rounded-lg shadow-md hover:shadow-lg hover:border-gray-300 dark:hover:border-gray-600 focus:outline-none focus:ring-2 focus:ring-accent-500 dark:focus:ring-accent-400 focus:border-accent-500 dark:focus:border-accent-400 px-4 py-3 transition-all duration-200 text-center font-semibold cursor-pointer transform focus:scale-[1.01]"
         @change="select"
       >
         <option :selected="selected == 'Top'">Top</option>
