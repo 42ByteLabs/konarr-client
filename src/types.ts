@@ -3,6 +3,28 @@
  * Based on: https://github.com/42ByteLabs/konarr/tree/main/server/src/api
  */
 
+/**
+ * API Error Response
+ *
+ * Server source: server/src/api/mod.rs ApiError
+ * Returned when an API request fails (4xx or 5xx status codes)
+ */
+export interface ApiError {
+  /** Error message describing what went wrong */
+  message: string;
+  /** Optional detailed error information (only included in debug mode) */
+  details?: string;
+  /** HTTP status code (401, 404, 500, etc.) */
+  status: number;
+}
+
+/**
+ * Generic API Response Wrapper
+ *
+ * Server source: server/src/api/mod.rs ApiResult<T>
+ */
+export type ApiResponse<T> = T | ApiError;
+
 /** Pagination Helper Type
  *
  * Generic pagination structure used by the frontend stores
@@ -11,20 +33,12 @@
 export interface Pagination<T> {
   /** The array of paginated items */
   data: T[];
-  /** Loading state indicator (client-side only) */
-  loading: boolean;
   /** Total number of items across all pages (from API) */
   total: number;
   /** Number of items in current result set (from API) */
   count: number;
   /** Total number of pages available (from API) */
   pages: number;
-  /** Current page number (0-indexed) */
-  page: number;
-  /** Currently selected/viewed item ID (client-side only) */
-  current: number | null;
-  /** Number of items per page */
-  limit: number;
 }
 
 /** Server Information
@@ -59,6 +73,8 @@ export interface Config {
   /** Whether new user registration is enabled */
   registration: boolean;
 }
+
+export type ServerInfoResponse = ApiResponse<ServerInfo>;
 
 /** Admin User Statistics
  *
@@ -273,6 +289,9 @@ export interface Project {
   children?: Project[];
 }
 
+export type ProjectsResponse = ApiResponse<Projects>;
+export type ProjectResponse = ApiResponse<Project>;
+
 /** Snapshots Collection
  *
  * Response from GET /api/snapshots
@@ -363,6 +382,9 @@ export interface Dependency {
   projects?: Project[];
 }
 
+export type DependenciesResponse = ApiResponse<Dependencies>;
+export type DependencyResponse = ApiResponse<Dependency>;
+
 /** Security Alerts Collection
  *
  * Response from GET /api/security
@@ -387,3 +409,6 @@ export interface SecurityAlert {
   /** Affected dependency (can be dependency name string or full object) */
   dependency?: string | Dependency;
 }
+
+export type SecurityAlertsResponse = ApiResponse<SecurityAlerts>;
+export type SecurityAlertResponse = ApiResponse<SecurityAlert>;
