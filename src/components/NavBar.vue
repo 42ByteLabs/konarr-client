@@ -59,16 +59,21 @@ const props = defineProps<{
               leave-to-class="transform opacity-0 scale-95"
             >
               <MenuItems
-                class="bg-white absolute z-10 mt-2 w-auto dark:text-black origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                class="bg-white absolute z-10 mt-2 w-auto dark:bg-gray-800 origin-top-right rounded-md py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
               >
                 <MenuItem
                   v-for="item in navigation"
                   v-slot="{}"
                   :key="item.name"
-                  class="block w-auto border-gray-300 text-sm text-gray-700 rounded-md my-2 mx-2 px-3 py-3 font-medium"
                 >
                   <RouterLink
                     :to="{ name: item.name }"
+                    :class="[
+                      item.current
+                        ? 'bg-accent-500 text-white'
+                        : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700',
+                      'block w-auto text-sm rounded-md my-2 mx-2 px-3 py-3 font-medium transition-colors',
+                    ]"
                     :aria-current="item.current ? 'page' : undefined"
                   >
                     {{ item.name }}
@@ -105,9 +110,9 @@ const props = defineProps<{
                 :to="{ name: item.name }"
                 :class="[
                   item.current
-                    ? 'bg-gray-900 text-white'
+                    ? 'bg-accent-500 text-white'
                     : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                  'rounded-md px-3 py-2 text-sm font-medium',
+                  'rounded-md px-3 py-2 text-sm font-medium transition-colors',
                 ]"
                 :aria-current="item.current ? 'page' : undefined"
               >

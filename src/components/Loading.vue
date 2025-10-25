@@ -11,7 +11,7 @@ const props = withDefaults(
     type: "bar",
     size: "md",
     text: "",
-  }
+  },
 );
 
 const sizeClasses = computed(() => {
