@@ -12,7 +12,7 @@ const server = useServerStore();
     <div class="container mt-4 mb-6 w-full mx-auto px-4">
       <Title title="Registration" subtitle="Create your new account" />
 
-      <Loading v-if="server.logging_in" />
+      <Loading v-if="server.logging_in" text="Creating your account..." />
 
       <div
         v-if="server.config.initialised"
