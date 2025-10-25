@@ -18,6 +18,7 @@ import {
 import { useServerStore } from "@/stores/server";
 import { navigation } from "@/router";
 import type { KonarrUser } from "@/types";
+import { primaryButton, neutralButton } from "@/utils/buttonClasses";
 
 const server = useServerStore();
 
@@ -122,11 +123,9 @@ const props = defineProps<{
           class="absolute inset-y-0 right-0 flex items-center justify-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
         >
           <Menu as="div" class="relative ml-3">
-            <MenuButton
-              class="text-white rounded-md px-3 py-2 text-sm font-medium"
-              aria-label="Add new project"
-            >
-              <PlusCircleIcon class="h-7 w-7" aria-hidden="true" />
+            <MenuButton :class="primaryButton()" aria-label="Add new project">
+              <PlusCircleIcon class="h-5 w-5" aria-hidden="true" />
+              <span class="hidden sm:inline">New</span>
             </MenuButton>
 
             <transition
@@ -165,28 +164,26 @@ const props = defineProps<{
             <div>
               <MenuButton
                 aria-label="Open user menu"
-                class="relative flex rounded-full bg-accent-500 hover:bg-accent-600 text-sm px-6 py-1 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                :class="primaryButton()"
+                class="!px-2 !py-1.5"
               >
-                <span
-                  class="hidden md:block text-black text-sm font-medium truncate mr-4 mt-1.5"
-                >
-                  {{ props.user.username }}
-                </span>
-                <span class="absolute -inset-1.5" />
-                <span class="sr-only"
-                  >Open user menu for {{ props.user.username }}</span
-                >
                 <img
                   v-if="props.user.avatar"
-                  class="h-8 w-8 rounded-full"
+                  class="h-6 w-6 rounded-full"
                   :src="props.user.avatar"
                   :alt="`${props.user.username} avatar`"
                 />
                 <UserCircleIcon
                   v-else
-                  class="h-8 w-8 rounded-full text-black"
+                  class="h-6 w-6 rounded-full"
                   aria-hidden="true"
                 />
+                <span class="hidden md:inline text-sm font-medium truncate">
+                  {{ props.user.username }}
+                </span>
+                <span class="sr-only"
+                  >Open user menu for {{ props.user.username }}</span
+                >
               </MenuButton>
             </div>
             <transition
@@ -243,21 +240,16 @@ const props = defineProps<{
         <!-- Login -->
         <div
           v-else
-          class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
+          class="absolute inset-y-0 right-0 flex items-center gap-2 pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
         >
           <RouterLink
             v-if="server.config.registration"
             to="/register"
-            class="text-gray-300 bg-accent-500 hover:bg-accent-700 hover:text-white rounded-md px-6 py-2 text-sm font-medium mr-4"
+            :class="neutralButton()"
           >
             Register
           </RouterLink>
-          <RouterLink
-            to="/login"
-            class="text-gray-300 bg-accent-500 hover:bg-accent-600 hover:text-white rounded-md px-6 py-2 text-sm font-medium"
-          >
-            Login
-          </RouterLink>
+          <RouterLink to="/login" :class="primaryButton()"> Login </RouterLink>
         </div>
       </div>
     </div>

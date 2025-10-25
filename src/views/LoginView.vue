@@ -18,7 +18,7 @@ if (server.user) {
 <template>
   <main>
     <div class="container mt-4 mb-6 w-full mx-auto px-4">
-      <Title title="Login" />
+      <Title title="Login" subtitle="Sign in to your account" />
 
       <Loading v-if="server.logging_in" />
 

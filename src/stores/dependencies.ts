@@ -42,7 +42,7 @@ export const useDependenciesStore = defineStore("dependencies", {
       page: number = 0,
       limit: number = 12,
       top: boolean = true,
-      deptype: string | undefined = undefined
+      deptype: string | undefined = undefined,
     ) {
       // Get from URL if null
       if (deptype === undefined) {
@@ -108,7 +108,7 @@ export const useDependenciesStore = defineStore("dependencies", {
       } else {
         await client
           .get(
-            `/snapshots/${this.current}/dependencies?search=${search}&limit=10`
+            `/snapshots/${this.current}/dependencies?search=${search}&limit=10`,
           )
           .then((response) => {
             this.loading = false;

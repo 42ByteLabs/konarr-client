@@ -9,16 +9,21 @@ const server = useServerStore();
 
 <template>
   <main>
-    <div class="container mt-4 mb-6 w-full mx-auto">
-      <Title title="Registration" subtitle="Register a new user here!" />
+    <div class="container mt-4 mb-6 w-full mx-auto px-4">
+      <Title title="Registration" subtitle="Create your new account" />
 
       <Loading v-if="server.logging_in" />
 
-      <div v-if="server.config.initialised">
-        <h3 class="text-center text-2xl font-semibold text-gray-700 mb-4">
-          Setting up the server for the first time...
+      <div
+        v-if="server.config.initialised"
+        class="max-w-md mx-auto mb-6 p-4 bg-blue-100 dark:bg-blue-900 border border-blue-400 dark:border-blue-600 rounded"
+      >
+        <h3
+          class="text-center text-xl font-semibold text-blue-800 dark:text-blue-200 mb-2"
+        >
+          Initial Setup
         </h3>
-        <p class="text-center text-gray-600">
+        <p class="text-center text-blue-700 dark:text-blue-300 text-sm">
           You will be registered as an administrator user.
         </p>
       </div>
