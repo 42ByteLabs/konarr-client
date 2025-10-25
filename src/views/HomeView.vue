@@ -46,7 +46,7 @@ const hasSecurityIssues = computed(() => {
     server.security &&
       (server.security.critical > 0 ||
         server.security.high > 0 ||
-        server.security.medium > 0),
+        server.security.medium > 0)
   );
 });
 
@@ -162,7 +162,7 @@ const navigateToDependencies = () => {
                 ></div>
               </div>
               <div
-                v-else-if="projects.data.length === 0"
+                v-else-if="projects.projects.length === 0"
                 class="text-center py-12"
               >
                 <p class="text-gray-500 dark:text-gray-400">
@@ -177,7 +177,7 @@ const navigateToDependencies = () => {
               </div>
               <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <ProjectTile
-                  v-for="project in projects.data.slice(0, 6)"
+                  v-for="project in projects.projects.slice(0, 6)"
                   :key="project.id"
                   :project="project"
                 />

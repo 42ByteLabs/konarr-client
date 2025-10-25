@@ -17,7 +17,7 @@ const create = async () => {
     title.value,
     type.value,
     description.value,
-    parent.value
+    parent.value,
   );
 };
 

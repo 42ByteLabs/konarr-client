@@ -66,7 +66,7 @@ const selectables = {
           class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4 mt-8"
         >
           <DependencyTile
-            v-for="dep in dependencies.data"
+            v-for="dep in dependencies.dependencies"
             :key="dep.id"
             :dependency="dep"
           />

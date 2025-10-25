@@ -45,7 +45,7 @@ onMounted(() => {
 });
 
 let project = computed(() => {
-  return projects.data.find((p: Project) => p.id === projects.current);
+  return projects.projects.find((p: Project) => p.id === projects.current);
 });
 
 let title = computed(() => {

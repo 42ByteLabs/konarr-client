@@ -46,17 +46,19 @@ const cancel = () => {
 
 const project = computed(() => {
   // Return the project from the store if present, otherwise the local fallback
-  const foundProject = projects.data.find((p: Project) => p.id === project_id);
+  const foundProject = projects.projects.find(
+    (p: Project) => p.id === project_id
+  );
   return foundProject ?? localProject.value;
 });
 
 // Computed parents list (no side-effects) used by the parent select
 const parentsList = computed(() => {
-  const found = projects.data.find((p: Project) => p.id === project_id);
+  const found = projects.projects.find((p: Project) => p.id === project_id);
   if (found && Array.isArray(found.parents) && found.parents.length > 0) {
     return found.parents;
   }
-  return projects.data.filter((p: Project) => p.id !== project_id);
+  return projects.projects.filter((p: Project) => p.id !== project_id);
 });
 
 onMounted(() => {

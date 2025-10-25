@@ -53,7 +53,7 @@ onUpdated(() => {
 });
 
 var dependency = computed(() => {
-  return dependencies.data.find(
+  return dependencies.dependencies.find(
     (c: Dependency) => c.id === dependencies.current
   );
 });
