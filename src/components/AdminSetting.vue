@@ -255,16 +255,16 @@ onMounted(() => {
       <!-- Info Alert (when toggle is off) -->
       <div
         v-if="props.info && !enabled"
-        class="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 p-3 rounded"
+        class="bg-sec-information-50 dark:bg-sec-information-900/20 border-l-4 border-sec-information-500 p-3 rounded"
         role="alert"
       >
         <div class="flex items-start gap-3">
           <svg-icon
             type="mdi"
             :path="mdiInformationBox"
-            class="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5"
+            class="h-5 w-5 text-sec-information-600 dark:text-sec-information-400 flex-shrink-0 mt-0.5"
           />
-          <p class="text-sm text-blue-800 dark:text-blue-300">
+          <p class="text-sm text-sec-information-800 dark:text-sec-information-300">
             {{ props.info }}
           </p>
         </div>

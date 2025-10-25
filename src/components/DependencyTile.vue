@@ -17,6 +17,7 @@ import { mdiPackageVariantClosed, mdiChevronRight } from "@mdi/js";
 
 import type { Dependency } from "@/types";
 import DependencyIcon from "@/components/DependencyIcon.vue";
+import BaseBadge from "@/components/BaseBadge.vue";
 import { useDependenciesStore } from "@/stores/dependencies";
 
 const dependencies = useDependenciesStore();
@@ -99,11 +100,9 @@ const projectCount = computed(() => {
 
     <!-- Footer with Type and Project Count -->
     <div class="flex items-center justify-between text-sm">
-      <span
-        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent-100 text-accent-800 dark:bg-accent-900/30 dark:text-accent-300"
-      >
+      <BaseBadge variant="accent">
         {{ formattedType }}
-      </span>
+      </BaseBadge>
 
       <div
         v-if="projectCount > 0"

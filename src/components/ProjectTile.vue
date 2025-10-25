@@ -5,6 +5,7 @@ import { mdiGraph, mdiSecurity } from "@mdi/js";
 
 import type { Project } from "@/types";
 import ProjectIcon from "@/components/ProjectIcon.vue";
+import BaseBadge from "@/components/BaseBadge.vue";
 import { useProjectsStore } from "@/stores/projects";
 
 const projects = useProjectsStore();
@@ -133,11 +134,9 @@ const project = computed(() => {
 
     <!-- Optional: Project Type Badge -->
     <div class="mt-3">
-      <span
-        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent-100 text-accent-800 dark:bg-accent-900/30 dark:text-accent-300"
-      >
+      <BaseBadge variant="accent">
         {{ project.type }}
-      </span>
+      </BaseBadge>
     </div>
   </router-link>
 </template>

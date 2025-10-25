@@ -57,7 +57,7 @@ const register = async () => {
       <!-- Error message -->
       <div
         v-if="errorMessage"
-        class="mb-4 p-3 bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-300 rounded"
+        class="mb-4 p-3 bg-error-100 dark:bg-error-900 border border-error-400 dark:border-error-600 text-error-700 dark:text-error-300 rounded"
       >
         {{ errorMessage }}
       </div>
@@ -118,12 +118,12 @@ const register = async () => {
             'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-white dark:bg-gray-800 leading-tight focus:outline-none focus:shadow-outline',
             passwordsMatch
               ? 'dark:border-gray-600 focus:border-accent-500'
-              : 'border-red-500 dark:border-red-500',
+              : 'border-error-500 dark:border-error-500',
           ]"
         />
         <p
           v-if="!passwordsMatch && confirmPassword.length > 0"
-          class="mt-2 text-sm text-red-600 dark:text-red-400"
+          class="mt-2 text-sm text-error-600 dark:text-error-400"
         >
           Passwords do not match
         </p>
