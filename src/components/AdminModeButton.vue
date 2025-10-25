@@ -29,9 +29,15 @@ window.addEventListener("keypress", setAdminMode);
   <div class="mx-4 mt-1.5">
     <Switch
       v-model="adminModeEnabled"
+      :aria-label="
+        adminModeEnabled ? 'Disable admin mode' : 'Enable admin mode'
+      "
       :class="adminModeEnabled ? 'bg-accent-500' : 'bg-gray-500'"
       class="relative inline-flex h-6 w-11 items-center rounded-full"
     >
+      <span class="sr-only">
+        {{ adminModeEnabled ? "Admin mode enabled" : "Admin mode disabled" }}
+      </span>
       <span
         :class="adminModeEnabled ? 'translate-x-6' : 'translate-x-1'"
         class="inline-block h-4 w-4 transform rounded-full transition"
@@ -40,11 +46,17 @@ window.addEventListener("keypress", setAdminMode);
           <svg-icon
             type="mdi"
             :path="mdiShieldAccountOutline"
+            aria-hidden="true"
             class="w-4 h-4 text-black"
           />
         </div>
         <div v-else>
-          <svg-icon type="mdi" :path="mdiAccount" class="w-4 h-4 text-white" />
+          <svg-icon
+            type="mdi"
+            :path="mdiAccount"
+            aria-hidden="true"
+            class="w-4 h-4 text-white"
+          />
         </div>
       </span>
     </Switch>

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { KonarrServer } from "@/types";
+import type { ServerInfo } from "@/types";
 import DarkModeButton from "@/components/DarkModeButton.vue";
 import AdminModeButton from "@/components/AdminModeButton.vue";
 
 const props = defineProps<{
-  server: KonarrServer;
+  server: ServerInfo;
 }>();
 </script>
 <template>

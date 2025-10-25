@@ -1,44 +1,50 @@
 import { defineStore } from "pinia";
 import client from "@/client";
 import { handleErrors } from "@/stores/utils";
-import type { KonarrSnapshot } from "@/types";
+import type { Snapshot } from "@/types";
 
 export const useSnapshotsStore = defineStore("snapshots", {
-  state: (): { loading: boolean; snapshot: KonarrSnapshot | null } => ({
-    loading: false,
+  state: (): { loading: boolean; snapshot: Snapshot | null } => ({
+    loading: true,
     snapshot: null,
   }),
 
   actions: {
-    async getById(snapshotId: number): Promise<KonarrSnapshot | null> {
+    async getById(snapshotId: number): Promise<Snapshot | null> {
       this.loading = true;
       await client
-        .get(`/snapshots/${snapshotId}`)
+        .get<Snapshot>(`/snapshots/${snapshotId}`)
         .then((response) => {
           this.loading = false;
-          this.snapshot = response.data as KonarrSnapshot;
+          this.snapshot = response.data;
         })
         .catch((error) => {
           handleErrors(error);
           throw error;
+        })
+        .finally(() => {
+          this.loading = false;
         });
       return this.snapshot;
     },
 
-    async create(projectId: number): Promise<KonarrSnapshot | null> {
+    async create(projectId: number): Promise<Snapshot | null> {
       this.loading = true;
 
       await client
-        .post("/snapshots", {
+        .post<Snapshot>("/snapshots", {
           project_id: projectId,
         })
         .then((response) => {
           this.loading = false;
-          this.snapshot = response.data as KonarrSnapshot;
+          this.snapshot = response.data;
         })
         .catch((error) => {
           handleErrors(error);
           throw error;
+        })
+        .finally(() => {
+          this.loading = false;
         });
       return this.snapshot;
     },
@@ -88,7 +94,7 @@ export const useSnapshotsStore = defineStore("snapshots", {
       }
 
       await client
-        .request({
+        .request<Snapshot>({
           method: "POST",
           url: `/snapshots/${snapshotId}/bom`,
           data: await file.text(),
@@ -98,11 +104,14 @@ export const useSnapshotsStore = defineStore("snapshots", {
         })
         .then((response) => {
           this.loading = false;
-          this.snapshot = response.data as KonarrSnapshot;
+          this.snapshot = response.data;
         })
         .catch((error) => {
           handleErrors(error);
           throw error;
+        })
+        .finally(() => {
+          this.loading = false;
         });
       return this.snapshot;
     },

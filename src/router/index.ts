@@ -1,5 +1,6 @@
 // https://v3.router.vuejs.org/
 import { createRouter, createWebHistory } from "vue-router";
+import { reactive } from "vue";
 
 import HomeView from "@/views/HomeView.vue";
 // Auth Views
@@ -14,8 +15,8 @@ import ProjectEdit from "@/views/projects/ProjectEdit.vue";
 import DependenciesView from "@/views/dependencies/DependenciesView.vue";
 import DependencyView from "@/views/dependencies/DependencyView.vue";
 // Security Views
-import SecurityView from "@/views/SecurityView.vue";
-import SecurityAlertView from "@/views/SecurityAlertView.vue";
+import SecurityView from "@/views/security/SecurityView.vue";
+import SecurityAlertView from "@/views/security/SecurityAlertView.vue";
 // User views
 import UserProfileView from "@/views/users/UserProfile.vue";
 // Admin Views
@@ -23,6 +24,14 @@ import AdminView from "@/views/admin/AdminView.vue";
 import AdminUsersView from "@/views/admin/AdminUsersView.vue";
 import AdminSecurityView from "@/views/admin/AdminSecurityView.vue";
 import AdminAgentsView from "@/views/admin/AdminAgentsView.vue";
+
+// Create reactive navigation array
+export const navigation = reactive([
+  { name: "Home", current: false },
+  { name: "Projects", current: false },
+  { name: "Dependencies", current: false },
+  { name: "Security", current: false },
+]);
 
 export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -132,18 +141,35 @@ export const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  // Update the current navigation item
+  // Update the current navigation item based on route name
   navigation.forEach((item) => {
-    item.current = item.name === to.name;
+    // Check if the route name matches the nav item or if it's a sub-route
+    // For example, "Project" route should highlight "Projects" nav item
+    if (to.name === item.name) {
+      item.current = true;
+    } else if (
+      item.name === "Projects" &&
+      typeof to.name === "string" &&
+      to.name.startsWith("Project")
+    ) {
+      item.current = true;
+    } else if (
+      item.name === "Dependencies" &&
+      typeof to.name === "string" &&
+      to.name.startsWith("Dependenc")
+    ) {
+      item.current = true;
+    } else if (
+      item.name === "Security" &&
+      typeof to.name === "string" &&
+      (to.name === "Alert" || to.name.startsWith("Security"))
+    ) {
+      item.current = true;
+    } else {
+      item.current = false;
+    }
   });
   next();
 });
-
-export const navigation = [
-  { name: "Home", current: false },
-  { name: "Projects", current: false },
-  { name: "Dependencies", current: false },
-  { name: "Security", current: false },
-];
 
 export default router;

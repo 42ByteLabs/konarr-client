@@ -1,27 +1,52 @@
 import { defineStore } from "pinia";
 import client from "@/client";
-import { handleErrors } from "@/stores/utils";
+import { handleErrors, handleApiResponse } from "@/stores/utils";
 
-import type { KonarrDependencies } from "@/types";
+import type {
+  Dependencies,
+  Dependency,
+  DependenciesResponse,
+  DependencyResponse,
+} from "@/types";
 import router from "@/router";
 
 export const useDependenciesStore = defineStore("dependencies", {
-  state: () =>
-    ({
-      data: [],
-      loading: true,
-      current: null,
+  state: () => ({
+    data: {
+      data: [] as Dependency[],
+      pages: 0,
       total: 0,
       count: 0,
-      pages: 0,
-      page: 0,
-      limit: 0,
-    }) as KonarrDependencies,
+    } as Dependencies,
+    loading: true,
+    page: 0,
+    limit: 24,
+    current: null as number | null,
+  }),
 
+  getters: {
+    dependencies(state): Dependency[] {
+      return state.data.data;
+    },
+    pages(state): number {
+      return state.data.pages;
+    },
+    total(state): number {
+      return state.data.total;
+    },
+    count(state): number {
+      return state.data.count;
+    },
+  },
   actions: {
     // Set the snapshot ID
     setSnapshot(snapid: number) {
       this.current = snapid;
+    },
+
+    find(d: number | null): Dependency | undefined {
+      if (d === null) return undefined;
+      return this.data.data.find((dep) => dep.id === d);
     },
 
     async getDependency(id?: number, snapshot?: number) {
@@ -32,7 +57,7 @@ export const useDependenciesStore = defineStore("dependencies", {
         this.current = id;
       }
 
-      const result = this.data.find((dep) => dep.id === this.current);
+      const result = this.data.data.find((dep) => dep.id === this.current);
       if (!result) {
         await this.fetchDependency(this.current, snapshot);
       }
@@ -40,10 +65,11 @@ export const useDependenciesStore = defineStore("dependencies", {
 
     async fetchDependencies(
       page: number = 0,
-      limit: number = 10,
+      limit: number = 12,
       top: boolean = true,
       deptype: string | undefined = undefined,
     ) {
+      this.loading = true;
       // Get from URL if null
       if (deptype === undefined) {
         const selectParam = router.currentRoute.value.query.select;
@@ -62,33 +88,35 @@ export const useDependenciesStore = defineStore("dependencies", {
 
       if (this.current === 0) {
         await client
-          .get(`/dependencies?${params}`)
+          .get<DependenciesResponse>(`/dependencies?${params}`)
           .then((response) => {
-            this.loading = false;
-            this.data = response.data.data;
-
-            this.total = response.data.total;
-            this.count = response.data.count;
-            this.pages = response.data.pages;
-            this.page = page;
+            const data = handleApiResponse(response.data);
+            if (data) {
+              this.data = data;
+            }
           })
           .catch((error) => {
             handleErrors(error);
+          })
+          .finally(() => {
+            this.loading = false;
           });
       } else {
         await client
-          .get(`/snapshots/${this.current}/dependencies?${params}`)
+          .get<DependenciesResponse>(
+            `/snapshots/${this.current}/dependencies?${params}`,
+          )
           .then((response) => {
-            this.loading = false;
-            this.data = response.data.data;
-
-            this.total = response.data.total;
-            this.count = response.data.count;
-            this.pages = response.data.pages;
-            this.page = page;
+            const data = handleApiResponse(response.data);
+            if (data) {
+              this.data = data;
+            }
           })
           .catch((error) => {
             handleErrors(error);
+          })
+          .finally(() => {
+            this.loading = false;
           });
       }
     },
@@ -96,26 +124,35 @@ export const useDependenciesStore = defineStore("dependencies", {
     async searchDependencies(search: string) {
       if (this.current === 0) {
         await client
-          .get(`/dependencies?search=${search}&limit=24`)
+          .get<DependenciesResponse>(`/dependencies?search=${search}&limit=24`)
           .then((response) => {
-            this.loading = false;
-            this.data = response.data.data;
-            this.count = response.data.count;
+            const data = handleApiResponse(response.data);
+            if (data) {
+              this.data = data;
+            }
           })
           .catch((error) => {
             handleErrors(error);
+          })
+          .finally(() => {
+            this.loading = false;
           });
       } else {
         await client
-          .get(
+          .get<DependenciesResponse>(
             `/snapshots/${this.current}/dependencies?search=${search}&limit=10`,
           )
           .then((response) => {
-            this.loading = false;
-            this.data = response.data.data;
+            const data = handleApiResponse(response.data);
+            if (data) {
+              this.data = data;
+            }
           })
           .catch((error) => {
             handleErrors(error);
+          })
+          .finally(() => {
+            this.loading = false;
           });
       }
     },
@@ -130,29 +167,36 @@ export const useDependenciesStore = defineStore("dependencies", {
       }
 
       await client
-        .get(`/dependencies/${this.current}?${params}`)
+        .get<DependencyResponse>(`/dependencies/${this.current}?${params}`)
         .then((response) => {
-          this.loading = false;
-          // If the item already exists, resplce it or push it
-          const index = this.data.findIndex((item) => item.id === this.current);
-          if (index !== -1) {
-            this.data[index] = response.data;
-          } else {
-            this.data.push(response.data);
+          const dependency = handleApiResponse(response.data);
+          if (dependency) {
+            // If the item already exists, replace it or push it
+            const index = this.data.data.findIndex(
+              (item) => item.id === this.current,
+            );
+            if (index !== -1) {
+              this.data.data[index] = dependency;
+            } else {
+              this.data.data.push(dependency);
+            }
           }
         })
         .catch((error) => {
           handleErrors(error);
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
 
-    async fetchNextPage() {
+    async fetchNextPage(limit?: number) {
       const sselect = router.currentRoute.value.query.select;
       const top = sselect === undefined;
 
       if (this.page < this.pages) {
         if (this.current) {
-          await this.fetchDependencies(this.page + 1);
+          await this.fetchDependencies(this.page + 1, limit);
         } else {
           const selectParam = router.currentRoute.value.query.select;
           const sselectStr = Array.isArray(selectParam)
@@ -164,7 +208,7 @@ export const useDependenciesStore = defineStore("dependencies", {
       }
     },
 
-    async fetchPrevPage() {
+    async fetchPrevPage(limit?: number) {
       const selectParam = router.currentRoute.value.query.select;
       const sselectStr = Array.isArray(selectParam)
         ? selectParam[0] || undefined
@@ -173,7 +217,7 @@ export const useDependenciesStore = defineStore("dependencies", {
 
       if (this.page !== 0) {
         if (this.current) {
-          await this.fetchDependencies(this.page - 1);
+          await this.fetchDependencies(this.page - 1, limit);
         } else {
           await this.fetchDependencies(this.page - 1, 24, top, sselectStr);
           if (this.isFirstPage()) {

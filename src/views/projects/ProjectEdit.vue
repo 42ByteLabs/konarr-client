@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
 import { router } from "@/router";
-import type { KonarrProject } from "@/types";
+import type { Project } from "@/types";
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiLanguageMarkdown, mdiContentSave } from "@mdi/js";
 
@@ -18,7 +18,7 @@ const project_id = parseInt(
 );
 
 // persistent fallback project used until the store returns the real project
-const localProject = ref<KonarrProject>({
+const localProject = ref<Project>({
   id: project_id,
   name: "",
   title: "Untitled Project",
@@ -37,7 +37,7 @@ const update = async () => {
     type: project.value?.type || "Server",
     description: project.value?.description || "",
     parent: project.value?.parent || 0,
-  } as KonarrProject);
+  } as Project);
 };
 
 const cancel = () => {
@@ -46,19 +46,19 @@ const cancel = () => {
 
 const project = computed(() => {
   // Return the project from the store if present, otherwise the local fallback
-  const foundProject = projects.data.find(
-    (p: KonarrProject) => p.id === project_id,
+  const foundProject = projects.projects.find(
+    (p: Project) => p.id === project_id,
   );
   return foundProject ?? localProject.value;
 });
 
 // Computed parents list (no side-effects) used by the parent select
 const parentsList = computed(() => {
-  const found = projects.data.find((p: KonarrProject) => p.id === project_id);
+  const found = projects.projects.find((p: Project) => p.id === project_id);
   if (found && Array.isArray(found.parents) && found.parents.length > 0) {
     return found.parents;
   }
-  return projects.data.filter((p: KonarrProject) => p.id !== project_id);
+  return projects.projects.filter((p: Project) => p.id !== project_id);
 });
 
 onMounted(() => {

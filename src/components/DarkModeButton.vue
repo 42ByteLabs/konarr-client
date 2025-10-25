@@ -27,9 +27,13 @@ onMounted(() => {
     <Switch
       v-model="enabled"
       :class="enabled ? 'bg-accent-500' : 'bg-black'"
+      :aria-label="enabled ? 'Switch to light mode' : 'Switch to dark mode'"
       class="relative inline-flex h-6 w-11 items-center rounded-full"
       @click="toggle"
     >
+      <span class="sr-only">
+        {{ enabled ? "Dark mode enabled" : "Light mode enabled" }}
+      </span>
       <span
         :class="enabled ? 'translate-x-6' : 'translate-x-1'"
         class="inline-block h-4 w-4 transform rounded-full transition"
@@ -38,6 +42,7 @@ onMounted(() => {
           <svg-icon
             type="mdi"
             :path="mdiWeatherNight"
+            aria-hidden="true"
             class="w-4 h-4 text-black"
           />
         </div>
@@ -45,6 +50,7 @@ onMounted(() => {
           <svg-icon
             type="mdi"
             :path="mdiWhiteBalanceSunny"
+            aria-hidden="true"
             class="w-4 h-4 text-white"
           />
         </div>

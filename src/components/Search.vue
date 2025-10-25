@@ -66,8 +66,8 @@ const search = (value: string) => {
       router.push({ query: { search: value } });
       admin.getUsers({ page: 0, limit: props.limit || 10, search: value });
     }
-    count.value = admin.userStats?.active || 0;
-    total.value = admin.userStats?.total || 0;
+    count.value = admin.adminSettings.userStats?.active || 0;
+    total.value = admin.adminSettings.userStats?.total || 0;
   } else {
     console.error("Unknown searching type: " + props.searching);
   }

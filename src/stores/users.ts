@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { handleErrors } from "@/stores/utils";
 import client from "@/client";
 
-import type { SessionSummary, KonarrUser } from "@/types";
+import type { SessionSummary, User } from "@/types";
 
 export const useUsersStore = defineStore("users", {
   state: () => ({
@@ -13,10 +13,10 @@ export const useUsersStore = defineStore("users", {
 
   actions: {
     // Fetch the current authenticated user via the server-mounted `/user` endpoints
-    async whoami(): Promise<KonarrUser | null> {
+    async whoami(): Promise<User | null> {
       try {
-        const res = await client.get("/user/whoami");
-        return res.data as KonarrUser;
+        const res = await client.get<User>("/user/whoami");
+        return res.data;
       } catch (e) {
         handleErrors(e as any);
         return null;
@@ -27,7 +27,7 @@ export const useUsersStore = defineStore("users", {
     async changePassword(current: string, next: string, confirm: string) {
       this.changingPassword = true;
       try {
-        const res = await client.patch("/user/password", {
+        const res = await client.patch<{ status: string }>("/user/password", {
           current_password: current,
           new_password: next,
           new_password_confirm: confirm,
@@ -45,9 +45,8 @@ export const useUsersStore = defineStore("users", {
     async listSessions() {
       this.loading = true;
       try {
-        const res = await client.get("/user/sessions");
-        const data: SessionSummary[] = res.data;
-        this.sessions = data;
+        const res = await client.get<SessionSummary[]>("/user/sessions");
+        this.sessions = res.data;
         return this.sessions;
       } catch (e) {
         handleErrors(e as any);
