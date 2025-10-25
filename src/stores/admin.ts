@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import client from "@/client";
 import { handleErrors } from "@/stores/utils";
 
-import type { AdminSettings } from "@/types";
+import type { AdminSettings, AdminUser } from "@/types";
 
 /** Admin Store State
  *
@@ -47,7 +47,7 @@ export const useAdminStore = defineStore("admin", {
     async fetchInfo() {
       this.loading = true;
       await client
-        .get("/admin")
+        .get<AdminSettings>("/admin")
         .then((response) => {
           this.settings = response.data.settings;
           this.projectStats = response.data.projectStats;
@@ -73,7 +73,7 @@ export const useAdminStore = defineStore("admin", {
       data[name] = value;
 
       await client
-        .patch("/admin", data)
+        .patch<AdminSettings>("/admin", data)
         .then((response) => {
           this.settings = response.data.settings;
         })
@@ -97,7 +97,14 @@ export const useAdminStore = defineStore("admin", {
       }
 
       await client
-        .get("/admin/users", { params: query })
+        .get<{
+          users: AdminUser[];
+          userStats: any;
+          page?: number;
+          pages?: number;
+          limit?: number;
+          total?: number;
+        }>("/admin/users", { params: query })
         .then((response) => {
           // Expecting an object with users list and pagination/stats
           if (response.data.users) this.users = response.data.users;
@@ -127,7 +134,7 @@ export const useAdminStore = defineStore("admin", {
       }
 
       await client
-        .patch(`/admin/users/${id}`, payload)
+        .patch<AdminUser>(`/admin/users/${id}`, payload)
         .then((response) => {
           console.error("Update User Error", response);
         })

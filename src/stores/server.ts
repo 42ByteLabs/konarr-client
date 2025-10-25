@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
 import router from "@/router";
 import client from "@/client";
-import { handleErrors } from "@/stores/utils";
+import { handleErrors, handleApiResponse } from "@/stores/utils";
 
-import type { ServerInfo } from "@/types";
+import type { ServerInfoResponse, ServerInfo } from "@/types";
 
 export const useServerStore = defineStore("konarr", {
   state: () => ({
@@ -36,27 +36,23 @@ export const useServerStore = defineStore("konarr", {
     // Fetch the server information
     async fetchInfo() {
       await client
-        .get("/")
+        .get<ServerInfoResponse>("/")
         .then((response) => {
-          this.info.version = response.data.version;
-          this.info.commit = response.data.commit;
-          this.info.config = response.data.config;
+          const data = handleApiResponse(response.data);
 
-          if (response.data.user) {
-            this.info.user = response.data.user;
-            this.info.projects = response.data.projects;
-            this.info.dependencies = response.data.dependencies;
-            this.info.security = response.data.security;
-
-            this.setAdminMode();
-          } else {
-            if (
-              !this.info.config.initialised ||
-              this.info.config.registration === true
-            ) {
-              router.push({ name: "Register" });
+          if (data) {
+            this.info = data;
+            if (this.info.user) {
+              this.setAdminMode();
             } else {
-              router.push({ name: "Login" });
+              if (
+                !this.info.config.initialised ||
+                this.info.config.registration === true
+              ) {
+                router.push({ name: "Register" });
+              } else {
+                router.push({ name: "Login" });
+              }
             }
           }
         })
@@ -68,7 +64,7 @@ export const useServerStore = defineStore("konarr", {
     async login(username: string, password: string) {
       this.loggingIn = true;
       await client
-        .post("/auth/login", {
+        .post<{ status: string }>("/auth/login", {
           username: username,
           password: password,
         })
@@ -87,7 +83,7 @@ export const useServerStore = defineStore("konarr", {
 
     async logout() {
       await client
-        .post("/auth/logout", {})
+        .post<{ status: string }>("/auth/logout", {})
         .then((response) => {
           if (response.data.status !== "success") {
             console.error(response.data);
@@ -105,7 +101,7 @@ export const useServerStore = defineStore("konarr", {
     async register(username: string, password: string) {
       this.loggingIn = true;
       await client
-        .post("/auth/register", {
+        .post<{ status: string }>("/auth/register", {
           username: username,
           password: password,
           password_confirm: password,

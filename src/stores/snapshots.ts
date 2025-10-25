@@ -13,10 +13,10 @@ export const useSnapshotsStore = defineStore("snapshots", {
     async getById(snapshotId: number): Promise<Snapshot | null> {
       this.loading = true;
       await client
-        .get(`/snapshots/${snapshotId}`)
+        .get<Snapshot>(`/snapshots/${snapshotId}`)
         .then((response) => {
           this.loading = false;
-          this.snapshot = response.data as Snapshot;
+          this.snapshot = response.data;
         })
         .catch((error) => {
           handleErrors(error);
@@ -29,12 +29,12 @@ export const useSnapshotsStore = defineStore("snapshots", {
       this.loading = true;
 
       await client
-        .post("/snapshots", {
+        .post<Snapshot>("/snapshots", {
           project_id: projectId,
         })
         .then((response) => {
           this.loading = false;
-          this.snapshot = response.data as Snapshot;
+          this.snapshot = response.data;
         })
         .catch((error) => {
           handleErrors(error);
@@ -68,13 +68,13 @@ export const useSnapshotsStore = defineStore("snapshots", {
       // Check extension
       const fileName = file.name.toLowerCase();
       const fileExtensionValid = allowedExtensions.some((ext) =>
-        fileName.endsWith(ext)
+        fileName.endsWith(ext),
       );
 
       if (!fileTypeValid && !fileExtensionValid) {
         this.loading = false;
         throw new Error(
-          "Invalid file type. Only .json and .xml files are allowed."
+          "Invalid file type. Only .json and .xml files are allowed.",
         );
       }
       if (this.snapshot && this.snapshot.status === "Failed") {
@@ -88,7 +88,7 @@ export const useSnapshotsStore = defineStore("snapshots", {
       }
 
       await client
-        .request({
+        .request<Snapshot>({
           method: "POST",
           url: `/snapshots/${snapshotId}/bom`,
           data: await file.text(),
@@ -98,7 +98,7 @@ export const useSnapshotsStore = defineStore("snapshots", {
         })
         .then((response) => {
           this.loading = false;
-          this.snapshot = response.data as Snapshot;
+          this.snapshot = response.data;
         })
         .catch((error) => {
           handleErrors(error);
