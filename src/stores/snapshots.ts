@@ -1,22 +1,22 @@
 import { defineStore } from "pinia";
 import client from "@/client";
 import { handleErrors } from "@/stores/utils";
-import type { KonarrSnapshot } from "@/types";
+import type { Snapshot } from "@/types";
 
 export const useSnapshotsStore = defineStore("snapshots", {
-  state: (): { loading: boolean; snapshot: KonarrSnapshot | null } => ({
+  state: (): { loading: boolean; snapshot: Snapshot | null } => ({
     loading: false,
     snapshot: null,
   }),
 
   actions: {
-    async getById(snapshotId: number): Promise<KonarrSnapshot | null> {
+    async getById(snapshotId: number): Promise<Snapshot | null> {
       this.loading = true;
       await client
         .get(`/snapshots/${snapshotId}`)
         .then((response) => {
           this.loading = false;
-          this.snapshot = response.data as KonarrSnapshot;
+          this.snapshot = response.data as Snapshot;
         })
         .catch((error) => {
           handleErrors(error);
@@ -25,7 +25,7 @@ export const useSnapshotsStore = defineStore("snapshots", {
       return this.snapshot;
     },
 
-    async create(projectId: number): Promise<KonarrSnapshot | null> {
+    async create(projectId: number): Promise<Snapshot | null> {
       this.loading = true;
 
       await client
@@ -34,7 +34,7 @@ export const useSnapshotsStore = defineStore("snapshots", {
         })
         .then((response) => {
           this.loading = false;
-          this.snapshot = response.data as KonarrSnapshot;
+          this.snapshot = response.data as Snapshot;
         })
         .catch((error) => {
           handleErrors(error);
@@ -68,13 +68,13 @@ export const useSnapshotsStore = defineStore("snapshots", {
       // Check extension
       const fileName = file.name.toLowerCase();
       const fileExtensionValid = allowedExtensions.some((ext) =>
-        fileName.endsWith(ext),
+        fileName.endsWith(ext)
       );
 
       if (!fileTypeValid && !fileExtensionValid) {
         this.loading = false;
         throw new Error(
-          "Invalid file type. Only .json and .xml files are allowed.",
+          "Invalid file type. Only .json and .xml files are allowed."
         );
       }
       if (this.snapshot && this.snapshot.status === "Failed") {
@@ -98,7 +98,7 @@ export const useSnapshotsStore = defineStore("snapshots", {
         })
         .then((response) => {
           this.loading = false;
-          this.snapshot = response.data as KonarrSnapshot;
+          this.snapshot = response.data as Snapshot;
         })
         .catch((error) => {
           handleErrors(error);

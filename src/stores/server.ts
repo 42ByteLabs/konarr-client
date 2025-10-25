@@ -3,22 +3,34 @@ import router from "@/router";
 import client from "@/client";
 import { handleErrors } from "@/stores/utils";
 
-import type { KonarrServer } from "@/types";
+import type { ServerInfo } from "@/types";
 
 export const useServerStore = defineStore("konarr", {
-  state: () =>
-    ({
+  state: () => ({
+    info: {
       version: "0.0.0",
       commit: "0000000",
       config: {
         initialised: false,
-        registration: true,
+        registration: false,
       },
-      // Is the user is logging in
-      logging_in: false,
-      // Admin mode
-      adminMode: false,
-    }) as KonarrServer,
+    } as ServerInfo,
+    // Is the user is logging in
+    loggingIn: false,
+    // Admin mode
+    adminMode: false,
+  }),
+
+  getters: {
+    // Convenient getters for accessing nested properties
+    version: (state) => state.info.version,
+    commit: (state) => state.info.commit,
+    config: (state) => state.info.config,
+    user: (state) => state.info.user,
+    projects: (state) => state.info.projects,
+    dependencies: (state) => state.info.dependencies,
+    security: (state) => state.info.security,
+  },
 
   actions: {
     // Fetch the server information
@@ -26,19 +38,22 @@ export const useServerStore = defineStore("konarr", {
       await client
         .get("/")
         .then((response) => {
-          this.version = response.data.version;
-          this.commit = response.data.commit;
-          this.config = response.data.config;
+          this.info.version = response.data.version;
+          this.info.commit = response.data.commit;
+          this.info.config = response.data.config;
 
           if (response.data.user) {
-            this.user = response.data.user;
-            this.projects = response.data.projects;
-            this.dependencies = response.data.dependencies;
-            this.security = response.data.security;
+            this.info.user = response.data.user;
+            this.info.projects = response.data.projects;
+            this.info.dependencies = response.data.dependencies;
+            this.info.security = response.data.security;
 
             this.setAdminMode();
           } else {
-            if (!this.config.initialised || this.config.registration === true) {
+            if (
+              !this.info.config.initialised ||
+              this.info.config.registration === true
+            ) {
               router.push({ name: "Register" });
             } else {
               router.push({ name: "Login" });
@@ -51,21 +66,21 @@ export const useServerStore = defineStore("konarr", {
     },
 
     async login(username: string, password: string) {
-      this.logging_in = true;
+      this.loggingIn = true;
       await client
         .post("/auth/login", {
           username: username,
           password: password,
         })
         .then((response) => {
-          this.logging_in = false;
+          this.loggingIn = false;
           if (response.data.status === "success") {
             this.fetchInfo();
             router.push({ name: "Home" });
           }
         })
         .catch((error) => {
-          this.logging_in = false;
+          this.loggingIn = false;
           handleErrors(error);
         });
     },
@@ -88,7 +103,7 @@ export const useServerStore = defineStore("konarr", {
     },
 
     async register(username: string, password: string) {
-      this.logging_in = true;
+      this.loggingIn = true;
       await client
         .post("/auth/register", {
           username: username,
@@ -96,7 +111,7 @@ export const useServerStore = defineStore("konarr", {
           password_confirm: password,
         })
         .then((response) => {
-          this.logging_in = false;
+          this.loggingIn = false;
           if (response.data.status === "success") {
             router.push({ name: "Login" });
           } else {
@@ -119,7 +134,7 @@ export const useServerStore = defineStore("konarr", {
     },
 
     toggleAdminMode() {
-      if (this.user?.role === "Admin") {
+      if (this.info.user?.role === "Admin") {
         this.adminMode = !this.adminMode;
         // Save admin mode to local storage
         localStorage.setItem("adminMode", this.adminMode.toString());

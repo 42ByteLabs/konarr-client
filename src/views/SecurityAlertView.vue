@@ -2,7 +2,7 @@
 import { onMounted, computed } from "vue";
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiShieldAlert, mdiMenuLeft, mdiPackageVariantClosed } from "@mdi/js";
-import type { KonarrSecurityAlert } from "@/types";
+import type { SecurityAlert } from "@/types";
 
 import Title from "@/components/Title.vue";
 import SecurityIcon from "@/components/SecurityIcon.vue";
@@ -19,9 +19,7 @@ onMounted(() => {
 });
 
 var alert = computed(() => {
-  return security.data.find(
-    (c: KonarrSecurityAlert) => c.id === security.current,
-  );
+  return security.data.find((c: SecurityAlert) => c.id === security.current);
 });
 
 // Get severity-specific styling

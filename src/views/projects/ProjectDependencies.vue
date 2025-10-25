@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { KonarrProject } from "@/types";
+import type { Project } from "@/types";
 import DependenciesList from "@/components/DependenciesList.vue";
 
-const props = defineProps<{ project: KonarrProject }>();
+const props = defineProps<{ project: Project }>();
 </script>
 
 <template>

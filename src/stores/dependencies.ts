@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import client from "@/client";
 import { handleErrors } from "@/stores/utils";
 
-import type { KonarrDependencies } from "@/types";
+import type { Dependencies } from "@/types";
 import router from "@/router";
 
 export const useDependenciesStore = defineStore("dependencies", {
@@ -16,7 +16,7 @@ export const useDependenciesStore = defineStore("dependencies", {
       pages: 0,
       page: 0,
       limit: 0,
-    }) as KonarrDependencies,
+    }) as Dependencies,
 
   actions: {
     // Set the snapshot ID

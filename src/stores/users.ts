@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { handleErrors } from "@/stores/utils";
 import client from "@/client";
 
-import type { SessionSummary, KonarrUser } from "@/types";
+import type { SessionSummary, User } from "@/types";
 
 export const useUsersStore = defineStore("users", {
   state: () => ({
@@ -13,10 +13,10 @@ export const useUsersStore = defineStore("users", {
 
   actions: {
     // Fetch the current authenticated user via the server-mounted `/user` endpoints
-    async whoami(): Promise<KonarrUser | null> {
+    async whoami(): Promise<User | null> {
       try {
         const res = await client.get("/user/whoami");
-        return res.data as KonarrUser;
+        return res.data as User;
       } catch (e) {
         handleErrors(e as any);
         return null;

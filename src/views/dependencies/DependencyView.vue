@@ -11,7 +11,7 @@ import {
 import { router } from "@/router";
 
 import Title from "@/components/Title.vue";
-import type { KonarrDependency } from "@/types";
+import type { Dependency } from "@/types";
 
 import { useDependenciesStore } from "@/stores/dependencies";
 import ProjectTile from "@/components/ProjectTile.vue";
@@ -54,7 +54,7 @@ onUpdated(() => {
 
 var dependency = computed(() => {
   return dependencies.data.find(
-    (c: KonarrDependency) => c.id === dependencies.current,
+    (c: Dependency) => c.id === dependencies.current
   );
 });
 var dependency_type = computed(() => {

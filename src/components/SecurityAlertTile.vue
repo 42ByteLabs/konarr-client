@@ -15,14 +15,14 @@ import { computed } from "vue";
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiChevronRight } from "@mdi/js";
 
-import type { KonarrSecurityAlert } from "@/types";
+import type { SecurityAlert } from "@/types";
 import SecurityIcon from "@/components/SecurityIcon.vue";
 import { useSecurityStore } from "@/stores/security";
 
 const security = useSecurityStore();
 
 const props = defineProps<{
-  alert?: KonarrSecurityAlert;
+  alert?: SecurityAlert;
   id?: number;
 }>();
 
@@ -30,7 +30,7 @@ const alert = computed(() => {
   if (props.alert) {
     return props.alert;
   } else if (props.id) {
-    return security.data.find((a: KonarrSecurityAlert) => a.id === props.id);
+    return security.data.find((a: SecurityAlert) => a.id === props.id);
   }
   return null;
 });

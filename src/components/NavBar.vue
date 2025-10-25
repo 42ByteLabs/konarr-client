@@ -17,13 +17,13 @@ import {
 
 import { useServerStore } from "@/stores/server";
 import { navigation } from "@/router";
-import type { KonarrUser } from "@/types";
-import { primaryButton, neutralButton } from "@/utils/buttonClasses";
+import type { User } from "@/types";
+import { neutralButton, primaryButton } from "@/utils/buttonClasses";
 
 const server = useServerStore();
 
 const props = defineProps<{
-  user?: KonarrUser;
+  user?: User;
 }>();
 </script>
 

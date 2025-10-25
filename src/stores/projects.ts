@@ -3,7 +3,7 @@ import client from "@/client";
 import { handleErrors } from "@/stores/utils";
 
 import router from "@/router";
-import type { KonarrProjects, KonarrProject } from "@/types";
+import type { Projects, Project } from "@/types";
 
 export const useProjectsStore = defineStore("projects", {
   state: () =>
@@ -16,14 +16,14 @@ export const useProjectsStore = defineStore("projects", {
       pages: 0,
       page: 0,
       limit: 0,
-    }) as KonarrProjects,
+    }) as Projects,
 
   actions: {
     async fetchProjects(
       page: number = 0,
       limit: number = 24,
       top: boolean = true,
-      select?: string,
+      select?: string
     ) {
       this.page = page;
 
@@ -119,7 +119,7 @@ export const useProjectsStore = defineStore("projects", {
       }
     },
 
-    async fetchParents(): Promise<KonarrProject[] | undefined> {
+    async fetchParents(): Promise<Project[] | undefined> {
       try {
         const response = await client.get("/projects?parents=true");
         const index = this.data.findIndex((p) => p.id === this.current);
@@ -148,7 +148,7 @@ export const useProjectsStore = defineStore("projects", {
       name: string,
       type: string,
       description?: string,
-      parent?: number,
+      parent?: number
     ) {
       await client
         .post("/projects", { name, type, description, parent })
@@ -161,7 +161,7 @@ export const useProjectsStore = defineStore("projects", {
         });
     },
 
-    async update(project: KonarrProject) {
+    async update(project: Project) {
       console.log("Update Project", project);
 
       await client

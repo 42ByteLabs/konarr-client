@@ -3,14 +3,14 @@ import { computed } from "vue";
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiGraph, mdiSecurity } from "@mdi/js";
 
-import type { KonarrProject } from "@/types";
+import type { Project } from "@/types";
 import ProjectIcon from "@/components/ProjectIcon.vue";
 import { useProjectsStore } from "@/stores/projects";
 
 const projects = useProjectsStore();
 
 const props = defineProps<{
-  project?: KonarrProject;
+  project?: Project;
   id?: number;
 }>();
 
@@ -19,7 +19,7 @@ const project = computed(() => {
     return props.project;
   } else if (props.id) {
     projects.getCurrentProject(props.id);
-    return projects.data.find((p: KonarrProject) => p.id === projects.current);
+    return projects.data.find((p: Project) => p.id === projects.current);
   }
   return null;
 });

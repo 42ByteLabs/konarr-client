@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { KonarrProject } from "@/types";
+import type { Project } from "@/types";
 import SecuritySummary from "@/components/SecuritySummary.vue";
 import ProjectInfo from "@/components/ProjectInfo.vue";
 
-const props = defineProps<{ id: number; project: KonarrProject }>();
+const props = defineProps<{ id: number; project: Project }>();
 </script>
 
 <template>

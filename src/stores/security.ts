@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import client from "@/client";
 import { handleErrors } from "@/stores/utils";
 
-import type { KonarrSecurityAlerts } from "@/types";
+import type { SecurityAlerts } from "@/types";
 import router from "@/router";
 
 export const useSecurityStore = defineStore("security", {
@@ -16,7 +16,7 @@ export const useSecurityStore = defineStore("security", {
       pages: 0,
       page: 0,
       limit: 0,
-    }) as KonarrSecurityAlerts,
+    }) as SecurityAlerts,
 
   actions: {
     async getAlert(id?: number) {
@@ -78,7 +78,7 @@ export const useSecurityStore = defineStore("security", {
       snapshot: number,
       page?: number,
       limit?: number,
-      severity?: string,
+      severity?: string
     ) {
       let params = `page=${page}&limit=${limit}`;
       if (severity) {

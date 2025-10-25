@@ -2,35 +2,46 @@ import { defineStore } from "pinia";
 import client from "@/client";
 import { handleErrors } from "@/stores/utils";
 
-import type { KonarrAdmin } from "@/types";
+import type { AdminSettings } from "@/types";
+
+/** Admin Store State
+ *
+ * Extends AdminSettings (API response) with client-side state
+ */
+interface AdminStoreState extends AdminSettings {
+  /** Loading state indicator (client-side) */
+  loading: boolean;
+  /** Current page number for user pagination (client-side) */
+  page: number;
+  /** Total number of pages for user pagination (client-side) */
+  pages: number;
+  /** Items per page limit for user pagination (client-side) */
+  limit: number;
+  /** Total number of users (client-side) */
+  total: number;
+}
 
 export const useAdminStore = defineStore("admin", {
-  state: () =>
-    ({
-      loading: true,
-      settings: {},
-      projectStats: {
-        total: 0,
-        inactive: 0,
-        archived: 0,
-      },
-      project_stats: {
-        total: 0,
-        inactive: 0,
-        archived: 0,
-      },
-      users: [],
-      userStats: {
-        total: 0,
-        active: 0,
-        inactive: 0,
-      },
-      // pagination for users
-      page: 0,
-      pages: 0,
-      limit: 24,
+  state: (): AdminStoreState => ({
+    loading: true,
+    settings: {},
+    projectStats: {
       total: 0,
-    }) as KonarrAdmin,
+      inactive: 0,
+      archived: 0,
+    },
+    users: [],
+    userStats: {
+      total: 0,
+      active: 0,
+      inactive: 0,
+    },
+    // pagination for users (client-side)
+    page: 0,
+    pages: 0,
+    limit: 24,
+    total: 0,
+  }),
 
   actions: {
     async fetchInfo() {

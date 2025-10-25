@@ -12,7 +12,7 @@ import DOMPurify from "dompurify";
 
 const md = new MarkdownIt();
 
-import type { KonarrProject } from "@/types";
+import type { Project } from "@/types";
 
 import Title from "@/components/Title.vue";
 import ProjectIcon from "@/components/ProjectIcon.vue";
@@ -45,7 +45,7 @@ onMounted(() => {
 });
 
 let project = computed(() => {
-  return projects.data.find((p: KonarrProject) => p.id === projects.current);
+  return projects.data.find((p: Project) => p.id === projects.current);
 });
 
 let title = computed(() => {
@@ -88,7 +88,7 @@ let container_sha = computed(() => {
   ) {
     var sha = project.value.snapshot.metadata["container.sha"].replace(
       "sha256:",
-      "",
+      ""
     );
     return sha.substring(0, 12);
   } else {
