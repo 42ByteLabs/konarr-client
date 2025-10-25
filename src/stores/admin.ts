@@ -57,6 +57,9 @@ export const useAdminStore = defineStore("admin", {
         })
         .catch((error) => {
           handleErrors(error);
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
 
@@ -79,6 +82,9 @@ export const useAdminStore = defineStore("admin", {
         })
         .catch((error) => {
           handleErrors(error);
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
 
@@ -120,6 +126,9 @@ export const useAdminStore = defineStore("admin", {
         })
         .catch((error) => {
           handleErrors(error);
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
 
@@ -140,6 +149,9 @@ export const useAdminStore = defineStore("admin", {
         })
         .catch((error) => {
           handleErrors(error);
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
   },

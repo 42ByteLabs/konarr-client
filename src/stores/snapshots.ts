@@ -5,7 +5,7 @@ import type { Snapshot } from "@/types";
 
 export const useSnapshotsStore = defineStore("snapshots", {
   state: (): { loading: boolean; snapshot: Snapshot | null } => ({
-    loading: false,
+    loading: true,
     snapshot: null,
   }),
 
@@ -21,6 +21,9 @@ export const useSnapshotsStore = defineStore("snapshots", {
         .catch((error) => {
           handleErrors(error);
           throw error;
+        })
+        .finally(() => {
+          this.loading = false;
         });
       return this.snapshot;
     },
@@ -39,6 +42,9 @@ export const useSnapshotsStore = defineStore("snapshots", {
         .catch((error) => {
           handleErrors(error);
           throw error;
+        })
+        .finally(() => {
+          this.loading = false;
         });
       return this.snapshot;
     },
@@ -103,6 +109,9 @@ export const useSnapshotsStore = defineStore("snapshots", {
         .catch((error) => {
           handleErrors(error);
           throw error;
+        })
+        .finally(() => {
+          this.loading = false;
         });
       return this.snapshot;
     },

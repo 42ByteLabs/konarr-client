@@ -44,7 +44,7 @@ export const useProjectsStore = defineStore("projects", {
       page: number = 0,
       limit: number = 24,
       top: boolean = true,
-      select?: string
+      select?: string,
     ) {
       this.page = page;
 
@@ -110,7 +110,7 @@ export const useProjectsStore = defineStore("projects", {
       this.current = projectId;
 
       const result = this.data.data.find(
-        (project) => project.id === this.current
+        (project) => project.id === this.current,
       );
       if (!result) {
         await this.fetchProject(this.current);
@@ -153,7 +153,7 @@ export const useProjectsStore = defineStore("projects", {
     async fetchParents(): Promise<Project[] | undefined> {
       try {
         const response = await client.get<ProjectsResponse>(
-          "/projects?parents=true"
+          "/projects?parents=true",
         );
         const data = handleApiResponse(response.data);
         if (data) {
@@ -174,7 +174,7 @@ export const useProjectsStore = defineStore("projects", {
     async fetchParentsList(): Promise<any[]> {
       try {
         const response = await client.get<ProjectsResponse>(
-          "/projects?parents=true"
+          "/projects?parents=true",
         );
         const data = handleApiResponse(response.data);
         return data?.data || [];
@@ -188,7 +188,7 @@ export const useProjectsStore = defineStore("projects", {
       name: string,
       type: string,
       description?: string,
-      parent?: number
+      parent?: number,
     ) {
       await client
         .post<ApiResponse<Project>>("/projects", {
@@ -233,7 +233,7 @@ export const useProjectsStore = defineStore("projects", {
         .delete(`/projects/${id}`)
         .then(() => {
           this.data.data = this.data.data.filter(
-            (project) => project.id !== id
+            (project) => project.id !== id,
           );
           router.push({ name: "Projects" });
         })

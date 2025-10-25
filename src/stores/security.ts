@@ -60,6 +60,7 @@ export const useSecurityStore = defineStore("security", {
     },
 
     async fetchAlerts(page: number = 0, limit: number = 24, severity?: string) {
+      this.loading = true;
       let params = `page=${page}&limit=${limit}`;
       if (severity) {
         params += "&severity=" + severity;
@@ -75,9 +76,13 @@ export const useSecurityStore = defineStore("security", {
         })
         .catch((error) => {
           handleErrors(error);
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
     async fetchAlert(id: number) {
+      this.loading = true;
       this.current = id;
 
       await client
@@ -93,14 +98,18 @@ export const useSecurityStore = defineStore("security", {
         })
         .catch((error) => {
           handleErrors(error);
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
     async fetchSnapshotAlerts(
       snapshot: number,
       page?: number,
       limit?: number,
-      severity?: string
+      severity?: string,
     ) {
+      this.loading = true;
       let params = `page=${page}&limit=${limit}`;
       if (severity) {
         params += "&severity=" + severity;
@@ -113,10 +122,12 @@ export const useSecurityStore = defineStore("security", {
           if (data) {
             this.data.data = data.data;
           }
-          this.loading = false;
         })
         .catch((error) => {
           handleErrors(error);
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
     async fetchNextPage() {

@@ -68,8 +68,9 @@ export const useDependenciesStore = defineStore("dependencies", {
       page: number = 0,
       limit: number = 12,
       top: boolean = true,
-      deptype: string | undefined = undefined
+      deptype: string | undefined = undefined,
     ) {
+      this.loading = true;
       // Get from URL if null
       if (deptype === undefined) {
         const selectParam = router.currentRoute.value.query.select;
@@ -94,26 +95,28 @@ export const useDependenciesStore = defineStore("dependencies", {
             if (data) {
               this.data = data;
             }
-            this.loading = false;
           })
           .catch((error) => {
             handleErrors(error);
+          })
+          .finally(() => {
             this.loading = false;
           });
       } else {
         await client
           .get<DependenciesResponse>(
-            `/snapshots/${this.current}/dependencies?${params}`
+            `/snapshots/${this.current}/dependencies?${params}`,
           )
           .then((response) => {
             const data = handleApiResponse(response.data);
             if (data) {
               this.data = data;
             }
-            this.loading = false;
           })
           .catch((error) => {
             handleErrors(error);
+          })
+          .finally(() => {
             this.loading = false;
           });
       }
@@ -128,26 +131,28 @@ export const useDependenciesStore = defineStore("dependencies", {
             if (data) {
               this.data = data;
             }
-            this.loading = false;
           })
           .catch((error) => {
             handleErrors(error);
+          })
+          .finally(() => {
             this.loading = false;
           });
       } else {
         await client
           .get<DependenciesResponse>(
-            `/snapshots/${this.current}/dependencies?search=${search}&limit=10`
+            `/snapshots/${this.current}/dependencies?search=${search}&limit=10`,
           )
           .then((response) => {
             const data = handleApiResponse(response.data);
             if (data) {
               this.data = data;
             }
-            this.loading = false;
           })
           .catch((error) => {
             handleErrors(error);
+          })
+          .finally(() => {
             this.loading = false;
           });
       }
@@ -169,7 +174,7 @@ export const useDependenciesStore = defineStore("dependencies", {
           if (dependency) {
             // If the item already exists, replace it or push it
             const index = this.data.data.findIndex(
-              (item) => item.id === this.current
+              (item) => item.id === this.current,
             );
             if (index !== -1) {
               this.data.data[index] = dependency;
@@ -177,10 +182,11 @@ export const useDependenciesStore = defineStore("dependencies", {
               this.data.data.push(dependency);
             }
           }
-          this.loading = false;
         })
         .catch((error) => {
           handleErrors(error);
+        })
+        .finally(() => {
           this.loading = false;
         });
     },
