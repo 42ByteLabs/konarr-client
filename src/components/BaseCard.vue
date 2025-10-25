@@ -35,13 +35,13 @@ const props = withDefaults(defineProps<Props>(), {
 const variantClasses = computed(() => {
   switch (props.variant) {
     case "info":
-      return "border-blue-500";
+      return "border-sec-information-500";
     case "warning":
-      return "border-sec-medium-500";
+      return "border-warning-500";
     case "success":
-      return "border-green-500";
+      return "border-success-500";
     case "danger":
-      return "border-sec-critical-500";
+      return "border-error-500";
     default:
       return "border-gray-200 dark:border-gray-700";
   }

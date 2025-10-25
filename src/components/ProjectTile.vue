@@ -71,7 +71,7 @@ const project = computed(() => {
           type="mdi"
           :path="mdiGraph"
           aria-hidden="true"
-          class="text-green-500 mr-1"
+          class="text-success-500 mr-1"
           :size="18"
         ></svg-icon>
         <span>{{ project.snapshot.dependencies }}</span>
@@ -84,7 +84,7 @@ const project = computed(() => {
           type="mdi"
           :path="mdiSecurity"
           aria-hidden="true"
-          class="text-red-500 mr-1"
+          class="text-sec-critical-500 mr-1"
           :size="18"
         ></svg-icon>
         <svg-icon
@@ -92,7 +92,7 @@ const project = computed(() => {
           type="mdi"
           :path="mdiSecurity"
           aria-hidden="true"
-          class="text-orange-500 mr-1"
+          class="text-sec-high-500 mr-1"
           :size="18"
         ></svg-icon>
         <svg-icon
@@ -100,7 +100,7 @@ const project = computed(() => {
           type="mdi"
           :path="mdiSecurity"
           aria-hidden="true"
-          class="text-yellow-500 mr-1"
+          class="text-sec-medium-500 mr-1"
           :size="18"
         ></svg-icon>
         <svg-icon
@@ -108,7 +108,7 @@ const project = computed(() => {
           type="mdi"
           :path="mdiSecurity"
           aria-hidden="true"
-          class="text-green-500 mr-1"
+          class="text-sec-low-500 mr-1"
           :size="18"
         ></svg-icon>
         <svg-icon
@@ -121,9 +121,9 @@ const project = computed(() => {
         ></svg-icon>
         <span
           :class="{
-            'text-red-600 dark:text-red-400 font-semibold':
+            'text-sec-critical-600 dark:text-sec-critical-400 font-semibold':
               project.security.critical > 0,
-            'text-orange-600 dark:text-orange-400 font-semibold':
+            'text-sec-high-600 dark:text-sec-high-400 font-semibold':
               project.security.high > 0 && project.security.critical === 0,
           }"
         >

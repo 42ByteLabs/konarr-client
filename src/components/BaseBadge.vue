@@ -32,13 +32,13 @@ const variantClasses = computed(() => {
     case "accent":
       return "bg-accent-100 text-accent-800 dark:bg-accent-900/30 dark:text-accent-300";
     case "info":
-      return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300";
+      return "bg-sec-information-100 text-sec-information-800 dark:bg-sec-information-900/30 dark:text-sec-information-300";
     case "warning":
-      return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300";
+      return "bg-warning-100 text-warning-800 dark:bg-warning-900/30 dark:text-warning-300";
     case "success":
-      return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300";
+      return "bg-success-100 text-success-800 dark:bg-success-900/30 dark:text-success-300";
     case "danger":
-      return "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300";
+      return "bg-error-100 text-error-800 dark:bg-error-900/30 dark:text-error-300";
     default:
       return "bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300";
   }
