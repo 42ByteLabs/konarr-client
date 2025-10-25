@@ -16,6 +16,7 @@ import SecurityAlertsPie from "@/components/SecurityAlertsPie.vue";
 import ProjectTile from "@/components/ProjectTile.vue";
 import DependencySummaryTile from "@/components/DependencySummaryTile.vue";
 import QuickStatsCards from "@/components/QuickStatsCards.vue";
+import AlertBanner from "@/components/AlertBanner.vue";
 
 import { useServerStore } from "@/stores/server";
 import { useProjectsStore } from "@/stores/projects";
@@ -104,37 +105,20 @@ const navigateToDependencies = () => {
         />
 
         <!-- Alert Banner (if critical issues exist) -->
-        <div
+        <AlertBanner
           v-if="hasSecurityIssues"
-          class="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-400 p-4 rounded-lg"
+          variant="warning"
+          :icon="mdiAlertCircle"
+          :action="{
+            label: 'Review Alerts',
+            handler: navigateToSecurity,
+          }"
         >
-          <div class="flex items-center">
-            <svg-icon
-              type="mdi"
-              :path="mdiAlertCircle"
-              class="text-yellow-600 dark:text-yellow-400 mr-3"
-              :size="24"
-            ></svg-icon>
-            <div class="flex-1">
-              <p
-                class="text-sm font-medium text-yellow-800 dark:text-yellow-200"
-              >
-                Security attention needed
-              </p>
-              <p class="text-sm text-yellow-700 dark:text-yellow-300 mt-1">
-                You have {{ server.security?.critical || 0 }} critical and
-                {{ server.security?.high || 0 }} high severity alerts that
-                require immediate attention.
-              </p>
-            </div>
-            <button
-              class="ml-4 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-md text-sm font-medium transition-colors"
-              @click="navigateToSecurity"
-            >
-              Review Alerts
-            </button>
-          </div>
-        </div>
+          <template #title>Security attention needed</template>
+          You have {{ server.security?.critical || 0 }} critical and
+          {{ server.security?.high || 0 }} high severity alerts that require
+          immediate attention.
+        </AlertBanner>
 
         <!-- Main Dashboard Content -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -147,7 +131,7 @@ const navigateToDependencies = () => {
                   Recent Projects
                 </h2>
                 <button
-                  class="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                  class="text-sm text-sec-total-600 dark:text-sec-total-400 hover:underline"
                   @click="navigateToProjects"
                 >
                   View All
@@ -158,7 +142,7 @@ const navigateToDependencies = () => {
                 class="flex justify-center items-center py-12"
               >
                 <div
-                  class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"
+                  class="animate-spin rounded-full h-12 w-12 border-b-2 border-sec-total-500"
                 ></div>
               </div>
               <div
@@ -169,7 +153,7 @@ const navigateToDependencies = () => {
                   No projects found. Create your first project to get started.
                 </p>
                 <button
-                  class="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors"
+                  class="mt-4 px-4 py-2 bg-sec-total-600 hover:bg-sec-total-700 text-white rounded-md text-sm font-medium transition-colors"
                   @click="router.push({ name: 'New Project' })"
                 >
                   Create Project
