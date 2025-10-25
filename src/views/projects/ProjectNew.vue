@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useProjectsStore } from "@/stores/projects";
-import type { KonarrProject } from "@/types";
+import type { Project } from "@/types";
 import { primaryButton, outlineButton } from "@/utils/buttonClasses";
 
 const projects = useProjectsStore();
@@ -10,7 +10,7 @@ const title = ref("");
 const description = ref("");
 const type = ref("Server");
 const parent = ref(0);
-const parents = ref<KonarrProject[]>([]);
+const parents = ref<Project[]>([]);
 
 const create = async () => {
   await projects.create(

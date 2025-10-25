@@ -50,14 +50,14 @@ onMounted(() => {
           :total="projects.total"
           :limit="24"
           :selectables="selectables"
-          :count="projects.data.length"
+          :count="projects.count"
         />
 
         <div
           class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 my-12"
         >
           <ProjectTile
-            v-for="project in projects.data"
+            v-for="project in projects.projects"
             :key="project.id"
             :project="project"
           />

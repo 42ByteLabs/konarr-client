@@ -15,8 +15,8 @@ import ProjectEdit from "@/views/projects/ProjectEdit.vue";
 import DependenciesView from "@/views/dependencies/DependenciesView.vue";
 import DependencyView from "@/views/dependencies/DependencyView.vue";
 // Security Views
-import SecurityView from "@/views/SecurityView.vue";
-import SecurityAlertView from "@/views/SecurityAlertView.vue";
+import SecurityView from "@/views/security/SecurityView.vue";
+import SecurityAlertView from "@/views/security/SecurityAlertView.vue";
 // User views
 import UserProfileView from "@/views/users/UserProfile.vue";
 // Admin Views

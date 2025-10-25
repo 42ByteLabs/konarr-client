@@ -2,11 +2,11 @@
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiSecurity } from "@mdi/js";
 
-import type { KonarrSecuritySummary } from "@/types";
+import type { SecuritySummary } from "@/types";
 import SecuritySummaryTile from "@/components/SecuritySummaryTile.vue";
 
 const props = defineProps<{
-  summary: KonarrSecuritySummary;
+  summary: SecuritySummary;
   snapshot?: number;
 }>();
 </script>

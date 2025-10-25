@@ -2,10 +2,10 @@
 import { computed } from "vue";
 import SvgIcon from "@jamescoyle/vue-icon";
 import * as i from "@mdi/js";
-import type { KonarrDependency } from "@/types";
+import type { Dependency } from "@/types";
 
 const props = defineProps<{
-  dep: KonarrDependency | string;
+  dep: Dependency | string;
   id?: number;
   size?: string;
 }>();

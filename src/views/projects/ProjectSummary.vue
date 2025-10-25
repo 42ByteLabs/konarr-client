@@ -3,7 +3,7 @@ import { computed } from "vue";
 import MarkdownIt from "markdown-it";
 import DOMPurify from "dompurify";
 
-import type { KonarrProject, KonarrSecuritySummary } from "@/types";
+import type { Project, SecuritySummary } from "@/types";
 
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiGraph, mdiSecurity, mdiAccessPointNetwork } from "@mdi/js";
@@ -11,17 +11,17 @@ import { mdiGraph, mdiSecurity, mdiAccessPointNetwork } from "@mdi/js";
 const md = new MarkdownIt();
 
 const props = defineProps<{
-  project: KonarrProject;
+  project: Project;
 }>();
 
 const description = computed(() => {
   return DOMPurify.sanitize(md.render(props.project?.description || ""));
 });
 
-const securitySummary = computed<KonarrSecuritySummary>(() => {
+const securitySummary = computed<SecuritySummary>(() => {
   // Prefer snapshot security (fresh), fall back to project.security, otherwise zeroed summary
   const s = props.project?.snapshot?.security || props.project?.security;
-  if (s) return s as KonarrSecuritySummary;
+  if (s) return s as SecuritySummary;
   return {
     total: 0,
     critical: 0,
@@ -32,7 +32,7 @@ const securitySummary = computed<KonarrSecuritySummary>(() => {
     unmaintained: 0,
     informational: 0,
     unknown: 0,
-  } as KonarrSecuritySummary;
+  } as SecuritySummary;
 });
 
 const dependencyCount = computed(() => {

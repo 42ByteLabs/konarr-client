@@ -1,24 +1,49 @@
 import { defineStore } from "pinia";
 import client from "@/client";
-import { handleErrors } from "@/stores/utils";
+import { handleErrors, handleApiResponse } from "@/stores/utils";
 
-import type { KonarrSecurityAlerts } from "@/types";
+import type {
+  SecurityAlerts,
+  SecurityAlert,
+  SecurityAlertsResponse,
+} from "@/types";
 import router from "@/router";
 
 export const useSecurityStore = defineStore("security", {
-  state: () =>
-    ({
-      data: [],
-      loading: true,
-      current: null,
+  state: () => ({
+    data: {
+      data: [] as SecurityAlert[],
+      pages: 0,
       total: 0,
       count: 0,
-      pages: 0,
-      page: 0,
-      limit: 0,
-    }) as KonarrSecurityAlerts,
+      limit: 24,
+    } as SecurityAlerts,
+    loading: true,
+    current: null as number | null,
+    page: 0,
+  }),
+
+  getters: {
+    alerts(state): SecurityAlert[] {
+      return state.data.data;
+    },
+    pages(state): number {
+      return state.data.pages;
+    },
+    total(state): number {
+      return state.data.total;
+    },
+    count(state): number {
+      return state.data.count;
+    },
+  },
 
   actions: {
+    find(a: number | null): SecurityAlert | undefined {
+      if (a === null) return undefined;
+      return this.data.data.find((alert) => alert.id === a);
+    },
+
     async getAlert(id?: number) {
       if (!id) {
         // TODO: Get ID from URL
@@ -27,7 +52,7 @@ export const useSecurityStore = defineStore("security", {
         this.current = id;
       }
 
-      const result = this.data.find((dep) => dep.id === this.current);
+      const result = this.data.data.find((dep) => dep.id === this.current);
       if (!result) {
         // TODO: Implement fetchDependency method or remove this call
         // await this.fetchDependency(this.current);
@@ -35,43 +60,47 @@ export const useSecurityStore = defineStore("security", {
     },
 
     async fetchAlerts(page: number = 0, limit: number = 24, severity?: string) {
+      this.loading = true;
       let params = `page=${page}&limit=${limit}`;
       if (severity) {
         params += "&severity=" + severity;
       }
 
       await client
-        .get(`/security?${params}`)
+        .get<SecurityAlertsResponse>(`/security?${params}`)
         .then((response) => {
-          this.loading = false;
-          this.data = response.data.data;
-
-          this.current = null;
-          this.total = response.data.total;
-          this.count = response.data.count;
-          this.pages = response.data.pages;
-          this.page = page;
-        })
-        .catch((error) => {
-          handleErrors(error);
-        });
-    },
-    async fetchAlert(id: number) {
-      this.current = id;
-
-      await client
-        .get(`/security/${id}`)
-        .then((response) => {
-          this.loading = false;
-          const index = this.data.findIndex((x) => x.id === id);
-          if (index !== -1) {
-            this.data[index] = response.data;
-          } else {
-            this.data.push(response.data);
+          const data = handleApiResponse(response.data);
+          if (data) {
+            this.data.data = data.data;
           }
         })
         .catch((error) => {
           handleErrors(error);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    async fetchAlert(id: number) {
+      this.loading = true;
+      this.current = id;
+
+      await client
+        .get<SecurityAlert>(`/security/${id}`)
+        .then((response) => {
+          this.loading = false;
+          const index = this.data.data.findIndex((x) => x.id === id);
+          if (index !== -1) {
+            this.data.data[index] = response.data;
+          } else {
+            this.data.data.push(response.data);
+          }
+        })
+        .catch((error) => {
+          handleErrors(error);
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
     async fetchSnapshotAlerts(
@@ -80,23 +109,25 @@ export const useSecurityStore = defineStore("security", {
       limit?: number,
       severity?: string,
     ) {
+      this.loading = true;
       let params = `page=${page}&limit=${limit}`;
       if (severity) {
         params += "&severity=" + severity;
       }
 
       await client
-        .get(`/snapshots/${snapshot}/alerts?${params}`)
+        .get<SecurityAlertsResponse>(`/snapshots/${snapshot}/alerts?${params}`)
         .then((response) => {
-          this.loading = false;
-          this.data = response.data.data;
-          this.current = snapshot;
-          this.total = response.data.total;
-          this.count = response.data.count;
-          this.pages = response.data.pages;
+          const data = handleApiResponse(response.data);
+          if (data) {
+            this.data.data = data.data;
+          }
         })
         .catch((error) => {
           handleErrors(error);
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
     async fetchNextPage() {

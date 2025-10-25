@@ -20,7 +20,7 @@ if (server.user) {
     <div class="container mt-4 mb-6 w-full mx-auto px-4">
       <Title title="Login" subtitle="Sign in to your account" />
 
-      <Loading v-if="server.logging_in" text="Signing in..." />
+      <Loading v-if="server.loggingIn" text="Signing in..." />
 
       <LoginPanel />
     </div>
