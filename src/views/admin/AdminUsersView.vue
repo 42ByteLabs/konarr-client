@@ -51,169 +51,224 @@ onMounted(() => {
 
 <template>
   <main>
-    <div class="container mt-4 mb-6 w-full mx-auto px-2">
+    <div class="container mt-4 mb-12 w-full mx-auto px-2">
       <Title
         title="Admin Users Panel"
-        description="Konarr Admin Settings for Users"
+        description="Manage users and session settings"
       />
 
-      <div class="grid grid-cols-6 gap-2 w-full mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 w-full mx-auto">
         <AdminSettingMenu
           current="general"
           :icon="mdiServer"
-          class="col-span-6 md:col-span-2"
+          class="lg:col-span-1"
         />
 
-        <div
-          v-if="!admin.loading"
-          class="col-span-6 md:col-span-4 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4 pt-6"
-        >
-          <div class="grid grid-cols-3 text-center">
-            <div class="">
-              <span>Total</span>
-            </div>
-            <div class="">
-              <span>Active</span>
-            </div>
-            <div class="">
-              <span>Inactive</span>
-            </div>
-            <div class="">
-              <strong>{{ admin.adminSettings.userStats.total }}</strong>
-            </div>
-            <div class="">
-              <strong>{{ admin.adminSettings.userStats.active }}</strong>
-            </div>
-            <div class="">
-              <strong>{{ admin.adminSettings.userStats.inactive }}</strong>
-            </div>
-          </div>
-
-          <hr class="my-6 border-gray-300" />
-
-          <div class="mb-4">
-            <h3 class="text-lg font-semibold my-4 text-center">
-              Session Timeouts
-            </h3>
-            <div class="space-y-2">
-              <AdminSetting
-                title="Admin Sessions"
-                description="Session expiration for admin users"
-                :select="[
-                  { value: '1', label: '1 hour' },
-                  { value: '8', label: '8 hours' },
-                  { value: '24', label: '24 hours' },
-                  { value: '720', label: '30 days' },
-                  { value: '2160', label: '90 days' },
-                ]"
-                :data="admin.settings['sessions.admins.expires']"
-                setting="sessions.admins.expires"
-              />
-
-              <AdminSetting
-                title="User Sessions"
-                description="Session expiration for normal users"
-                :select="[
-                  { value: '1', label: '1 hour' },
-                  { value: '8', label: '8 hours' },
-                  { value: '24', label: '24 hours' },
-                  { value: '720', label: '30 days' },
-                  { value: '2160', label: '90 days' },
-                ]"
-                :data="admin.settings['sessions.users.expires']"
-                setting="sessions.users.expires"
-              />
-            </div>
-          </div>
-
-          <hr class="my-6 border-gray-300" />
-
-          <h4 class="text-lg font-semibold ml-4 text-center">System Users</h4>
-
-          <Search
-            searching="users"
-            :placeholder="'Search users by username'"
-            :limit="admin.usersLimit || 24"
-            :count="admin.adminSettings.userStats.active"
-            :total="admin.adminSettings.userStats.total"
-          />
-
-          <table class="min-w-full table-auto mt-4">
-            <thead>
-              <tr
-                class="bg-gray-200 dark:bg-accent-500 text-gray-600 dark:text-black text-sm leading-normal"
+        <div class="lg:col-span-3">
+          <Loading v-if="admin.loading" />
+          <div v-else class="space-y-6">
+            <!-- User Statistics Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div
+                class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-blue-500"
               >
-                <th class="py-3 px-6 text-left">ID</th>
-                <th class="py-3 px-6 text-left">Username</th>
-                <th class="py-3 px-6 text-left">Status</th>
-                <th class="py-3 px-6 text-left hidden sm:block">Role</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="user in admin.users.data" :key="user.id">
-                <td class="py-3 px-6 text-left whitespace-nowrap">
-                  {{ user.id }}
-                </td>
-                <td class="py-3 px-6 text-left whitespace-nowrap">
-                  {{ user.username }}
-                </td>
-                <td class="py-3 px-6 text-left">
-                  <select
-                    v-if="user.id !== 1"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    @change="updateState($event, user.id)"
-                  >
-                    >
-                    <option value="active" :selected="user.state === 'Active'">
-                      Active
-                    </option>
-                    <option
-                      value="disabled"
-                      :selected="user.state === 'Disabled'"
-                    >
-                      Disabled
-                    </option>
-                  </select>
-                  <span
-                    v-else
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  >
-                    Active
-                  </span>
-                </td>
-                <td class="py-3 px-6 text-left hidden sm:block">
-                  <select
-                    v-if="user.id !== 1"
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    @change="updateRole($event, user.id)"
-                  >
-                    >
-                    <option value="admin" :selected="user.role === 'Admin'">
-                      Admin
-                    </option>
-                    <option value="user" :selected="user.role === 'User'">
-                      User
-                    </option>
-                  </select>
-                  <span
-                    v-else
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  >
-                    Admin
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                <p class="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  Total Users
+                </p>
+                <p
+                  class="text-3xl font-bold text-gray-900 dark:text-white mt-2"
+                >
+                  {{ admin.adminSettings.userStats.total }}
+                </p>
+              </div>
+              <div
+                class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-green-500"
+              >
+                <p class="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  Active Users
+                </p>
+                <p
+                  class="text-3xl font-bold text-gray-900 dark:text-white mt-2"
+                >
+                  {{ admin.adminSettings.userStats.active }}
+                </p>
+              </div>
+              <div
+                class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-gray-500"
+              >
+                <p class="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  Inactive Users
+                </p>
+                <p
+                  class="text-3xl font-bold text-gray-900 dark:text-white mt-2"
+                >
+                  {{ admin.adminSettings.userStats.inactive }}
+                </p>
+              </div>
+            </div>
 
-          <Pagination
-            :page="admin.usersPage || 0"
-            :pages="admin.users.pages || 0"
-            :prev="prevPage"
-            :next="nextPage"
-          />
+            <!-- Session Timeouts Section -->
+            <div
+              class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-accent-500"
+            >
+              <h2
+                class="text-xl font-semibold mb-4 text-gray-900 dark:text-white"
+              >
+                Session Timeouts
+              </h2>
+              <div class="space-y-4">
+                <div class="grid grid-cols-2 md:grid-cols-2 gap-4">
+                  <AdminSetting
+                    title="Admin Sessions"
+                    description="Session expiration for admin users"
+                    :select="[
+                      { value: '1', label: '1 hour' },
+                      { value: '8', label: '8 hours' },
+                      { value: '24', label: '24 hours' },
+                      { value: '720', label: '30 days' },
+                      { value: '2160', label: '90 days' },
+                    ]"
+                    :data="admin.settings['sessions.admins.expires']"
+                    setting="sessions.admins.expires"
+                  />
+
+                  <AdminSetting
+                    title="User Sessions"
+                    description="Session expiration for normal users"
+                    :select="[
+                      { value: '1', label: '1 hour' },
+                      { value: '8', label: '8 hours' },
+                      { value: '24', label: '24 hours' },
+                      { value: '720', label: '30 days' },
+                      { value: '2160', label: '90 days' },
+                    ]"
+                    :data="admin.settings['sessions.users.expires']"
+                    setting="sessions.users.expires"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- System Users Section -->
+            <div
+              class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-purple-500"
+            >
+              <h2
+                class="text-xl font-semibold mb-4 text-gray-900 dark:text-white"
+              >
+                System Users
+              </h2>
+
+              <Search
+                searching="users"
+                :placeholder="'Search users by username'"
+                :limit="admin.usersLimit || 24"
+                :count="admin.adminSettings.userStats.active"
+                :total="admin.adminSettings.userStats.total"
+              />
+
+              <div class="mt-4 overflow-x-auto">
+                <table class="min-w-full table-auto">
+                  <thead>
+                    <tr
+                      class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm leading-normal"
+                    >
+                      <th class="py-3 px-6 text-left font-semibold">ID</th>
+                      <th class="py-3 px-6 text-left font-semibold">
+                        Username
+                      </th>
+                      <th class="py-3 px-6 text-left font-semibold">Status</th>
+                      <th
+                        class="py-3 px-6 text-left font-semibold hidden sm:table-cell"
+                      >
+                        Role
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody class="text-gray-600 dark:text-gray-400 text-sm">
+                    <tr
+                      v-for="user in admin.users.data ||
+                      admin.adminSettings.users"
+                      :key="user.id"
+                      class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+                    >
+                      <td class="py-3 px-6 text-left whitespace-nowrap">
+                        <span
+                          class="font-medium text-gray-900 dark:text-white"
+                          >{{ user.id }}</span
+                        >
+                      </td>
+                      <td class="py-3 px-6 text-left whitespace-nowrap">
+                        <span
+                          class="font-medium text-gray-900 dark:text-white"
+                          >{{ user.username }}</span
+                        >
+                      </td>
+                      <td class="py-3 px-6 text-left">
+                        <select
+                          v-if="user.id !== 1"
+                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-accent-500 focus:border-accent-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-accent-500 dark:focus:border-accent-500"
+                          @change="updateState($event, user.id)"
+                        >
+                          >
+                          <option
+                            value="active"
+                            :selected="user.state === 'Active'"
+                          >
+                            Active
+                          </option>
+                          <option
+                            value="disabled"
+                            :selected="user.state === 'Disabled'"
+                          >
+                            Disabled
+                          </option>
+                        </select>
+                        <span
+                          v-else
+                          class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
+                        >
+                          Active
+                        </span>
+                      </td>
+                      <td class="py-3 px-6 text-left hidden sm:table-cell">
+                        <select
+                          v-if="user.id !== 1"
+                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-accent-500 focus:border-accent-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-accent-500 dark:focus:border-accent-500"
+                          @change="updateRole($event, user.id)"
+                        >
+                          >
+                          <option
+                            value="admin"
+                            :selected="user.role === 'Admin'"
+                          >
+                            Admin
+                          </option>
+                          <option value="user" :selected="user.role === 'User'">
+                            User
+                          </option>
+                        </select>
+                        <span
+                          v-else
+                          class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-accent-100 text-accent-800 dark:bg-accent-900/30 dark:text-accent-300"
+                        >
+                          Admin
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <Pagination
+                :page="admin.usersPage || 0"
+                :pages="admin.users.pages || 0"
+                :prev="prevPage"
+                :next="nextPage"
+              />
+            </div>
+          </div>
         </div>
-        <Loading v-else />
       </div>
     </div>
   </main>

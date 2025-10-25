@@ -20,64 +20,90 @@ onMounted(() => {
 
 <template>
   <main>
-    <div class="container mt-4 mb-6 w-full mx-auto px-2">
+    <div class="container mt-4 mb-12 w-full mx-auto px-2">
       <Title
         title="Admin Panel"
-        description="Konarr Admin Setting and Information Panel"
+        description="Manage server settings and configuration"
       />
 
-      <div class="grid grid-cols-6 gap-2 w-full mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 w-full mx-auto">
         <AdminSettingMenu
           current="general"
           :icon="mdiServer"
-          class="col-span-6 md:col-span-2"
+          class="lg:col-span-1"
         />
 
-        <div
-          v-if="!admin.loading"
-          class="col-span-6 md:col-span-4 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4 pt-6"
-        >
-          <AdminSetting
-            title="Registration Active"
-            description="Allow users to register for an account. When disabled, no new users can register."
-            :data="admin.registration"
-            setting="registration"
-            toggle
-          />
-
-          <div class="my-6">
-            <h3 class="text-lg font-semibold my-4 text-center">
-              Server Configuration
-            </h3>
-            <div class="space-y-2">
+        <div class="lg:col-span-3">
+          <Loading v-if="admin.loading" />
+          <div v-else class="space-y-6">
+            <!-- User Registration Section -->
+            <div
+              class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-accent-500"
+            >
+              <h2
+                class="text-xl font-semibold mb-4 text-gray-900 dark:text-white"
+              >
+                User Registration
+              </h2>
               <AdminSetting
-                title="Server URL"
-                description="Select the base URL that the frontend should use to contact the server."
-                :data="admin.settings['server.url']"
-                setting="server.url"
-                editable
-              />
-
-              <AdminSetting
-                title="Server Data Path"
-                description="Readonly path where server stores data"
-                :data="admin.settings['server.data']"
-              />
-
-              <AdminSetting
-                title="Server Frontend Path"
-                description="Readonly path to the frontend build on the server"
-                :data="admin.settings['server.frontend.path']"
+                title="Registration Active"
+                description="Allow users to register for an account. When disabled, no new users can register."
+                :data="admin.registration"
+                setting="registration"
+                toggle
               />
             </div>
+
+            <!-- Server Configuration Section -->
+            <div
+              class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-blue-500"
+            >
+              <h2
+                class="text-xl font-semibold mb-4 text-gray-900 dark:text-white"
+              >
+                Server Configuration
+              </h2>
+              <div class="space-y-4">
+                <AdminSetting
+                  title="Server URL"
+                  description="Base URL that the frontend uses to contact the server"
+                  :data="admin.settings['server.url']"
+                  setting="server.url"
+                  editable
+                />
+
+                <AdminSetting
+                  title="Server Data Path"
+                  description="Directory where server stores data"
+                  :data="admin.settings['server.data']"
+                />
+
+                <AdminSetting
+                  title="Server Frontend Path"
+                  description="Directory containing the frontend build"
+                  :data="admin.settings['server.frontend.path']"
+                />
+              </div>
+            </div>
+
+            <!-- Server Information Section -->
+            <div
+              class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-green-500"
+            >
+              <h2
+                class="text-xl font-semibold mb-4 text-gray-900 dark:text-white"
+              >
+                Server Information
+              </h2>
+              <div class="space-y-4">
+                <div class="grid grid-cols-2 md:grid-cols-2 gap-4">
+                  <AdminSetting title="Server Version" :data="server.version" />
+                  <AdminSetting title="Server Commit" :data="server.commit" />
+                </div>
+              </div>
+            </div>
           </div>
-
-          <hr class="my-6 border-gray-300" />
-
-          <AdminSetting title="Server Version" :data="server.version" />
-          <AdminSetting title="Server Commit" :data="server.commit" />
         </div>
-        <Loading v-else />
       </div>
     </div>
   </main>

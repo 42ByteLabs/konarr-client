@@ -9,11 +9,17 @@ import AdminSettingButton from "@/components/AdminSettingButton.vue";
 </script>
 
 <template>
-  <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-4">
-    <div class="flex flex-col items-center">
-      <h3 class="dark:text-gray-200 text-lg font-semibold">Server Settings</h3>
+  <div
+    class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-accent-500"
+  >
+    <div class="flex flex-col">
+      <h3
+        class="text-xl font-semibold mb-4 text-gray-900 dark:text-white text-center"
+      >
+        Settings
+      </h3>
 
-      <div class="flex flex-col w-full mt-4">
+      <nav class="space-y-2">
         <AdminSettingButton title="General" link="Admin" :icon="mdiServer" />
         <AdminSettingButton
           title="Users"
@@ -21,7 +27,7 @@ import AdminSettingButton from "@/components/AdminSettingButton.vue";
           :icon="mdiAccountGroup"
         />
         <AdminSettingButton
-          title="Security Alerts & Tools"
+          title="Security"
           link="Admin Security"
           :icon="mdiSecurity"
         />
@@ -30,7 +36,7 @@ import AdminSettingButton from "@/components/AdminSettingButton.vue";
           link="Admin Agents"
           :icon="mdiRobotLoveOutline"
         />
-      </div>
+      </nav>
     </div>
   </div>
 </template>
