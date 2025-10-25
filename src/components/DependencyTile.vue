@@ -30,7 +30,7 @@ const dependency = computed(() => {
   if (props.dependency) {
     return props.dependency;
   } else if (props.id) {
-    return dependencies.data.find((d: Dependency) => d.id === props.id);
+    return dependencies.find(props.id);
   }
   return null;
 });

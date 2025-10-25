@@ -55,7 +55,7 @@ watch(
       params: router.currentRoute.value.params,
       query: currentQuery,
     });
-  },
+  }
 );
 </script>
 
@@ -84,11 +84,11 @@ watch(
 
       <!-- Card Grid Layout -->
       <div
-        v-if="dependencies.data.length > 0"
+        v-if="dependencies.count > 0"
         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 my-4"
       >
         <DependencyTile
-          v-for="dependency in dependencies.data"
+          v-for="dependency in dependencies.dependencies"
           :key="dependency.id"
           :dependency="dependency"
         />

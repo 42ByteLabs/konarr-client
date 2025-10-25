@@ -19,7 +19,7 @@ const project = computed(() => {
     return props.project;
   } else if (props.id) {
     projects.getCurrentProject(props.id);
-    return projects.data.find((p: Project) => p.id === projects.current);
+    return projects.find(projects.current);
   }
   return null;
 });

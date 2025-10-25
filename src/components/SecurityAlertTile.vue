@@ -30,7 +30,7 @@ const alert = computed(() => {
   if (props.alert) {
     return props.alert;
   } else if (props.id) {
-    return security.data.find((a: SecurityAlert) => a.id === props.id);
+    return security.find(props.id);
   }
   return null;
 });
