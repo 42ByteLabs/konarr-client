@@ -46,7 +46,7 @@ const hasSecurityIssues = computed(() => {
     server.security &&
       (server.security.critical > 0 ||
         server.security.high > 0 ||
-        server.security.medium > 0)
+        server.security.medium > 0),
   );
 });
 

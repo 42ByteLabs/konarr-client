@@ -14,7 +14,7 @@ const projects = useProjectsStore();
 const project_id = parseInt(
   Array.isArray(router.currentRoute.value.params.id)
     ? router.currentRoute.value.params.id[0]
-    : router.currentRoute.value.params.id
+    : router.currentRoute.value.params.id,
 );
 
 // persistent fallback project used until the store returns the real project
@@ -47,7 +47,7 @@ const cancel = () => {
 const project = computed(() => {
   // Return the project from the store if present, otherwise the local fallback
   const foundProject = projects.projects.find(
-    (p: Project) => p.id === project_id
+    (p: Project) => p.id === project_id,
   );
   return foundProject ?? localProject.value;
 });

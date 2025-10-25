@@ -88,7 +88,7 @@ let container_sha = computed(() => {
   ) {
     var sha = project.value.snapshot.metadata["container.sha"].replace(
       "sha256:",
-      ""
+      "",
     );
     return sha.substring(0, 12);
   } else {

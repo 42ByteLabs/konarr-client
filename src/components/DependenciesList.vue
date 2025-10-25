@@ -55,7 +55,7 @@ watch(
       params: router.currentRoute.value.params,
       query: currentQuery,
     });
-  }
+  },
 );
 </script>
 

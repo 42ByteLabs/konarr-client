@@ -54,7 +54,7 @@ onUpdated(() => {
 
 var dependency = computed(() => {
   return dependencies.dependencies.find(
-    (c: Dependency) => c.id === dependencies.current
+    (c: Dependency) => c.id === dependencies.current,
   );
 });
 var dependency_type = computed(() => {

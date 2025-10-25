@@ -13,7 +13,7 @@ import { useServerStore } from "@/stores/server";
 import { useSecurityStore } from "@/stores/security";
 
 const server = useServerStore();
-const security = useSecurityStore();
+const securityStore = useSecurityStore();
 
 onMounted(() => {
   const qseverity = router.currentRoute.value.query.severity as string;
@@ -29,11 +29,11 @@ onMounted(() => {
     1;
 
   if (qsnapshot) {
-    security.fetchSnapshotAlerts(qsnapshot, qpage, 24, qseverity);
+    securityStore.fetchSnapshotAlerts(qsnapshot, qpage, 24, qseverity);
   } else if (qseverity) {
-    security.fetchAlerts(qpage, 24, qseverity);
+    securityStore.fetchAlerts(qpage, 24, qseverity);
   } else {
-    security.fetchAlerts(qpage, 24);
+    securityStore.fetchAlerts(qpage, 24);
   }
 });
 </script>
@@ -43,10 +43,10 @@ onMounted(() => {
     <div v-if="server.security" class="container mt-4 mb-6 w-full mx-auto px-2">
       <Title title="Security Alerts" description="List of Security Alerts" />
 
-      <Loading v-if="security.loading" />
+      <Loading v-if="securityStore.loading" />
       <div v-else class="w-full">
         <div
-          v-if="!security.current"
+          v-if="!securityStore.current"
           class="grid lg:grid-cols-6 md:grid-cols-3 sm:grid-cols-1 gap-2 w-full mx-auto dark:text-black my-2"
         >
           <SecuritySummaryTile
@@ -81,7 +81,7 @@ onMounted(() => {
           />
         </div>
         <div
-          v-if="!security.current"
+          v-if="!securityStore.current"
           class="grid lg:grid-cols-3 sm:grid-cols-1 gap-2 w-full mx-auto dark:text-black my-0 md:mt-4 md:mb-8"
         >
           <SecuritySummaryTile
@@ -104,13 +104,13 @@ onMounted(() => {
         <Search
           searching="security"
           placeholder="Find alerts..."
-          :total="security.total"
+          :total="securityStore.total"
           :limit="24"
-          :count="security.count"
+          :count="securityStore.count"
         />
 
         <h2
-          v-if="security.current"
+          v-if="securityStore.current"
           class="text-xl font-semibold mt-8 text-center"
         >
           Security Alerts from Project Snapshot
@@ -120,18 +120,18 @@ onMounted(() => {
           class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4 mt-8"
         >
           <SecurityAlertTile
-            v-for="sec in security.alerts"
+            v-for="sec in securityStore.alerts"
             :key="sec.id"
             :alert="sec"
           />
         </div>
 
         <Pagination
-          v-if="security.pages !== 1"
-          :page="security.page"
-          :pages="security.pages"
-          :next="security.fetchNextPage"
-          :prev="security.fetchPrevPage"
+          v-if="securityStore.pages !== 1"
+          :page="securityStore.page"
+          :pages="securityStore.pages"
+          :next="securityStore.fetchNextPage"
+          :prev="securityStore.fetchPrevPage"
         />
       </div>
     </div>
