@@ -26,19 +26,19 @@ const updateRole = (event: Event, id: number) => {
 // search is handled by the Search component which calls admin.getUsers
 
 const nextPage = () => {
-  if ((admin.page || 0) < (admin.pages || 0)) {
+  if ((admin.usersPage || 0) < (admin.users.pages || 0)) {
     admin.getUsers({
-      page: (admin.page || 0) + 1,
-      limit: admin.limit || 24,
+      page: (admin.usersPage || 0) + 1,
+      limit: admin.usersLimit || 24,
     });
   }
 };
 
 const prevPage = () => {
-  if ((admin.page || 0) > 0) {
+  if ((admin.usersPage || 0) > 0) {
     admin.getUsers({
-      page: (admin.page || 0) - 1,
-      limit: admin.limit || 24,
+      page: (admin.usersPage || 0) - 1,
+      limit: admin.usersLimit || 24,
     });
   }
 };
@@ -79,13 +79,13 @@ onMounted(() => {
               <span>Inactive</span>
             </div>
             <div class="">
-              <strong>{{ admin.userStats.total }}</strong>
+              <strong>{{ admin.adminSettings.userStats.total }}</strong>
             </div>
             <div class="">
-              <strong>{{ admin.userStats.active }}</strong>
+              <strong>{{ admin.adminSettings.userStats.active }}</strong>
             </div>
             <div class="">
-              <strong>{{ admin.userStats.inactive }}</strong>
+              <strong>{{ admin.adminSettings.userStats.inactive }}</strong>
             </div>
           </div>
 
@@ -133,9 +133,9 @@ onMounted(() => {
           <Search
             searching="users"
             :placeholder="'Search users by username'"
-            :limit="admin.limit || 24"
-            :count="admin.userStats.active"
-            :total="admin.userStats.total"
+            :limit="admin.usersLimit || 24"
+            :count="admin.adminSettings.userStats.active"
+            :total="admin.adminSettings.userStats.total"
           />
 
           <table class="min-w-full table-auto mt-4">
@@ -150,7 +150,7 @@ onMounted(() => {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="user in admin.users" :key="user.id">
+              <tr v-for="user in admin.users.data" :key="user.id">
                 <td class="py-3 px-6 text-left whitespace-nowrap">
                   {{ user.id }}
                 </td>
@@ -207,8 +207,8 @@ onMounted(() => {
           </table>
 
           <Pagination
-            :page="admin.page || 0"
-            :pages="admin.pages || 0"
+            :page="admin.usersPage || 0"
+            :pages="admin.users.pages || 0"
             :prev="prevPage"
             :next="nextPage"
           />

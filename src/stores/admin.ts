@@ -1,47 +1,52 @@
 import { defineStore } from "pinia";
 import client from "@/client";
-import { handleErrors } from "@/stores/utils";
+import { handleErrors, handleApiResponse } from "@/stores/utils";
 
-import type { AdminSettings, AdminUser } from "@/types";
-
-/** Admin Store State
- *
- * Extends AdminSettings (API response) with client-side state
- */
-interface AdminStoreState extends AdminSettings {
-  /** Loading state indicator (client-side) */
-  loading: boolean;
-  /** Current page number for user pagination (client-side) */
-  page: number;
-  /** Total number of pages for user pagination (client-side) */
-  pages: number;
-  /** Items per page limit for user pagination (client-side) */
-  limit: number;
-  /** Total number of users (client-side) */
-  total: number;
-}
+import type {
+  AdminSettings,
+  AdminUser,
+  AdminUsers,
+  AdminUsersResponse,
+} from "@/types";
 
 export const useAdminStore = defineStore("admin", {
-  state: (): AdminStoreState => ({
+  state: () => ({
     loading: true,
-    settings: {},
-    projectStats: {
+    // Admin settings and stats
+    adminSettings: {
+      settings: {},
+      projectStats: {
+        total: 0,
+        inactive: 0,
+        archived: 0,
+      },
+      // This will be deprecated in favor of users list endpoint
+      users: [],
+      userStats: {
+        total: 0,
+        active: 0,
+        inactive: 0,
+      },
+    } as AdminSettings,
+    // Users list with pagination
+    users: {
+      data: [] as AdminUser[],
+      pages: 0,
+      count: 10,
       total: 0,
-      inactive: 0,
-      archived: 0,
-    },
-    users: [],
-    userStats: {
-      total: 0,
-      active: 0,
-      inactive: 0,
-    },
-    // pagination for users (client-side)
-    page: 0,
-    pages: 0,
-    limit: 24,
-    total: 0,
+    } as AdminUsers,
+    usersPage: 0,
+    usersLimit: 24,
   }),
+
+  getters: {
+    registration(state): boolean {
+      return state.adminSettings.settings["registration"] === "enabled";
+    },
+    settings(state): { [key: string]: any } {
+      return state.adminSettings.settings;
+    },
+  },
 
   actions: {
     async fetchInfo() {
@@ -49,11 +54,10 @@ export const useAdminStore = defineStore("admin", {
       await client
         .get<AdminSettings>("/admin")
         .then((response) => {
-          this.settings = response.data.settings;
-          this.projectStats = response.data.projectStats;
-          this.users = response.data.users;
-          this.userStats = response.data.userStats;
-          this.loading = false;
+          const data = handleApiResponse(response.data);
+          if (data) {
+            this.adminSettings = data;
+          }
         })
         .catch((error) => {
           handleErrors(error);
@@ -78,7 +82,10 @@ export const useAdminStore = defineStore("admin", {
       await client
         .patch<AdminSettings>("/admin", data)
         .then((response) => {
-          this.settings = response.data.settings;
+          const data = handleApiResponse(response.data);
+          if (data) {
+            this.adminSettings = data;
+          }
         })
         .catch((error) => {
           handleErrors(error);
@@ -93,6 +100,7 @@ export const useAdminStore = defineStore("admin", {
       limit?: number;
       search?: string;
     }) {
+      this.loading = true;
       // Build query params
       const query: { [key: string]: any } = {};
       if (params) {
@@ -103,26 +111,12 @@ export const useAdminStore = defineStore("admin", {
       }
 
       await client
-        .get<{
-          users: AdminUser[];
-          userStats: any;
-          page?: number;
-          pages?: number;
-          limit?: number;
-          total?: number;
-        }>("/admin/users", { params: query })
+        .get<AdminUsersResponse>("/admin/users", { params: query })
         .then((response) => {
-          // Expecting an object with users list and pagination/stats
-          if (response.data.users) this.users = response.data.users;
-          if (response.data.userStats) this.userStats = response.data.userStats;
-          // Optional pagination fields from server
-          if (response.data.page !== undefined) this.page = response.data.page;
-          if (response.data.pages !== undefined)
-            this.pages = response.data.pages;
-          if (response.data.limit !== undefined)
-            this.limit = response.data.limit;
-          if (response.data.total !== undefined)
-            this.total = response.data.total;
+          const data = handleApiResponse(response.data);
+          if (data) {
+            this.users = data;
+          }
         })
         .catch((error) => {
           handleErrors(error);

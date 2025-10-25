@@ -14,14 +14,13 @@ export const useDependenciesStore = defineStore("dependencies", {
   state: () => ({
     data: {
       data: [] as Dependency[],
-      page: 0,
       pages: 0,
       total: 0,
       count: 0,
-      limit: 24,
     } as Dependencies,
     loading: true,
     page: 0,
+    limit: 24,
     current: null as number | null,
   }),
 

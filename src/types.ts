@@ -122,6 +122,8 @@ export interface User {
   lastLogin: string;
 }
 
+export type AdminUsers = Pagination<AdminUser>;
+
 /** Admin User Summary
  *
  * Response from GET /api/admin/users
@@ -139,6 +141,8 @@ export interface AdminUser {
   /** ISO 8601 timestamp when user was created */
   createdAt: string;
 }
+
+export type AdminUsersResponse = ApiResponse<AdminUsers>;
 
 /** Session Summary
  *

@@ -11,51 +11,52 @@ import router from "@/router";
 
 export const useSecurityStore = defineStore("security", {
   state: () => ({
-    data: {
+    securityAlerts: {
       data: [] as SecurityAlert[],
       pages: 0,
       total: 0,
       count: 0,
-      limit: 24,
     } as SecurityAlerts,
     loading: true,
     current: null as number | null,
     page: 0,
+    limit: 24,
   }),
 
   getters: {
     alerts(state): SecurityAlert[] {
-      return state.data.data;
+      return state.securityAlerts.data;
     },
     pages(state): number {
-      return state.data.pages;
+      return state.securityAlerts.pages;
     },
     total(state): number {
-      return state.data.total;
+      return state.securityAlerts.total;
     },
     count(state): number {
-      return state.data.count;
+      return state.securityAlerts.count;
     },
   },
 
   actions: {
     find(a: number | null): SecurityAlert | undefined {
       if (a === null) return undefined;
-      return this.data.data.find((alert) => alert.id === a);
+      return this.securityAlerts.data.find((alert) => alert.id === a);
     },
 
     async getAlert(id?: number) {
       if (!id) {
-        // TODO: Get ID from URL
-        this.current = parseInt(window.location.pathname.split("/").pop()!);
+        const idParam = router.currentRoute.value.params.id;
+        this.current = parseInt(Array.isArray(idParam) ? idParam[0] : idParam);
       } else {
         this.current = id;
       }
 
-      const result = this.data.data.find((dep) => dep.id === this.current);
+      const result = this.securityAlerts.data.find(
+        (alert) => alert.id === this.current,
+      );
       if (!result) {
-        // TODO: Implement fetchDependency method or remove this call
-        // await this.fetchDependency(this.current);
+        await this.fetchAlert(this.current);
       }
     },
 
@@ -71,7 +72,7 @@ export const useSecurityStore = defineStore("security", {
         .then((response) => {
           const data = handleApiResponse(response.data);
           if (data) {
-            this.data.data = data.data;
+            this.securityAlerts.data = data.data;
           }
         })
         .catch((error) => {
@@ -89,11 +90,11 @@ export const useSecurityStore = defineStore("security", {
         .get<SecurityAlert>(`/security/${id}`)
         .then((response) => {
           this.loading = false;
-          const index = this.data.data.findIndex((x) => x.id === id);
+          const index = this.securityAlerts.data.findIndex((x) => x.id === id);
           if (index !== -1) {
-            this.data.data[index] = response.data;
+            this.securityAlerts.data[index] = response.data;
           } else {
-            this.data.data.push(response.data);
+            this.securityAlerts.data.push(response.data);
           }
         })
         .catch((error) => {
@@ -120,7 +121,7 @@ export const useSecurityStore = defineStore("security", {
         .then((response) => {
           const data = handleApiResponse(response.data);
           if (data) {
-            this.data.data = data.data;
+            this.securityAlerts.data = data.data;
           }
         })
         .catch((error) => {
