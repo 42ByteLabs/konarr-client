@@ -264,7 +264,9 @@ onMounted(() => {
             :path="mdiInformationBox"
             class="h-5 w-5 text-sec-information-600 dark:text-sec-information-400 flex-shrink-0 mt-0.5"
           />
-          <p class="text-sm text-sec-information-800 dark:text-sec-information-300">
+          <p
+            class="text-sm text-sec-information-800 dark:text-sec-information-300"
+          >
             {{ props.info }}
           </p>
         </div>

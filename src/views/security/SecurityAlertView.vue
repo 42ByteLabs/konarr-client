@@ -7,6 +7,7 @@ import type { SecurityAlert } from "@/types";
 import Title from "@/components/Title.vue";
 import SecurityIcon from "@/components/SecurityIcon.vue";
 import DependencyTile from "@/components/DependencyTile.vue";
+import BaseBadge from "@/components/BaseBadge.vue";
 
 import { useSecurityStore } from "@/stores/security";
 
@@ -22,69 +23,76 @@ var alert = computed(() => {
   return security.alerts.find((c: SecurityAlert) => c.id === security.current);
 });
 
-// Get severity-specific styling
+// Get severity-specific styling and badge variant
 const severityStyles = computed(() => {
-  if (!alert.value) return {};
+  if (!alert.value) return { border: "", bg: "" };
 
   const severity = alert.value.severity.toLowerCase();
 
   switch (severity) {
     case "critical":
       return {
-        border: "border-red-500",
-        badge: "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300",
-        bg: "bg-red-50 dark:bg-red-900/10",
+        border: "border-sec-critical-500",
+        bg: "bg-sec-critical-50 dark:bg-sec-critical-900/10",
       };
     case "high":
       return {
-        border: "border-orange-500",
-        badge:
-          "bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300",
-        bg: "bg-orange-50 dark:bg-orange-900/10",
+        border: "border-sec-high-500",
+        bg: "bg-sec-high-50 dark:bg-sec-high-900/10",
       };
     case "medium":
       return {
-        border: "border-yellow-500",
-        badge:
-          "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300",
-        bg: "bg-yellow-50 dark:bg-yellow-900/10",
+        border: "border-sec-medium-500",
+        bg: "bg-sec-medium-50 dark:bg-sec-medium-900/10",
       };
     case "low":
       return {
-        border: "border-green-500",
-        badge:
-          "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300",
-        bg: "bg-green-50 dark:bg-green-900/10",
+        border: "border-sec-low-500",
+        bg: "bg-sec-low-50 dark:bg-sec-low-900/10",
       };
     case "info":
     case "informational":
       return {
-        border: "border-blue-500",
-        badge:
-          "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300",
-        bg: "bg-blue-50 dark:bg-blue-900/10",
+        border: "border-sec-information-500",
+        bg: "bg-sec-information-50 dark:bg-sec-information-900/10",
       };
     case "malware":
       return {
-        border: "border-pink-500",
-        badge:
-          "bg-pink-100 text-pink-800 dark:bg-pink-900/30 dark:text-pink-300",
-        bg: "bg-pink-50 dark:bg-pink-900/10",
+        border: "border-sec-malware-500",
+        bg: "bg-sec-malware-50 dark:bg-sec-malware-900/10",
       };
     case "unmaintained":
       return {
-        border: "border-slate-500",
-        badge:
-          "bg-slate-100 text-slate-800 dark:bg-slate-900/30 dark:text-slate-300",
-        bg: "bg-slate-50 dark:bg-slate-900/10",
+        border: "border-sec-unmaintained-500",
+        bg: "bg-sec-unmaintained-50 dark:bg-sec-unmaintained-900/10",
       };
     default:
       return {
         border: "border-gray-500",
-        badge:
-          "bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300",
         bg: "bg-gray-50 dark:bg-gray-900/10",
       };
+  }
+});
+
+const badgeVariant = computed(() => {
+  if (!alert.value) return "default";
+
+  const severity = alert.value.severity.toLowerCase();
+
+  switch (severity) {
+    case "critical":
+      return "danger";
+    case "high":
+      return "warning";
+    case "medium":
+      return "warning";
+    case "low":
+      return "success";
+    case "info":
+    case "informational":
+      return "info";
+    default:
+      return "default";
   }
 });
 </script>
@@ -124,12 +132,9 @@ const severityStyles = computed(() => {
               <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
                 {{ alert.name }}
               </h1>
-              <span
-                class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium capitalize"
-                :class="severityStyles.badge"
-              >
+              <BaseBadge :variant="badgeVariant" size="md">
                 {{ alert.severity }}
-              </span>
+              </BaseBadge>
             </div>
           </div>
         </div>
