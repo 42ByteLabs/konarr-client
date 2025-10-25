@@ -5,11 +5,10 @@ import {
   mdiEyeOffOutline,
   mdiRefresh,
   mdiInformationBox,
-  mdiRadioboxBlank,
+  mdiPlayCircle,
 } from "@mdi/js";
 import { Switch } from "@headlessui/vue";
 import { useNotification } from "@kyvg/vue3-notification";
-import { primaryButton } from "@/utils/buttonClasses";
 
 const { notify } = useNotification();
 
@@ -131,98 +130,109 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-    <!-- Display a Admin Setting -->
-    <div class="grid grid-cols-12 gap-2 w-full mx-auto py-3 px-3 mt-2">
-      <div v-if="props.toggle" class="col-span-2 sm:col-span-1">
-        <div class="flex items-center justify-center">
+  <div
+    class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+  >
+    <!-- Admin Setting Layout -->
+    <div class="flex flex-col my-2">
+      <!-- Header Row: Toggle/Button/Action + Title + Info Icon -->
+      <div class="flex items-center gap-4">
+        <!-- Left: Control (Toggle/Button/Regenerate) -->
+        <div class="flex-shrink-0 flex items-center gap-3">
+          <!-- Toggle Switch -->
           <Switch
             v-if="props.toggle"
             v-model="enabled"
-            :class="enabled ? 'bg-pink-600' : 'bg-gray-400'"
-            class="relative inline-flex h-6 w-11 items-center rounded-full"
+            :class="enabled ? 'bg-accent-600' : 'bg-gray-400 dark:bg-gray-600'"
+            class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2"
             @click="toggle"
           >
             <span class="sr-only">Enable {{ props.title }}</span>
             <span
               :class="enabled ? 'translate-x-6' : 'translate-x-1'"
-              class="inline-block h-4 w-4 transform rounded-full bg-white dark:bg-gray-700 transition"
+              class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm"
             />
           </Switch>
-        </div>
-      </div>
-      <div v-else-if="props.button" class="col-span-2 sm:col-span-1">
-        <div class="flex items-center justify-center">
+
+          <!-- Action Button -->
           <button
-            :class="primaryButton() + ' py-1 px-3 rounded'"
+            v-else-if="props.button"
+            class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-accent-600 hover:bg-accent-700 rounded-lg transition-all shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2"
             @click="props.button ? onclick : undefined"
           >
-            <svg-icon type="mdi" :path="mdiRadioboxBlank" class="h-4 w-4" />
+            <svg-icon type="mdi" :path="mdiPlayCircle" class="h-4 w-4" />
+            <span>Execute</span>
+          </button>
+
+          <!-- Regenerate Button -->
+          <button
+            v-else-if="props.hidedata"
+            class="text-gray-600 dark:text-gray-400 hover:text-accent-500 dark:hover:text-accent-400 transition-colors p-1"
+            title="Regenerate"
+            @click="regenerate"
+          >
+            <svg-icon type="mdi" :path="mdiRefresh" class="h-5 w-5" />
           </button>
         </div>
-      </div>
-      <div v-else-if="props.hidedata" class="col-span-2 sm:col-span-1">
-        <div class="flex items-center justify-center">
-          <button class="col-span-1 hover:text-accent-500" @click="regenerate">
-            <svg-icon type="mdi" :path="mdiRefresh" />
-          </button>
-        </div>
-      </div>
-      <div v-else class="col-span-2 sm:col-span-1"></div>
 
-      <div v-if="props.description" class="col-span-2 sm:col-span-1">
-        <div class="flex items-center justify-center">
-          <button class="hover:text-blue-500 mt-1" @click="toggle_help">
-            <svg-icon type="mdi" :path="mdiInformationBox" class="h-4 w-4" />
-          </button>
-        </div>
-      </div>
-      <div v-else class="col-span-1"></div>
-
-      <div class="col-span-8 md:col-span-4">
-        <div class="flex items-center">
-          <span>
-            <strong>
-              {{ props.title }}
-            </strong>
-          </span>
-        </div>
-      </div>
-
-      <div v-if="props.hidedata" class="col-span-12 md:col-span-5 mt-2">
-        <div class="flex items-center">
-          <div class="grid grid-cols-12">
-            <button
-              class="col-span-2 sm:col-span-1 hover:text-blue-500 mr-4"
-              @click="toggleHidden"
+        <!-- Center: Title and Description -->
+        <div class="flex-1 min-w-0 mb-2">
+          <div class="flex items-center gap-2">
+            <h4
+              class="text-sm font-semibold text-gray-900 dark:text-white truncate"
             >
-              <svg-icon type="mdi" :path="mdiEyeOffOutline" />
+              {{ props.title }}
+            </h4>
+            <button
+              v-if="props.description"
+              class="text-gray-500 dark:text-gray-400 hover:text-accent-500 dark:hover:text-accent-400 transition-colors flex-shrink-0"
+              title="More information"
+              @click="toggle_help"
+            >
+              <svg-icon type="mdi" :path="mdiInformationBox" class="h-4 w-4" />
             </button>
-            <!-- Hide the data and on click, show the data -->
-            <span v-if="hidden" class="col-span-9 mt-1.5"> ******** </span>
-            <span v-else class="col-span-9 mt-1.5">
-              {{ props.data }}
-            </span>
           </div>
         </div>
       </div>
-      <div v-else-if="props.editable" class="col-span-12 md:col-span-5 mt-2">
+
+      <!-- Value/Input Row -->
+      <div class="flex items-center gap-2">
+        <!-- Hidden Data with Toggle Visibility -->
+        <div
+          v-if="props.hidedata"
+          class="flex items-center gap-2 flex-1 ml-1.5 mt-2"
+        >
+          <button
+            class="text-gray-600 dark:text-gray-400 hover:text-accent-500 dark:hover:text-accent-400 transition-colors flex-shrink-0"
+            title="Toggle visibility"
+            @click="toggleHidden"
+          >
+            <svg-icon type="mdi" :path="mdiEyeOffOutline" class="h-5 w-5" />
+          </button>
+          <span
+            class="flex-1 text-sm font-mono text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-800 px-3 py-1.5 rounded"
+          >
+            {{ hidden ? "••••••••••••••••" : props.data }}
+          </span>
+        </div>
+
+        <!-- Editable Input -->
         <input
+          v-else-if="props.editable"
           v-model="inputValue"
           type="text"
           :placeholder="props.data || ''"
-          class="bg-gray-200 dark:bg-gray-500 block w-full pl-3 pr-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-1 focus:ring-accent-500 focus:border-accent-500 sm:text-sm rounded-md"
+          class="flex-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 px-3 py-2 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition-colors"
           @blur="saveInput"
           @keyup.enter="saveInput"
         />
-      </div>
 
-      <div v-else-if="props.select" class="col-span-12 md:col-span-5 mt-2">
+        <!-- Select Dropdown -->
         <select
-          class="bg-gray-200 dark:bg-gray-500 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-1 focus:ring-accent-500 focus:border-accent-500 sm:text-sm rounded-md"
+          v-else-if="props.select"
+          class="ml-3.5 w-auto min-w-[200px] bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white px-3 py-2 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition-colors cursor-pointer hover:border-accent-400 dark:hover:border-accent-600"
           @change="onselect(($event.target as HTMLSelectElement).value)"
         >
-          >
           <option
             v-for="opt in select"
             :key="opt.label"
@@ -232,42 +242,43 @@ onMounted(() => {
             {{ opt.label }}
           </option>
         </select>
+
+        <!-- Read-only Data Display -->
+        <span
+          v-else-if="!props.button && !props.toggle"
+          class="flex-1 text-sm text-gray-700 dark:text-gray-300 font-mono bg-gray-200 dark:bg-gray-800 px-3 py-1.5 rounded"
+        >
+          {{ props.data }}
+        </span>
       </div>
-      <div v-else-if="props.button || props.toggle" class="col-span-5"></div>
-      <div v-else class="col-span-12 md:col-span-5 mt-2">
-        <div class="flex items-center">
-          <span>
-            {{ props.data }}
-          </span>
+
+      <!-- Info Alert (when toggle is off) -->
+      <div
+        v-if="props.info && !enabled"
+        class="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 p-3 rounded"
+        role="alert"
+      >
+        <div class="flex items-start gap-3">
+          <svg-icon
+            type="mdi"
+            :path="mdiInformationBox"
+            class="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5"
+          />
+          <p class="text-sm text-blue-800 dark:text-blue-300">
+            {{ props.info }}
+          </p>
         </div>
       </div>
 
-      <div v-if="props.info && !enabled" class="col-span-12 text-sm pt-1">
-        <div
-          class="bg-gray-100 dark:bg-gray-800 border-l-4 border-accent-500 text-accent-700 dark:text-accent-400 p-4"
-          role="alert"
-        >
-          <div class="grid grid-cols-12">
-            <div class="col-span-1 flex items-center justify-center">
-              <svg-icon
-                type="mdi"
-                :path="mdiInformationBox"
-                class="h-4 w-4 mr-2"
-              />
-            </div>
-            <div class="col-span-11">
-              {{ props.info }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div v-if="description_help" class="col-span-12 text-sm pt-2">
-        <div
-          class="bg-gray-100 dark:bg-gray-800 border-l-4 border-accent-500 text-accent-700 dark:text-accent-400 p-4"
-          role="alert"
-        >
+      <!-- Description Help (when toggled) -->
+      <div
+        v-if="description_help"
+        class="bg-accent-50 dark:bg-accent-900/20 border-l-4 border-accent-500 p-3 rounded"
+        role="alert"
+      >
+        <p class="text-sm text-accent-800 dark:text-accent-300">
           {{ props.description }}
-        </div>
+        </p>
       </div>
     </div>
   </div>

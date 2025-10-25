@@ -18,42 +18,52 @@ onMounted(() => {
 
 <template>
   <main>
-    <div class="container mt-4 mb-6 w-full mx-auto px-2">
+    <div class="container mt-4 mb-12 w-full mx-auto px-2">
       <Title
         title="Admin Agent Panel"
-        description="Konarr Admin Setting for Agents"
+        description="Configure agent communication and security"
       />
 
-      <div class="grid grid-cols-6 gap-2 w-full mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 w-full mx-auto">
         <AdminSettingMenu
           current="agents"
           :icon="mdiServer"
-          class="col-span-6 md:col-span-2"
+          class="lg:col-span-1"
         />
 
-        <div
-          v-if="!admin.loading"
-          class="col-span-6 md:col-span-4 bg-white dark:bg-gray-800 dark:text-white shadow-md rounded-lg p-4 pt-6"
-        >
-          <AdminSetting
-            title="Agent Active"
-            :data="admin.settings.agent"
-            setting="agent"
-            toggle
-          />
+        <div class="lg:col-span-3">
+          <Loading v-if="admin.loading" />
+          <div v-else class="space-y-6">
+            <!-- Agent Configuration Section -->
+            <div
+              class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-blue-500"
+            >
+              <h2
+                class="text-xl font-semibold mb-4 text-gray-900 dark:text-white"
+              >
+                Agent Configuration
+              </h2>
+              <div class="space-y-4">
+                <AdminSetting
+                  title="Agent Active"
+                  description="Enable or disable agent communication"
+                  :data="admin.settings.agent"
+                  setting="agent"
+                  toggle
+                />
 
-          <hr class="my-6 border-gray-300" />
-
-          <AdminSetting
-            v-if="admin.settings.agent === 'enabled'"
-            title="Agent Share Key"
-            description="Shared secret key for agent communication"
-            :data="admin.settings['agent.key']"
-            setting="agent.key"
-            hidedata
-          />
+                <AdminSetting
+                  v-if="admin.settings.agent === 'enabled'"
+                  title="Agent Share Key"
+                  description="Shared secret key for agent communication"
+                  :data="admin.settings['agent.key']"
+                  setting="agent.key"
+                  hidedata
+                />
+              </div>
+            </div>
+          </div>
         </div>
-        <Loading v-else />
       </div>
     </div>
   </main>
