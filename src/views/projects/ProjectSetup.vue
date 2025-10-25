@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
-import type { KonarrProject } from "@/types";
+import type { Project } from "@/types";
 import { useAdminStore } from "@/stores/admin";
 import SbomUpload from "@/components/SbomUpload.vue";
 
 const admin = useAdminStore();
 
-const props = defineProps<{ id: number; project: KonarrProject }>();
+const props = defineProps<{ id: number; project: Project }>();
 
 const pid = props.id ? String(props.id) : "<project-id>";
 const instance =

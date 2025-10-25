@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { KonarrProject } from "@/types";
+import type { Project } from "@/types";
 import SvgIcon from "@jamescoyle/vue-icon";
 import {
   mdiPencil,

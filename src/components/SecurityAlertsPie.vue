@@ -3,10 +3,10 @@ import { computed, onMounted, ref } from "vue";
 import colors from "tailwindcss/colors";
 import { AgCharts } from "ag-charts-vue3";
 
-import type { KonarrSecuritySummary } from "@/types";
+import type { SecuritySummary } from "@/types";
 
 const props = defineProps<{
-  alerts: KonarrSecuritySummary;
+  alerts: SecuritySummary;
 }>();
 
 const isDarkMode = ref(false);

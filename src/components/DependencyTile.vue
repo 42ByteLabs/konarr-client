@@ -15,14 +15,14 @@ import { computed } from "vue";
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiPackageVariantClosed, mdiChevronRight } from "@mdi/js";
 
-import type { KonarrDependency } from "@/types";
+import type { Dependency } from "@/types";
 import DependencyIcon from "@/components/DependencyIcon.vue";
 import { useDependenciesStore } from "@/stores/dependencies";
 
 const dependencies = useDependenciesStore();
 
 const props = defineProps<{
-  dependency?: KonarrDependency;
+  dependency?: Dependency;
   id?: number;
 }>();
 
@@ -30,7 +30,7 @@ const dependency = computed(() => {
   if (props.dependency) {
     return props.dependency;
   } else if (props.id) {
-    return dependencies.data.find((d: KonarrDependency) => d.id === props.id);
+    return dependencies.find(props.id);
   }
   return null;
 });

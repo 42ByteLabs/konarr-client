@@ -1,51 +1,69 @@
 import { defineStore } from "pinia";
 import client from "@/client";
-import { handleErrors } from "@/stores/utils";
+import { handleErrors, handleApiResponse } from "@/stores/utils";
 
-import type { KonarrAdmin } from "@/types";
+import type {
+  AdminSettings,
+  AdminUser,
+  AdminUsers,
+  AdminUsersResponse,
+} from "@/types";
 
 export const useAdminStore = defineStore("admin", {
-  state: () =>
-    ({
-      loading: true,
+  state: () => ({
+    loading: true,
+    // Admin settings and stats
+    adminSettings: {
       settings: {},
       projectStats: {
         total: 0,
         inactive: 0,
         archived: 0,
       },
-      project_stats: {
-        total: 0,
-        inactive: 0,
-        archived: 0,
-      },
+      // This will be deprecated in favor of users list endpoint
       users: [],
       userStats: {
         total: 0,
         active: 0,
         inactive: 0,
       },
-      // pagination for users
-      page: 0,
+    } as AdminSettings,
+    // Users list with pagination
+    users: {
+      data: [] as AdminUser[],
       pages: 0,
-      limit: 24,
+      count: 10,
       total: 0,
-    }) as KonarrAdmin,
+    } as AdminUsers,
+    usersPage: 0,
+    usersLimit: 24,
+  }),
+
+  getters: {
+    registration(state): boolean {
+      return state.adminSettings.settings["registration"] === "enabled";
+    },
+    settings(state): { [key: string]: any } {
+      return state.adminSettings.settings;
+    },
+  },
 
   actions: {
     async fetchInfo() {
       this.loading = true;
       await client
-        .get("/admin")
+        .get<AdminSettings>("/admin")
         .then((response) => {
-          this.settings = response.data.settings;
-          this.projectStats = response.data.projectStats;
-          this.users = response.data.users;
-          this.userStats = response.data.userStats;
-          this.loading = false;
+          const data = handleApiResponse(response.data);
+          if (data) {
+            this.adminSettings = data;
+          }
         })
         .catch((error) => {
           handleErrors(error);
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
 
@@ -62,12 +80,18 @@ export const useAdminStore = defineStore("admin", {
       data[name] = value;
 
       await client
-        .patch("/admin", data)
+        .patch<AdminSettings>("/admin", data)
         .then((response) => {
-          this.settings = response.data.settings;
+          const data = handleApiResponse(response.data);
+          if (data) {
+            this.adminSettings = data;
+          }
         })
         .catch((error) => {
           handleErrors(error);
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
 
@@ -76,6 +100,7 @@ export const useAdminStore = defineStore("admin", {
       limit?: number;
       search?: string;
     }) {
+      this.loading = true;
       // Build query params
       const query: { [key: string]: any } = {};
       if (params) {
@@ -86,22 +111,18 @@ export const useAdminStore = defineStore("admin", {
       }
 
       await client
-        .get("/admin/users", { params: query })
+        .get<AdminUsersResponse>("/admin/users", { params: query })
         .then((response) => {
-          // Expecting an object with users list and pagination/stats
-          if (response.data.users) this.users = response.data.users;
-          if (response.data.userStats) this.userStats = response.data.userStats;
-          // Optional pagination fields from server
-          if (response.data.page !== undefined) this.page = response.data.page;
-          if (response.data.pages !== undefined)
-            this.pages = response.data.pages;
-          if (response.data.limit !== undefined)
-            this.limit = response.data.limit;
-          if (response.data.total !== undefined)
-            this.total = response.data.total;
+          const data = handleApiResponse(response.data);
+          if (data) {
+            this.users = data;
+          }
         })
         .catch((error) => {
           handleErrors(error);
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
 
@@ -116,12 +137,15 @@ export const useAdminStore = defineStore("admin", {
       }
 
       await client
-        .patch(`/admin/users/${id}`, payload)
+        .patch<AdminUser>(`/admin/users/${id}`, payload)
         .then((response) => {
           console.error("Update User Error", response);
         })
         .catch((error) => {
           handleErrors(error);
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
   },
