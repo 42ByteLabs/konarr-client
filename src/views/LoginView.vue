@@ -18,27 +18,11 @@ if (server.user) {
 <template>
   <main>
     <div class="container mt-4 mb-6 w-full mx-auto px-4">
-      <Title title="Login" />
+      <Title title="Login" subtitle="Sign in to your account" />
 
-      <Loading v-if="server.logging_in" />
+      <Loading v-if="server.logging_in" text="Signing in..." />
 
       <LoginPanel />
     </div>
   </main>
 </template>
-
-<style scoped>
-.progress {
-  animation: progress 2s infinite;
-}
-
-@keyframes progress {
-  0% {
-    transform: translateX(-100%);
-  }
-
-  100% {
-    transform: translateX(100%);
-  }
-}
-</style>

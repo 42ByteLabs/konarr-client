@@ -22,7 +22,8 @@ const login = async () => {
 
 <template>
   <div class="max-w-md mx-auto">
-    <form>
+    <form @submit.prevent="login">
+      <!-- Username field -->
       <div class="mb-4">
         <label
           for="username"
@@ -35,9 +36,12 @@ const login = async () => {
           v-model="username"
           type="text"
           name="username"
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          required
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-white dark:bg-gray-800 dark:border-gray-600 leading-tight focus:outline-none focus:shadow-outline focus:border-accent-500"
         />
       </div>
+
+      <!-- Password field -->
       <div class="mb-6">
         <label
           for="password"
@@ -50,12 +54,18 @@ const login = async () => {
           v-model="password"
           type="password"
           name="password"
-          class="shadow appearance-none border border-accent-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+          required
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-white dark:bg-gray-800 dark:border-gray-600 leading-tight focus:outline-none focus:shadow-outline focus:border-accent-500"
         />
       </div>
-      <!-- Make center -->
-      <div class="flex items-center justify-between">
-        <button :class="primaryButton() + ' px-8'" type="button" @click="login">
+
+      <!-- Submit button -->
+      <div class="flex items-center justify-center">
+        <button
+          :class="primaryButton()"
+          type="submit"
+          class="w-full sm:w-auto sm:min-w-[200px]"
+        >
           Sign In
         </button>
       </div>

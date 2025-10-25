@@ -38,11 +38,10 @@ export const useServerStore = defineStore("konarr", {
 
             this.setAdminMode();
           } else {
-            if (!this.config.initialised) {
+            if (!this.config.initialised || this.config.registration === true) {
+              router.push({ name: "Register" });
+            } else {
               router.push({ name: "Login" });
-            }
-            if (this.config.registration === true) {
-              router.push({ name: "Registration" });
             }
           }
         })
