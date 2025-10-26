@@ -226,7 +226,7 @@ onMounted(() => {
                         </select>
                         <span
                           v-else
-                          class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
+                          class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-success-100 text-success-800 dark:bg-success-900/30 dark:text-success-300"
                         >
                           Active
                         </span>

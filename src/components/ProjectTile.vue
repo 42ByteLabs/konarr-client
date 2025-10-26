@@ -5,6 +5,7 @@ import { mdiGraph, mdiSecurity } from "@mdi/js";
 
 import type { Project } from "@/types";
 import ProjectIcon from "@/components/ProjectIcon.vue";
+import BaseBadge from "@/components/BaseBadge.vue";
 import { useProjectsStore } from "@/stores/projects";
 
 const projects = useProjectsStore();
@@ -70,7 +71,7 @@ const project = computed(() => {
           type="mdi"
           :path="mdiGraph"
           aria-hidden="true"
-          class="text-green-500 mr-1"
+          class="text-success-500 mr-1"
           :size="18"
         ></svg-icon>
         <span>{{ project.snapshot.dependencies }}</span>
@@ -83,7 +84,7 @@ const project = computed(() => {
           type="mdi"
           :path="mdiSecurity"
           aria-hidden="true"
-          class="text-red-500 mr-1"
+          class="text-sec-critical-500 mr-1"
           :size="18"
         ></svg-icon>
         <svg-icon
@@ -91,7 +92,7 @@ const project = computed(() => {
           type="mdi"
           :path="mdiSecurity"
           aria-hidden="true"
-          class="text-orange-500 mr-1"
+          class="text-sec-high-500 mr-1"
           :size="18"
         ></svg-icon>
         <svg-icon
@@ -99,7 +100,7 @@ const project = computed(() => {
           type="mdi"
           :path="mdiSecurity"
           aria-hidden="true"
-          class="text-yellow-500 mr-1"
+          class="text-sec-medium-500 mr-1"
           :size="18"
         ></svg-icon>
         <svg-icon
@@ -107,7 +108,7 @@ const project = computed(() => {
           type="mdi"
           :path="mdiSecurity"
           aria-hidden="true"
-          class="text-green-500 mr-1"
+          class="text-sec-low-500 mr-1"
           :size="18"
         ></svg-icon>
         <svg-icon
@@ -120,9 +121,9 @@ const project = computed(() => {
         ></svg-icon>
         <span
           :class="{
-            'text-red-600 dark:text-red-400 font-semibold':
+            'text-sec-critical-600 dark:text-sec-critical-400 font-semibold':
               project.security.critical > 0,
-            'text-orange-600 dark:text-orange-400 font-semibold':
+            'text-sec-high-600 dark:text-sec-high-400 font-semibold':
               project.security.high > 0 && project.security.critical === 0,
           }"
         >
@@ -133,11 +134,9 @@ const project = computed(() => {
 
     <!-- Optional: Project Type Badge -->
     <div class="mt-3">
-      <span
-        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent-100 text-accent-800 dark:bg-accent-900/30 dark:text-accent-300"
-      >
+      <BaseBadge variant="accent">
         {{ project.type }}
-      </span>
+      </BaseBadge>
     </div>
   </router-link>
 </template>

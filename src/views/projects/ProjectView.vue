@@ -113,7 +113,7 @@ let container_sha = computed(() => {
                   type="mdi"
                   :path="mdiCloudCheckOutline"
                   :size="86"
-                  class="text-blue-400"
+                  class="text-sec-information-400"
                 >
                 </svg-icon>
                 <svg-icon
@@ -121,7 +121,7 @@ let container_sha = computed(() => {
                   type="mdi"
                   :path="mdiCloudOffOutline"
                   :size="86"
-                  class="text-red-400"
+                  class="text-error-400"
                 >
                 </svg-icon>
               </div>

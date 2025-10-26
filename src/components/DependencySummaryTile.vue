@@ -29,34 +29,34 @@ const colorClasses = computed(() => {
     case "blue":
       return {
         gradient:
-          "bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20",
-        border: "border-blue-200 dark:border-blue-800",
-        icon: "text-blue-600 dark:text-blue-400",
-        count: "text-blue-700 dark:text-blue-300",
+          "bg-gradient-to-r from-sec-total-50 to-sec-total-100 dark:from-sec-total-900/20 dark:to-sec-total-800/20",
+        border: "border-sec-total-200 dark:border-sec-total-800",
+        icon: "text-sec-total-600 dark:text-sec-total-400",
+        count: "text-sec-total-700 dark:text-sec-total-300",
       };
     case "purple":
       return {
         gradient:
-          "bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20",
-        border: "border-purple-200 dark:border-purple-800",
-        icon: "text-purple-600 dark:text-purple-400",
-        count: "text-purple-700 dark:text-purple-300",
+          "bg-gradient-to-r from-sec-malware-50 to-sec-malware-100 dark:from-sec-malware-900/20 dark:to-sec-malware-800/20",
+        border: "border-sec-malware-200 dark:border-sec-malware-800",
+        icon: "text-sec-malware-600 dark:text-sec-malware-400",
+        count: "text-sec-malware-700 dark:text-sec-malware-300",
       };
     case "green":
       return {
         gradient:
-          "bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20",
-        border: "border-green-200 dark:border-green-800",
-        icon: "text-green-600 dark:text-green-400",
-        count: "text-green-700 dark:text-green-300",
+          "bg-gradient-to-r from-success-50 to-success-100 dark:from-success-900/20 dark:to-success-800/20",
+        border: "border-success-200 dark:border-success-800",
+        icon: "text-success-600 dark:text-success-400",
+        count: "text-success-700 dark:text-success-300",
       };
     case "orange":
       return {
         gradient:
-          "bg-gradient-to-r from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20",
-        border: "border-orange-200 dark:border-orange-800",
-        icon: "text-orange-600 dark:text-orange-400",
-        count: "text-orange-700 dark:text-orange-300",
+          "bg-gradient-to-r from-sec-high-50 to-sec-high-100 dark:from-sec-high-900/20 dark:to-sec-high-800/20",
+        border: "border-sec-high-200 dark:border-sec-high-800",
+        icon: "text-sec-high-600 dark:text-sec-high-400",
+        count: "text-sec-high-700 dark:text-sec-high-300",
       };
     default:
       return {

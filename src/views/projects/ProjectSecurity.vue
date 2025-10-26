@@ -15,7 +15,7 @@ const props = defineProps<{ id: number; project: Project }>();
         props.project.snapshot.status === 'Failed' &&
         props.project.snapshot.error
       "
-      class="bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-200 px-4 py-3 rounded relative my-4"
+      class="bg-error-100 dark:bg-error-900 border border-error-400 dark:border-error-600 text-error-700 dark:text-error-200 px-4 py-3 rounded relative my-4"
       role="alert"
     >
       <strong class="font-bold">Snapshot Processing Failed</strong>

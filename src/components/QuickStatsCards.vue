@@ -74,7 +74,7 @@ const emit = defineEmits<{
     <button
       type="button"
       aria-label="View all projects"
-      class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-blue-500 hover:shadow-xl transition-shadow cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+      class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-sec-total-500 hover:shadow-xl transition-shadow cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-sec-total-500 focus:ring-offset-2"
       @click="emit('navigate-to-projects')"
     >
       <div class="flex items-center justify-between">
@@ -96,7 +96,7 @@ const emit = defineEmits<{
           type="mdi"
           :path="mdiPackageVariant"
           aria-hidden="true"
-          class="text-blue-500"
+          class="text-sec-total-500"
           :size="48"
         ></svg-icon>
       </div>
@@ -118,7 +118,7 @@ const emit = defineEmits<{
     <button
       type="button"
       aria-label="View all dependencies"
-      class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-green-500 hover:shadow-xl transition-shadow cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+      class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-success-500 hover:shadow-xl transition-shadow cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-success-500 focus:ring-offset-2"
       @click="emit('navigate-to-dependencies')"
     >
       <div class="flex items-center justify-between">
@@ -140,7 +140,7 @@ const emit = defineEmits<{
           type="mdi"
           :path="mdiGraph"
           aria-hidden="true"
-          class="text-green-500"
+          class="text-success-500"
           :size="48"
         ></svg-icon>
       </div>
@@ -169,9 +169,9 @@ const emit = defineEmits<{
       class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 hover:shadow-xl transition-shadow cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-offset-2"
       :class="[
         criticalAlerts > 0
-          ? 'border-red-500 focus:ring-red-500'
+          ? 'border-error-500 focus:ring-error-500'
           : hasSecurityIssues
-            ? 'border-yellow-500 focus:ring-yellow-500'
+            ? 'border-warning-500 focus:ring-warning-500'
             : 'border-gray-300 focus:ring-gray-300',
       ]"
       @click="emit('navigate-to-security')"
@@ -197,9 +197,9 @@ const emit = defineEmits<{
           aria-hidden="true"
           :class="
             criticalAlerts > 0
-              ? 'text-red-500'
+              ? 'text-error-500'
               : hasSecurityIssues
-                ? 'text-yellow-500'
+                ? 'text-warning-500'
                 : 'text-gray-400'
           "
           :size="48"
@@ -221,7 +221,7 @@ const emit = defineEmits<{
 
     <!-- Infrastructure Card -->
     <div
-      class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-purple-500 hover:shadow-xl transition-shadow"
+      class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-sec-malware-500 hover:shadow-xl transition-shadow"
       role="status"
       aria-label="Infrastructure statistics"
     >
@@ -244,7 +244,7 @@ const emit = defineEmits<{
           type="mdi"
           :path="mdiTrendingUp"
           aria-hidden="true"
-          class="text-purple-500"
+          class="text-sec-malware-500"
           :size="48"
         ></svg-icon>
       </div>
