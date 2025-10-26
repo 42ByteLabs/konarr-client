@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import { router } from "@/router";
 
 import SvgIcon from "@jamescoyle/vue-icon";
@@ -109,6 +109,23 @@ const select = (value: Event) => {
   }
 };
 
+const handleSlashKey = (event: KeyboardEvent) => {
+  // Only focus if the user is not already typing in an input or textarea
+  const target = event.target as HTMLElement;
+  const isInputField =
+    target.tagName === "INPUT" ||
+    target.tagName === "TEXTAREA" ||
+    target.isContentEditable;
+
+  if (event.key === "/" && !isInputField) {
+    event.preventDefault();
+    const searchInput = document.getElementById("search") as HTMLInputElement;
+    if (searchInput) {
+      searchInput.focus();
+    }
+  }
+};
+
 onMounted(() => {
   const squery = router.currentRoute.value.query.search;
   const selectParam = router.currentRoute.value.query.select;
@@ -122,6 +139,14 @@ onMounted(() => {
       input.value = Array.isArray(squery) ? (squery[0] ?? "") : (squery ?? "");
     }
   }
+
+  // Add keyboard event listener for '/' key
+  window.addEventListener("keydown", handleSlashKey);
+});
+
+onUnmounted(() => {
+  // Clean up event listener when component is destroyed
+  window.removeEventListener("keydown", handleSlashKey);
 });
 </script>
 
