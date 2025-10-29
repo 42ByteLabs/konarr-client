@@ -7,15 +7,6 @@ import Loading from "@/components/Loading.vue";
 import PasswordStrengthMeter from "@/components/PasswordStrengthMeter.vue";
 
 const users = useUsersStore();
-const loading = ref(false);
-
-// Profile fields
-const username = ref("");
-const role = ref("");
-const state = ref("");
-const createdAt = ref("");
-const lastLogin = ref("");
-const avatar = ref("");
 
 // Password update fields
 const currentPassword = ref("");
@@ -23,18 +14,7 @@ const newPassword = ref("");
 const confirmPassword = ref("");
 
 onMounted(async () => {
-  const user = await users.whoami();
-
-  if (user) {
-    username.value = user.username;
-    role.value = user.role;
-    state.value = user.state;
-    createdAt.value = user.createdAt;
-    lastLogin.value = user.lastLogin;
-    avatar.value = user.avatar || "";
-  }
-  loading.value = false;
-
+  await users.whoami();
   // Load sessions
   await users.fetchSessions();
 });
@@ -113,7 +93,7 @@ function formatDate(dateString: string) {
     <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
       <Title title="User Profile" />
 
-      <Loading v-if="loading" />
+      <Loading v-if="users.loading" />
 
       <div v-else class="space-y-8">
         <!-- Profile Information Card -->
@@ -128,9 +108,9 @@ function formatDate(dateString: string) {
             </h3>
             <div class="mt-6 space-y-6">
               <!-- Avatar -->
-              <div v-if="avatar" class="flex items-center space-x-4">
+              <div v-if="users.user.avatar" class="flex items-center space-x-4">
                 <img
-                  :src="avatar"
+                  :src="users.user.avatar"
                   alt="User avatar"
                   class="h-16 w-16 rounded-full"
                 />
@@ -146,7 +126,7 @@ function formatDate(dateString: string) {
                 </label>
                 <input
                   id="username"
-                  v-model="username"
+                  v-model="users.user.username"
                   type="text"
                   disabled
                   class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 shadow-sm dark:bg-gray-600 dark:border-gray-600 dark:text-gray-400 sm:text-sm px-3 py-2"
@@ -165,7 +145,7 @@ function formatDate(dateString: string) {
                   </label>
                   <input
                     id="role"
-                    v-model="role"
+                    v-model="users.user.role"
                     type="text"
                     disabled
                     class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 shadow-sm dark:bg-gray-600 dark:border-gray-600 dark:text-gray-400 sm:text-sm px-3 py-2"
@@ -182,7 +162,7 @@ function formatDate(dateString: string) {
                   </label>
                   <input
                     id="state"
-                    v-model="state"
+                    v-model="users.user.state"
                     type="text"
                     disabled
                     class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 shadow-sm dark:bg-gray-600 dark:border-gray-600 dark:text-gray-400 sm:text-sm px-3 py-2"
@@ -202,7 +182,7 @@ function formatDate(dateString: string) {
                   </label>
                   <input
                     id="created-at"
-                    :value="formatDate(createdAt)"
+                    :value="formatDate(users.user.createdAt)"
                     type="text"
                     disabled
                     class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 shadow-sm dark:bg-gray-600 dark:border-gray-600 dark:text-gray-400 sm:text-sm px-3 py-2"
@@ -219,7 +199,7 @@ function formatDate(dateString: string) {
                   </label>
                   <input
                     id="last-login"
-                    :value="formatDate(lastLogin)"
+                    :value="formatDate(users.user.lastLogin)"
                     type="text"
                     disabled
                     class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 shadow-sm dark:bg-gray-600 dark:border-gray-600 dark:text-gray-400 sm:text-sm px-3 py-2"
@@ -322,13 +302,7 @@ function formatDate(dateString: string) {
               device.
             </p>
 
-            <Loading v-if="users.loading" />
-
-            <div v-else-if="users.sessions.data.length === 0" class="mt-6">
-              <p class="text-sm text-gray-500 dark:text-gray-400">
-                No active sessions found.
-              </p>
-            </div>
+            <Loading v-if="users.sessionsLoading" />
 
             <div v-else class="mt-6 space-y-4">
               <div
