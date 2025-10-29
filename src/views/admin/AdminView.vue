@@ -48,7 +48,7 @@ onMounted(() => {
               <AdminSetting
                 title="Registration Active"
                 description="Allow users to register for an account. When disabled, no new users can register."
-                :data="admin.registration"
+                :data="admin.settings['registration']"
                 setting="registration"
                 toggle
               />

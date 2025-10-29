@@ -35,10 +35,9 @@ export function handleErrors(error: any): boolean {
   } else if (error.response) {
     // Handle 401 Unauthorized - redirect to login
     if (error.response.status === 401) {
-      if (
-        router.currentRoute.value.name !== "Login" &&
-        router.currentRoute.value.name !== "Home"
-      ) {
+      if (router.currentRoute.value.name === "Home") {
+        return true;
+      } else if (router.currentRoute.value.name !== "Login") {
         router.push({ name: "Login" });
       } else {
         notify({
@@ -96,7 +95,9 @@ export function handleApiResponse<T>(response: T | ApiError): T | null {
 
     // Handle 401 specifically
     if (response.status === 401) {
-      if (router.currentRoute.value.name !== "Login") {
+      if (router.currentRoute.value.name === "Home") {
+        return null;
+      } else if (router.currentRoute.value.name !== "Login") {
         router.push({ name: "Login" });
       } else {
         notify({
