@@ -36,8 +36,8 @@ onMounted(() => {
 
   <notifications
     group="auth"
-    position="top center"
-    width="50%"
+    position="bottom right"
+    width="30%"
     classes="my-notification"
   />
   <notifications
