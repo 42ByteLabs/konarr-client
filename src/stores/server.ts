@@ -45,7 +45,7 @@ export const useServerStore = defineStore("konarr", {
             if (this.info.user) {
               this.setAdminMode();
             } else {
-              router.push({ name: "Login" });
+              handleErrors({ response: { status: 401 } });
             }
           }
         })

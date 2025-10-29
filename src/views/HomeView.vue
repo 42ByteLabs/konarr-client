@@ -29,8 +29,10 @@ const server = useServerStore();
 const projects = useProjectsStore();
 
 onMounted(async () => {
-  // Fetch recent projects and security alerts for dashboard
-  await projects.fetchProjects(0, 4, false, "containers");
+  if (server.user) {
+    // Fetch recent projects and security alerts for dashboard
+    await projects.fetchProjects(0, 4, false, "containers");
+  }
 });
 
 // Quick stats computed properties
