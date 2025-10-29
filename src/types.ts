@@ -102,6 +102,8 @@ export interface AdminProjectStats {
   archived: number;
 }
 
+export type UserResponse = ApiResponse<User>;
+
 /** User Information
  *
  * Response from GET /api/user/whoami
@@ -123,6 +125,16 @@ export interface User {
 }
 
 export type AdminUsers = Pagination<AdminUser>;
+
+export interface UserPasswordChange {
+  current_password: string;
+  new_password: string;
+  new_password_confirm: string;
+}
+
+export interface UserPasswordChangeResponse {
+  status: string;
+}
 
 /** Admin User Summary
  *
@@ -159,6 +171,10 @@ export interface SessionSummary {
   /** Session state (Active, Expired) */
   state: string;
 }
+
+export type SessionsSummary = Pagination<SessionSummary>;
+
+export type SessionsSummaryResponse = ApiResponse<SessionsSummary>;
 
 /** Projects Summary
  *
