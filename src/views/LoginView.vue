@@ -1,8 +1,5 @@
 <script setup lang="ts">
-// https://www.creative-tim.com/twcomponents/component/indeterminate-progress-bar
-
 import { router } from "@/router";
-import Title from "@/components/Title.vue";
 import LoginPanel from "@/components/LoginPanel.vue";
 import Loading from "@/components/Loading.vue";
 import { useServerStore } from "@/stores/server";
@@ -16,13 +13,38 @@ if (server.user) {
 </script>
 
 <template>
-  <main>
-    <div class="container mt-4 mb-6 w-full mx-auto px-4">
-      <Title title="Login" subtitle="Sign in to your account" />
+  <main class="min-h-screen flex items-center justify-center py-12 px-4">
+    <div class="container max-w-6xl mx-auto">
+      <!-- Header with gradient text -->
+      <div class="text-center mb-12">
+        <h1
+          class="text-5xl font-bold mb-4 bg-gradient-to-r from-accent-600 via-pink-600 to-accent-600 bg-clip-text text-transparent dark:from-accent-400 dark:via-pink-400 dark:to-accent-400"
+        >
+          Welcome Back
+        </h1>
+        <p class="text-xl text-gray-600 dark:text-gray-400">
+          Sign in to your account
+        </p>
+      </div>
 
       <Loading v-if="server.loggingIn" text="Signing in..." />
 
-      <LoginPanel />
+      <div v-else>
+        <LoginPanel />
+
+        <!-- Additional info -->
+        <div class="mt-8 text-center">
+          <p class="text-sm text-gray-600 dark:text-gray-400">
+            Don't have an account?
+            <router-link
+              to="/register"
+              class="font-semibold text-accent-600 hover:text-accent-700 dark:text-accent-400 dark:hover:text-accent-300 transition-colors underline decoration-accent-500/30 hover:decoration-accent-500"
+            >
+              Register here
+            </router-link>
+          </p>
+        </div>
+      </div>
     </div>
   </main>
 </template>

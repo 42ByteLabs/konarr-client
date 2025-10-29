@@ -95,20 +95,318 @@ if (idx >= 0) this.data.splice(idx, 1, updatedProject); // Replace in-place
 - **View composition pattern**: Views import sub-views/tabs (e.g., `ProjectView.vue` imports `ProjectSummary`, `ProjectSecurity`, `ProjectDependencies`, `ProjectSetup`) and switches via route-based computed property
 - Notifications use `@kyvg/vue3-notification`; access via `useNotification()` from `stores/utils.ts` or directly in components
 
-## Styling & components
+## Styling & Design System
 
-- **Tailwind CSS** with custom theme in `tailwind.config.js`:
-  - Custom colors: `accent` (pink), security severity palette (`sec.critical`, `sec.high`, etc.)
-  - Dark mode via `darkMode: "selector"` (toggle with `DarkModeButton.vue`)
-- **Button utilities** in `src/utils/buttonClasses.ts`: `primaryButton()`, `neutralButton()`, `outlineButton()` return composable class strings
-- **Icon libraries**:
-  - `@mdi/js` (Material Design Icons) via `@jamescoyle/vue-icon` as `<SvgIcon>`
-  - `@heroicons/vue` for outline/solid variants
-- **Component patterns**:
-  - Tile components (`ProjectTile`, `SecuritySummaryTile`, `DependencyTile`) for grid layouts
-  - List components (`DependenciesList`, `DependencyTable`) for tabular data
-  - Icon components (`ProjectIcon`, `DependencyIcon`, `SecurityIcon`) use `SvgIcon` wrapper with dynamic MDI paths
-  - Summary/stats components (`SecuritySummary`, `QuickStatsCards`) for dashboard metrics
+### Tailwind Configuration
+
+Configuration lives in `tailwind.config.js` with custom theme extensions:
+
+- **Dark mode**: `darkMode: "selector"` — toggle programmatically via `DarkModeButton.vue`
+- **Content purge**: `./index.html`, `./src/**/*.{vue,js,ts,jsx,tsx}`
+- **Custom grid**: `gridTemplateColumns.16` and `gridTemplateColumns.footer`
+- **Custom animations**: `progress` animation for loading bars with custom keyframes
+
+### Color Palette
+
+**Primary Colors** (from `tailwind.config.js`):
+
+- `accent`: Tailwind pink (`colors.pink`) — **primary interactive color** for buttons, links, active states
+  - Use: `bg-accent-500`, `text-accent-500`, `border-accent-500`, `hover:bg-accent-600`, `focus:ring-accent-500`
+- `black`: Custom `#0D0D0D`
+- `white`, `gray`, `red`, `yellow`, `green`, `blue`, `pink`: Tailwind default palettes
+- `green`: Tailwind emerald (`colors.emerald`)
+
+**Security Severity Colors** (namespace: `sec.*`):
+Use these for security alert styling and visualization:
+
+- `sec.total`: blue
+- `sec.critical`: red
+- `sec.high`: orange
+- `sec.medium`: yellow
+- `sec.low`: green (emerald)
+- `sec.information`: cyan
+- `sec.malware`: purple
+- `sec.unmaintained`: indigo
+- `sec.unknown`: gray
+
+**Semantic Colors**:
+
+- `error`: red
+- `warning`: yellow
+- `success`: green (emerald)
+
+### Accent Color Usage Guidelines
+
+The **accent color (pink)** is the primary brand/interactive color. Use it consistently for:
+
+1. **Interactive elements** (buttons, links, toggles):
+   - Primary buttons: `bg-accent-500 hover:bg-accent-600`
+   - Active navigation: `bg-accent-500 text-white`
+   - Toggle switches (enabled): `bg-accent-500`
+
+2. **Focus states** (all interactive elements):
+   - Standard: `focus:ring-2 focus:ring-accent-500 focus:ring-offset-2`
+   - Borders: `focus:border-accent-500`
+
+3. **Hover states**:
+   - Borders: `hover:border-accent-500 dark:hover:border-accent-400`
+   - Text: `hover:text-accent-500 dark:hover:text-accent-400`
+
+4. **Loading/progress indicators**:
+   - Progress bars: `bg-accent-500`
+   - Background: `bg-accent-100 dark:bg-accent-900/20`
+
+**Do NOT use accent color for**:
+
+- Security severity indicators (use `sec.*` colors)
+- Error/warning/success states (use semantic colors)
+- Neutral/secondary actions (use gray)
+
+### Button Styles
+
+Button utilities in `src/utils/buttonClasses.ts` provide consistent button styling:
+
+**`primaryButton()`** — Primary actions (save, submit, create):
+
+```typescript
+bg-accent-500 hover:bg-accent-600 text-white shadow-sm hover:shadow-md
+focus:ring-2 focus:ring-offset-2 focus:ring-accent-500
+disabled:opacity-50 disabled:cursor-not-allowed
+```
+
+**`neutralButton()`** — Secondary/neutral actions (cancel, back):
+
+```typescript
+bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300
+hover:bg-gray-300 dark:hover:bg-gray-600
+focus:ring-2 focus:ring-offset-2 focus:ring-accent-500
+disabled:opacity-50 disabled:cursor-not-allowed
+```
+
+**`outlineButton()`** — Tertiary/outline actions:
+
+```typescript
+border border-gray-200 dark:border-gray-700
+text-gray-700 dark:text-gray-200
+hover:bg-gray-50 dark:hover:bg-gray-700
+focus:ring-2 focus:ring-offset-2 focus:ring-accent-500
+disabled:opacity-50 disabled:cursor-not-allowed
+```
+
+**Button sizing**: All use `px-3 py-2 text-sm rounded-md` for consistency.
+
+**Usage pattern**:
+
+```vue
+<button :class="primaryButton()">Save</button>
+<button :class="neutralButton()">Cancel</button>
+<button :class="outlineButton()">More Options</button>
+```
+
+### Form Input Styles
+
+**Standard text input pattern**:
+
+```vue
+<input
+  type="text"
+  class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 px-3 py-2 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition-colors"
+/>
+```
+
+**Select dropdown pattern**:
+
+```vue
+<select
+  class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white px-3 py-2 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition-colors cursor-pointer hover:border-accent-400 dark:hover:border-accent-600"
+>
+  <option>...</option>
+</select>
+```
+
+**Toggle switch** (@headlessui/vue `Switch`):
+
+```vue
+<Switch
+  v-model="enabled"
+  :class="enabled ? 'bg-accent-600' : 'bg-gray-400 dark:bg-gray-600'"
+  class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2"
+>
+  <span
+    :class="enabled ? 'translate-x-6' : 'translate-x-1'"
+    class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform shadow-sm"
+  />
+</Switch>
+```
+
+### Card/Container Styles
+
+**Standard card/tile** (e.g., `ProjectTile.vue`):
+
+```vue
+<div
+  class="bg-white dark:bg-gray-800 shadow-md hover:shadow-xl rounded-lg p-5 border border-gray-200 dark:border-gray-700 hover:border-accent-500 dark:hover:border-accent-400 transition-all duration-200 transform hover:scale-[1.02] group"
+>
+  <!-- content -->
+</div>
+```
+
+**Settings panel** (e.g., `AdminSetting.vue`):
+
+```vue
+<div
+  class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+>
+  <!-- content -->
+</div>
+```
+
+**Alert/info boxes**:
+
+```vue
+<!-- Info alert -->
+<div
+  class="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 p-3 rounded"
+>
+  <p class="text-sm text-blue-800 dark:text-blue-300">Info message</p>
+</div>
+
+<!-- Accent alert -->
+<div
+  class="bg-accent-50 dark:bg-accent-900/20 border-l-4 border-accent-500 p-3 rounded"
+>
+  <p class="text-sm text-accent-800 dark:text-accent-300">Accent message</p>
+</div>
+```
+
+### Icon Usage
+
+**Material Design Icons** (`@mdi/js` via `@jamescoyle/vue-icon`):
+
+```vue
+<script setup>
+import SvgIcon from "@jamescoyle/vue-icon";
+import { mdiAccount, mdiCog } from "@mdi/js";
+</script>
+
+<template>
+  <svg-icon type="mdi" :path="mdiAccount" class="h-5 w-5" />
+</template>
+```
+
+**Heroicons** (`@heroicons/vue`):
+
+```vue
+<script setup>
+import { ChevronRightIcon } from "@heroicons/vue/20/solid";
+</script>
+
+<template>
+  <ChevronRightIcon class="h-5 w-5" />
+</template>
+```
+
+**Icon sizing**: Use `h-4 w-4` (small), `h-5 w-5` (standard), `h-6 w-6` (large), `h-8 w-8` (extra large)
+
+### Typography
+
+**Font stack** (from `base.css`):
+
+```
+Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif
+```
+
+**Common text styles**:
+
+- Headings: `text-gray-900 dark:text-white font-semibold`
+- Body text: `text-gray-700 dark:text-gray-300`
+- Muted text: `text-gray-500 dark:text-gray-400`
+- Monospace (code/data): `font-mono text-sm`
+
+**Heading sizes**:
+
+- h1: `text-3xl font-bold`
+- h2: `text-2xl font-semibold`
+- h3: `text-xl font-semibold`
+- h4: `text-lg font-semibold`
+
+### Dark Mode
+
+Dark mode is toggled via `selector` strategy (not media query). The `DarkModeButton.vue` component manages the `dark` class on the root element.
+
+**Dark mode class patterns**:
+
+- Backgrounds: `bg-white dark:bg-gray-800`, `bg-gray-50 dark:bg-gray-700/50`
+- Text: `text-gray-900 dark:text-white`, `text-gray-700 dark:text-gray-300`
+- Borders: `border-gray-200 dark:border-gray-700`, `border-gray-300 dark:border-gray-600`
+- Hover states: Always include dark variants, e.g., `hover:bg-gray-100 dark:hover:bg-gray-700`
+
+**Testing dark mode**: Toggle via UI button or add `dark` class to `<html>` element in DevTools.
+
+### Component Patterns
+
+**Tile components** (`*Tile.vue`) — Grid layouts:
+
+- Consistent card styling with hover effects
+- Use `hover:scale-[1.02]` for subtle lift
+- Border transitions to accent color on hover
+
+**List components** (`*List.vue`, `*Table.vue`) — Tabular data:
+
+- Striped rows: `odd:bg-gray-50 dark:odd:bg-gray-800/50`
+- Hover rows: `hover:bg-gray-100 dark:hover:bg-gray-700`
+
+**Icon components** (`*Icon.vue`) — Wrapped `SvgIcon`:
+
+- Accept `size` prop (default: 5 for `h-5 w-5`)
+- Use dynamic MDI path based on type/state
+
+**Summary components** (`*Summary.vue`) — Dashboard metrics:
+
+- Grid layouts with stats cards
+- Use `QuickStatsCards` pattern for numerical summaries
+
+### Transitions & Animations
+
+**Standard transitions**:
+
+- Colors: `transition-colors` (default timing)
+- All properties: `transition-all duration-200`
+- Transforms: `transition-transform`
+
+**Custom animations** (from `tailwind.config.js`):
+
+- `animate-progress`: Loading bar animation
+- `animate-spin`: Loading spinner (Tailwind default)
+- `animate-bounce-1/2/3`: Custom bounce delays (if defined)
+
+### Spacing & Layout
+
+**Container padding**: `p-4` (1rem), `p-5` (1.25rem), `p-6` (1.5rem)
+**Gap/spacing**: `gap-2` (0.5rem), `gap-3` (0.75rem), `gap-4` (1rem)
+**Rounded corners**: `rounded` (0.25rem), `rounded-lg` (0.5rem), `rounded-xl` (0.75rem)
+
+### Accessibility
+
+- All interactive elements must have focus rings: `focus:ring-2 focus:ring-accent-500 focus:ring-offset-2`
+- Use semantic HTML (`<button>`, `<a>`, `<input>`, etc.)
+- Include `aria-label` or `title` for icon-only buttons
+- Form inputs need associated labels or `aria-label`
+
+### Styling Checklist
+
+When creating or modifying components:
+
+1. ✅ Use accent color for primary interactive elements
+2. ✅ Include dark mode variants for all color classes
+3. ✅ Add focus rings (`focus:ring-2 focus:ring-accent-500`) to interactive elements
+4. ✅ Use button utilities from `buttonClasses.ts` for buttons
+5. ✅ Include hover states with dark variants
+6. ✅ Use consistent spacing (gap, padding) and border radius
+7. ✅ Add transitions (`transition-colors`, `transition-all`) for smooth interactions
+8. ✅ Test in both light and dark mode
+9. ✅ Validate color contrast for accessibility
+10. ✅ Use semantic color classes (`sec.*` for security, not accent)
 
 ## Types & checks
 
