@@ -9,9 +9,13 @@ import {
   mdiCodeBraces,
   mdiApplication,
   mdiServer,
+  mdiLogin,
+  mdiAccountPlus,
+  mdiShieldCheck,
+  mdiChartLine,
+  mdiPackageVariant,
 } from "@mdi/js";
 
-import Welcome from "@/components/Welcome.vue";
 import SecurityAlertsPie from "@/components/SecurityAlertsPie.vue";
 import ProjectTile from "@/components/ProjectTile.vue";
 import DependencySummaryTile from "@/components/DependencySummaryTile.vue";
@@ -68,8 +72,225 @@ const navigateToDependencies = () => {
 <template>
   <main>
     <div class="container mt-4 mb-6 w-full mx-auto px-2 md:px-4">
-      <Welcome v-if="!server.user" />
+      <!-- Not Logged In View -->
+      <div
+        v-if="!server.user"
+        class="min-h-[80vh] flex items-center justify-center py-12"
+      >
+        <div class="max-w-6xl mx-auto w-full">
+          <!-- Hero Section -->
+          <div class="text-center mb-16">
+            <h1
+              class="text-6xl font-bold mb-6 bg-gradient-to-r from-accent-600 via-pink-600 to-accent-600 bg-clip-text text-transparent dark:from-accent-400 dark:via-pink-400 dark:to-accent-400"
+            >
+              Konarr
+            </h1>
+            <p class="text-2xl text-gray-700 dark:text-gray-300 mb-4">
+              Supply Chain Security Monitoring
+            </p>
+            <p
+              class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto"
+            >
+              Monitor dependencies, track vulnerabilities, and secure your
+              software supply chain
+            </p>
+          </div>
 
+          <!-- Feature Highlights -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <!-- Feature 1 -->
+            <div
+              class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700"
+            >
+              <div
+                class="w-12 h-12 bg-accent-500/10 dark:bg-accent-500/20 rounded-lg flex items-center justify-center mb-4"
+              >
+                <svg-icon
+                  type="mdi"
+                  :path="mdiShieldCheck"
+                  class="h-6 w-6 text-accent-600 dark:text-accent-400"
+                ></svg-icon>
+              </div>
+              <h3
+                class="text-lg font-semibold text-gray-900 dark:text-white mb-2"
+              >
+                Security Monitoring
+              </h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">
+                Track vulnerabilities and security alerts across all your
+                projects
+              </p>
+            </div>
+
+            <!-- Feature 2 -->
+            <div
+              class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700"
+            >
+              <div
+                class="w-12 h-12 bg-blue-500/10 dark:bg-blue-500/20 rounded-lg flex items-center justify-center mb-4"
+              >
+                <svg-icon
+                  type="mdi"
+                  :path="mdiPackageVariant"
+                  class="h-6 w-6 text-blue-600 dark:text-blue-400"
+                ></svg-icon>
+              </div>
+              <h3
+                class="text-lg font-semibold text-gray-900 dark:text-white mb-2"
+              >
+                Dependency Tracking
+              </h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">
+                Comprehensive SBOM analysis and dependency management
+              </p>
+            </div>
+
+            <!-- Feature 3 -->
+            <div
+              class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700"
+            >
+              <div
+                class="w-12 h-12 bg-green-500/10 dark:bg-green-500/20 rounded-lg flex items-center justify-center mb-4"
+              >
+                <svg-icon
+                  type="mdi"
+                  :path="mdiChartLine"
+                  class="h-6 w-6 text-green-600 dark:text-green-400"
+                ></svg-icon>
+              </div>
+              <h3
+                class="text-lg font-semibold text-gray-900 dark:text-white mb-2"
+              >
+                Real-time Insights
+              </h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">
+                Get actionable insights and visualizations for your supply chain
+              </p>
+            </div>
+          </div>
+
+          <!-- Login/Register Cards -->
+          <div
+            :class="[
+              'grid gap-6 max-w-4xl mx-auto',
+              server.config.registration
+                ? 'grid-cols-1 md:grid-cols-2'
+                : 'grid-cols-1 max-w-md',
+            ]"
+          >
+            <!-- Login Card -->
+            <div
+              class="relative bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8 overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer group"
+              @click="router.push({ name: 'Login' })"
+            >
+              <!-- Decorative gradient -->
+              <div
+                class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-accent-500/20 to-pink-500/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-500"
+              ></div>
+
+              <div class="relative z-10">
+                <!-- Icon -->
+                <div
+                  class="w-16 h-16 bg-accent-500/10 dark:bg-accent-500/20 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-accent-500/20 dark:group-hover:bg-accent-500/30 transition-colors"
+                >
+                  <svg-icon
+                    type="mdi"
+                    :path="mdiLogin"
+                    class="h-8 w-8 text-accent-600 dark:text-accent-400"
+                  ></svg-icon>
+                </div>
+
+                <!-- Content -->
+                <h2
+                  class="text-2xl font-bold text-gray-900 dark:text-white mb-3"
+                >
+                  Sign In
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400 mb-6">
+                  Access your account and manage your projects
+                </p>
+
+                <!-- Arrow indicator -->
+                <div
+                  class="flex items-center text-accent-600 dark:text-accent-400 font-semibold group-hover:translate-x-2 transition-transform duration-300"
+                >
+                  <span>Continue to Login</span>
+                  <svg
+                    class="w-5 h-5 ml-2"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Register Card (only if registration is enabled) -->
+            <div
+              v-if="server.config.registration"
+              class="relative bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8 overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer group"
+              @click="router.push({ name: 'Register' })"
+            >
+              <!-- Decorative gradient -->
+              <div
+                class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-500"
+              ></div>
+
+              <div class="relative z-10">
+                <!-- Icon -->
+                <div
+                  class="w-16 h-16 bg-blue-500/10 dark:bg-blue-500/20 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-blue-500/20 dark:group-hover:bg-blue-500/30 transition-colors"
+                >
+                  <svg-icon
+                    type="mdi"
+                    :path="mdiAccountPlus"
+                    class="h-8 w-8 text-blue-600 dark:text-blue-400"
+                  ></svg-icon>
+                </div>
+
+                <!-- Content -->
+                <h2
+                  class="text-2xl font-bold text-gray-900 dark:text-white mb-3"
+                >
+                  Create Account
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400 mb-6">
+                  Join us and start monitoring your supply chain
+                </p>
+
+                <!-- Arrow indicator -->
+                <div
+                  class="flex items-center text-blue-600 dark:text-blue-400 font-semibold group-hover:translate-x-2 transition-transform duration-300"
+                >
+                  <span>Get Started</span>
+                  <svg
+                    class="w-5 h-5 ml-2"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Logged In View -->
       <div v-else class="space-y-6">
         <!-- Dashboard Header -->
         <div class="flex items-center justify-between">
