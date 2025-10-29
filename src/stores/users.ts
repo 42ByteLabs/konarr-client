@@ -1,73 +1,119 @@
 import { defineStore } from "pinia";
-import { handleErrors } from "@/stores/utils";
+import { handleErrors, handleApiResponse } from "@/stores/utils";
 import client from "@/client";
 
-import type { SessionSummary, User } from "@/types";
+import type {
+  SessionSummary,
+  SessionsSummary,
+  User,
+  UserPasswordChange,
+  UserPasswordChangeResponse,
+  SessionsSummaryResponse,
+} from "@/types";
 
 export const useUsersStore = defineStore("users", {
   state: () => ({
-    sessions: [] as SessionSummary[],
-    loading: false,
+    sessions: {
+      data: [] as SessionSummary[],
+      pages: 0,
+      count: 0,
+      total: 0,
+    } as SessionsSummary,
+    loading: true,
     changingPassword: false,
   }),
 
   actions: {
     // Fetch the current authenticated user via the server-mounted `/user` endpoints
-    async whoami(): Promise<User | null> {
-      try {
-        const res = await client.get<User>("/user/whoami");
-        return res.data;
-      } catch (e) {
-        handleErrors(e as any);
-        return null;
-      }
+    async whoami(): Promise<User | undefined> {
+      this.loading = true;
+
+      await client
+        .get<User>("/user/whoami")
+        .then((response) => {
+          const data = handleApiResponse(response.data);
+          if (data) {
+            return data;
+          }
+        })
+        .catch((error) => {
+          handleErrors(error);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+      return undefined;
     },
 
     // Change password
-    async changePassword(current: string, next: string, confirm: string) {
+    async changePassword(
+      current: string,
+      next: string,
+      confirm: string,
+    ): Promise<UserPasswordChange | undefined> {
+      this.loading = true;
       this.changingPassword = true;
-      try {
-        const res = await client.patch<{ status: string }>("/user/password", {
-          current_password: current,
-          new_password: next,
-          new_password_confirm: confirm,
+
+      const data = {
+        current_password: current,
+        new_password: next,
+        new_password_confirm: confirm,
+      } as UserPasswordChange;
+
+      await client
+        .patch<UserPasswordChangeResponse>("/user/password", data)
+        .then((response) => {
+          const data = handleApiResponse(response.data);
+          if (data) {
+            return data;
+          }
+        })
+        .catch((error) => {
+          handleErrors(error);
+        })
+        .finally(() => {
+          this.changingPassword = false;
+          this.loading = false;
         });
-        return res.data;
-      } catch (e) {
-        handleErrors(e as any);
-        return null;
-      } finally {
-        this.changingPassword = false;
-      }
+      return undefined;
     },
 
     // List sessions (returns the current session summary)
-    async listSessions() {
+    async fetchSessions() {
       this.loading = true;
-      try {
-        const res = await client.get<SessionSummary[]>("/user/sessions");
-        this.sessions = res.data;
-        return this.sessions;
-      } catch (e) {
-        handleErrors(e as any);
-        return [] as SessionSummary[];
-      } finally {
-        this.loading = false;
-      }
+
+      await client
+        .get<SessionsSummaryResponse>("/user/sessions")
+        .then((res) => {
+          const data = handleApiResponse(res.data);
+          if (data) {
+            this.sessions = data;
+          }
+        })
+        .catch((e) => {
+          handleErrors(e);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+      return this.sessions;
     },
 
     // Revoke a session by id
     async revokeSession(id: number) {
-      try {
-        await client.delete(`/user/sessions/${id}`);
+      this.loading = true;
 
-        // Refresh sessions
-        await this.listSessions();
-        return true;
-      } catch (e) {
-        handleErrors(e as any);
-        return false;
-      }
+      await client
+        .delete(`/user/sessions/${id}`)
+        .then(() => {
+          console.log("Session revoked");
+        })
+        .catch((e) => {
+          throw e;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
   },
 });
