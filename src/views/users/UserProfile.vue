@@ -36,7 +36,7 @@ onMounted(async () => {
   loading.value = false;
 
   // Load sessions
-  await users.listSessions();
+  await users.fetchSessions();
 });
 
 async function updatePassword() {
@@ -93,15 +93,13 @@ async function updatePassword() {
 
 async function revokeSession(sessionId: number) {
   if (confirm("Are you sure you want to revoke this session?")) {
-    const result = await users.revokeSession(sessionId);
-    if (result) {
-      notify({
-        group: "app",
-        type: "success",
-        title: "Session Revoked",
-        text: "The session has been revoked successfully",
-      });
-    }
+    await users.revokeSession(sessionId);
+    notify({
+      group: "app",
+      type: "success",
+      title: "Session Revoked",
+      text: "The session has been revoked successfully",
+    });
   }
 }
 
@@ -326,7 +324,7 @@ function formatDate(dateString: string) {
 
             <Loading v-if="users.loading" />
 
-            <div v-else-if="users.sessions.length === 0" class="mt-6">
+            <div v-else-if="users.sessions.data.length === 0" class="mt-6">
               <p class="text-sm text-gray-500 dark:text-gray-400">
                 No active sessions found.
               </p>
@@ -334,7 +332,7 @@ function formatDate(dateString: string) {
 
             <div v-else class="mt-6 space-y-4">
               <div
-                v-for="session in users.sessions"
+                v-for="session in users.sessions.data"
                 :key="session.id"
                 class="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg"
               >
