@@ -13,15 +13,28 @@ import type {
 
 export const useUsersStore = defineStore("users", {
   state: () => ({
+    loading: true,
+    user: {
+      id: 0,
+      username: "",
+      email: "",
+      role: "",
+      state: "",
+      avatar: "",
+      createdAt: "",
+      lastLogin: "",
+    } as User,
     sessions: {
       data: [] as SessionSummary[],
       pages: 0,
       count: 0,
       total: 0,
     } as SessionsSummary,
-    loading: true,
+    sessionsLoading: true,
     changingPassword: false,
   }),
+
+  getters: {},
 
   actions: {
     // Fetch the current authenticated user via the server-mounted `/user` endpoints
@@ -33,6 +46,7 @@ export const useUsersStore = defineStore("users", {
         .then((response) => {
           const data = handleApiResponse(response.data);
           if (data) {
+            this.user = data;
             return data;
           }
         })
@@ -80,7 +94,7 @@ export const useUsersStore = defineStore("users", {
 
     // List sessions (returns the current session summary)
     async fetchSessions() {
-      this.loading = true;
+      this.sessionsLoading = true;
 
       await client
         .get<SessionsSummaryResponse>("/user/sessions")
@@ -94,14 +108,14 @@ export const useUsersStore = defineStore("users", {
           handleErrors(e);
         })
         .finally(() => {
-          this.loading = false;
+          this.sessionsLoading = false;
         });
       return this.sessions;
     },
 
     // Revoke a session by id
     async revokeSession(id: number) {
-      this.loading = true;
+      this.sessionsLoading = true;
 
       await client
         .delete(`/user/sessions/${id}`)
@@ -112,7 +126,7 @@ export const useUsersStore = defineStore("users", {
           throw e;
         })
         .finally(() => {
-          this.loading = false;
+          this.sessionsLoading = false;
         });
     },
   },
