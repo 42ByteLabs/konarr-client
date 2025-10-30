@@ -66,7 +66,6 @@ export const useDependenciesStore = defineStore("dependencies", {
     async fetchDependencies(
       page: number = 0,
       limit: number = 12,
-      top: boolean = true,
       deptype: string | undefined = undefined,
     ) {
       this.loading = true;
@@ -75,15 +74,12 @@ export const useDependenciesStore = defineStore("dependencies", {
         const selectParam = router.currentRoute.value.query.select;
         deptype = Array.isArray(selectParam)
           ? selectParam[0] || undefined
-          : selectParam || undefined;
+          : selectParam || "top";
       }
 
       let params = `page=${page}&limit=${limit}`;
-      if (top) {
-        params += "&top=true";
-      }
       if (deptype) {
-        params += `&deptype=${deptype}`;
+        params += `&select=${deptype}`;
       }
 
       if (this.current === 0) {
@@ -191,18 +187,15 @@ export const useDependenciesStore = defineStore("dependencies", {
     },
 
     async fetchNextPage(limit?: number) {
-      const sselect = router.currentRoute.value.query.select;
-      const top = sselect === undefined;
-
       if (this.page < this.pages) {
         if (this.current) {
-          await this.fetchDependencies(this.page + 1, limit);
+          await this.fetchDependencies(this.page + 1, limit, "top");
         } else {
           const selectParam = router.currentRoute.value.query.select;
           const sselectStr = Array.isArray(selectParam)
             ? selectParam[0] || undefined
             : selectParam || undefined;
-          await this.fetchDependencies(this.page + 1, 24, top, sselectStr);
+          await this.fetchDependencies(this.page + 1, 24, sselectStr);
           router.push({ query: { page: this.page + 1, select: sselectStr } });
         }
       }
@@ -213,13 +206,12 @@ export const useDependenciesStore = defineStore("dependencies", {
       const sselectStr = Array.isArray(selectParam)
         ? selectParam[0] || undefined
         : selectParam || undefined;
-      const top = sselectStr === undefined;
 
       if (this.page !== 0) {
         if (this.current) {
-          await this.fetchDependencies(this.page - 1, limit);
+          await this.fetchDependencies(this.page - 1, limit, "top");
         } else {
-          await this.fetchDependencies(this.page - 1, 24, top, sselectStr);
+          await this.fetchDependencies(this.page - 1, 24, sselectStr);
           if (this.isFirstPage()) {
             // Remove page if first
             router.push({ query: { page: undefined, select: sselectStr } });

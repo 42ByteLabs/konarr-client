@@ -55,7 +55,7 @@ const search = (value: string) => {
     if (value === "") {
       // Remove from URL
       router.push({ query: {} });
-      dependencies.fetchDependencies(0, props.limit || 10);
+      dependencies.fetchDependencies(0, props.limit || 10, "top");
     } else {
       // Push onto URL
       router.push({ query: { search: value } });
@@ -100,18 +100,13 @@ const select = (value: Event) => {
   } else if (props.searching === "dependencies") {
     if (selected.value === "Top") {
       router.push({ query: {} });
-      dependencies.fetchDependencies(0, props.limit || 10, true);
+      dependencies.fetchDependencies(0, props.limit || 10, "top");
     } else if (selected.value === "All") {
       router.push({ query: { select: "all" } });
-      dependencies.fetchDependencies(0, props.limit || 10, false);
+      dependencies.fetchDependencies(0, props.limit || 10);
     } else {
       router.push({ query: { select: selected.value } });
-      dependencies.fetchDependencies(
-        0,
-        props.limit || 10,
-        false,
-        selected.value,
-      );
+      dependencies.fetchDependencies(0, props.limit || 10, selected.value);
     }
   }
 };

@@ -29,7 +29,7 @@ onMounted(() => {
   else if (qpageParam) qpageStr = qpageParam as string;
   const qpage = parseInt(qpageStr) - 1;
   const page = isNaN(qpage) || qpage < 0 ? 0 : qpage;
-  dependencies.fetchDependencies(page, props.limit || 12);
+  dependencies.fetchDependencies(page, props.limit || 12, "top");
 });
 
 // When the store's page changes, update the URL so the page is preserved
