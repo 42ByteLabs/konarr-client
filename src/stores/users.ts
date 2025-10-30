@@ -14,7 +14,16 @@ import type {
 export const useUsersStore = defineStore("users", {
   state: () => ({
     loading: true,
-    user: {} as User,
+    user: {
+      id: 0,
+      username: "",
+      email: "",
+      role: "",
+      state: "",
+      avatar: "",
+      createdAt: "",
+      lastLogin: "",
+    } as User,
     sessions: {
       data: [] as SessionSummary[],
       pages: 0,
