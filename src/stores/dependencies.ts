@@ -29,7 +29,7 @@ export const useDependenciesStore = defineStore("dependencies", {
       return state.data.data;
     },
     pages(state): number {
-      return state.data.pages;
+      return state.data.pages - 1;
     },
     total(state): number {
       return state.data.total;
@@ -69,6 +69,8 @@ export const useDependenciesStore = defineStore("dependencies", {
       deptype: string | undefined = undefined,
     ) {
       this.loading = true;
+      this.page = page;
+
       // Get from URL if null
       if (deptype === undefined) {
         const selectParam = router.currentRoute.value.query.select;
@@ -187,14 +189,15 @@ export const useDependenciesStore = defineStore("dependencies", {
     },
 
     async fetchNextPage(limit?: number) {
+      const selectParam = router.currentRoute.value.query.select;
+      const sselectStr = Array.isArray(selectParam)
+        ? selectParam[0] || undefined
+        : selectParam || undefined;
+
       if (this.page < this.pages) {
         if (this.current) {
           await this.fetchDependencies(this.page + 1, limit, "top");
         } else {
-          const selectParam = router.currentRoute.value.query.select;
-          const sselectStr = Array.isArray(selectParam)
-            ? selectParam[0] || undefined
-            : selectParam || undefined;
           await this.fetchDependencies(this.page + 1, 24, sselectStr);
           router.push({ query: { page: this.page + 1, select: sselectStr } });
         }
