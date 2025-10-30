@@ -23,9 +23,9 @@ onMounted(() => {
   if (qquery) {
     dependencies.searchDependencies(qquery);
   } else if (qselect && qselect === "") {
-    dependencies.fetchDependencies(qpage, 24, true);
+    dependencies.fetchDependencies(qpage, 24, "top");
   } else if (qselect && qselect !== "" && qselect !== "All") {
-    dependencies.fetchDependencies(qpage, 24, false, qselect);
+    dependencies.fetchDependencies(qpage, 24, qselect);
   } else {
     // Set snapshot id to 0 to fetch all dependencies
     dependencies.fetchDependencies(qpage, 24);
