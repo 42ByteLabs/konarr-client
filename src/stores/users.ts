@@ -93,7 +93,6 @@ export const useUsersStore = defineStore("users", {
           const data = handleApiResponse(res.data);
           if (data) {
             this.sessions = data;
-            console.log("Fetched sessions:", data);
           }
         })
         .catch((e) => {
