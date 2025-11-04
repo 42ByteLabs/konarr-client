@@ -19,6 +19,7 @@ export const useSecurityStore = defineStore("security", {
     } as SecurityAlerts,
     loading: true,
     current: null as number | null,
+    snapshot: null as number | null,
     page: 0,
     limit: 24,
   }),
@@ -61,27 +62,34 @@ export const useSecurityStore = defineStore("security", {
     },
 
     async fetchAlerts(page: number = 0, limit: number = 24, severity?: string) {
-      this.loading = true;
-      let params = `page=${page}&limit=${limit}`;
-      if (severity) {
-        params += "&severity=" + severity;
-      }
+      if (this.snapshot) {
+        await this.fetchSnapshotAlerts(this.snapshot, 12, page, severity);
+      } else {
+        this.loading = true;
+        self.limit = limit;
 
-      await client
-        .get<SecurityAlertsResponse>(`/security?${params}`)
-        .then((response) => {
-          const data = handleApiResponse(response.data);
-          if (data) {
-            this.securityAlerts.data = data.data;
-          }
-        })
-        .catch((error) => {
-          handleErrors(error);
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+        let params = `page=${page}&limit=${limit}`;
+        if (severity) {
+          params += "&severity=" + severity;
+        }
+
+        await client
+          .get<SecurityAlertsResponse>(`/security?${params}`)
+          .then((response) => {
+            const data = handleApiResponse(response.data);
+            if (data) {
+              this.securityAlerts.data = data.data;
+            }
+          })
+          .catch((error) => {
+            handleErrors(error);
+          })
+          .finally(() => {
+            this.loading = false;
+          });
+      }
     },
+
     async fetchAlert(id: number) {
       this.loading = true;
       this.current = id;
@@ -104,16 +112,27 @@ export const useSecurityStore = defineStore("security", {
           this.loading = false;
         });
     },
+
+    setSnapshot(snapshotId: number | null) {
+      this.snapshot = snapshotId;
+    },
+
     async fetchSnapshotAlerts(
       snapshot: number,
-      page?: number,
       limit?: number,
+      page?: number,
       severity?: string,
     ) {
       this.loading = true;
-      let params = `page=${page}&limit=${limit}`;
-      if (severity) {
-        params += "&severity=" + severity;
+      this.limit = limit || 12;
+
+      const pageQuery = router.currentRoute.value.query.page;
+      const sev = severity || router.currentRoute.value.query.severity;
+
+      let params = `page=${page || pageQuery || 0}&limit=${this.limit}`;
+
+      if (sev) {
+        params += "&severity=" + sev;
       }
 
       await client
@@ -121,7 +140,7 @@ export const useSecurityStore = defineStore("security", {
         .then((response) => {
           const data = handleApiResponse(response.data);
           if (data) {
-            this.securityAlerts.data = data.data;
+            this.securityAlerts = data;
           }
         })
         .catch((error) => {
