@@ -198,6 +198,7 @@ let container_sha = computed(() => {
             :parent="project.parent"
             edit
             :active="activeTab"
+            :project-type="project.type"
           />
 
           <div class="mt-4">
