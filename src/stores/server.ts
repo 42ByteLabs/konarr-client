@@ -112,6 +112,10 @@ export const useServerStore = defineStore("konarr", {
         });
     },
 
+    isAdmin() {
+      return this.info.user?.role === "Admin";
+    },
+
     setAdminMode() {
       // Check local storage for admin mode
       const adminModeValue = localStorage.getItem("adminMode");
