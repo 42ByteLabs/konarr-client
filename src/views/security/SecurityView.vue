@@ -16,6 +16,8 @@ const server = useServerStore();
 const securityStore = useSecurityStore();
 
 onMounted(() => {
+  securityStore.setSnapshot(null);
+
   const qseverity = router.currentRoute.value.query.severity as string;
   const qsnapshotParam = router.currentRoute.value.query.snapshot;
   const qsnapshot = Array.isArray(qsnapshotParam)

@@ -1,9 +1,20 @@
 <script setup lang="ts">
+import { onMounted } from "vue";
 import type { Project } from "@/types";
+import { useSecurityStore } from "@/stores/security";
 import SecuritySummary from "@/components/SecuritySummary.vue";
-import ProjectInfo from "@/components/ProjectInfo.vue";
+import SecurityAlertTile from "@/components/SecurityAlertTile.vue";
+import Pagination from "@/components/Pagination.vue";
+import Search from "@/components/Search.vue";
 
 const props = defineProps<{ id: number; project: Project }>();
+
+const securityStore = useSecurityStore();
+
+onMounted(() => {
+  securityStore.setSnapshot(props.project.snapshot?.id || 0);
+  securityStore.fetchSnapshotAlerts(props.project.snapshot?.id || 0, 12);
+});
 </script>
 
 <template>
@@ -30,22 +41,30 @@ const props = defineProps<{ id: number; project: Project }>();
       :snapshot="props.project.snapshot.id"
     />
 
-    <div
-      v-if="props.project.type === 'Container' && props.project.snapshot"
-      class="mt-4"
-    >
-      <ProjectInfo
-        name="Container Image"
-        :value="props.project.snapshot.metadata['container.image']"
+    <div v-if="securityStore.alerts.length > 0" class="w-full">
+      <Search
+        searching="security"
+        placeholder="Find alerts..."
+        :total="securityStore.securityAlerts.total"
+        :limit="securityStore.limit"
+        :count="securityStore.securityAlerts.count"
       />
 
-      <ProjectInfo
-        name="Container SHA(256)"
-        :value="
-          (props.project.snapshot.metadata['container.sha'] || '')
-            .replace('sha256:', '')
-            .substring(0, 12)
-        "
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-4 mt-8"
+      >
+        <SecurityAlertTile
+          v-for="sec in securityStore.alerts"
+          :key="sec.id"
+          :alert="sec"
+        />
+      </div>
+
+      <Pagination
+        :page="securityStore.page"
+        :pages="securityStore.pages"
+        :next="securityStore.fetchNextPage"
+        :prev="securityStore.fetchPrevPage"
       />
     </div>
   </div>
