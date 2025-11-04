@@ -149,6 +149,33 @@ onMounted(() => {
               </div>
             </div>
 
+            <div
+              class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-green-500"
+            >
+              <h2
+                class="text-xl font-semibold mb-4 text-gray-900 dark:text-white"
+              >
+                Password Policies
+              </h2>
+              <div class="space-y-4">
+                <div class="grid grid-cols-2 md:grid-cols-2 gap-4">
+                  <AdminSetting
+                    title="Password Strength Requirement"
+                    description="Minimum password strength for users"
+                    :select="[
+                      { value: '1', label: 'Very weak' },
+                      { value: '2', label: 'Weak' },
+                      { value: '3', label: 'Moderate' },
+                      { value: '4', label: 'Strong' },
+                      { value: '5', label: 'Very strong' },
+                    ]"
+                    :data="admin.settings['users.password.strength']"
+                    setting="users.password.strength"
+                  />
+                </div>
+              </div>
+            </div>
+
             <!-- System Users Section -->
             <div
               class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-purple-500"
