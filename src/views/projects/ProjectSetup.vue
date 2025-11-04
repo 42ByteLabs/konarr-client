@@ -103,7 +103,10 @@ onMounted(async () => {
     </h3>
 
     <div class="grid grid-cols-1 gap-4 dark:text-white mt-4">
-      <div class="bg-white dark:bg-gray-900 shadow-md rounded-lg p-4 relative">
+      <div
+        v-if="props.project.type === 'Server'"
+        class="bg-white dark:bg-gray-900 shadow-md rounded-lg p-4 relative"
+      >
         <div class="flex items-center justify-between mb-3">
           <h4 class="text-lg font-bold">Docker</h4>
           <div class="flex items-center gap-2">
@@ -137,7 +140,10 @@ onMounted(async () => {
         </div>
       </div>
 
-      <div class="bg-white dark:bg-gray-900 shadow-md rounded-lg p-4 relative">
+      <div
+        v-if="props.project.type === 'Server'"
+        class="bg-white dark:bg-gray-900 shadow-md rounded-lg p-4 relative"
+      >
         <div class="flex items-center justify-between mb-3">
           <h4 class="text-lg font-bold">Kubernetes</h4>
           <div class="flex items-center gap-2">
