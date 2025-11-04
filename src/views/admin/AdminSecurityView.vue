@@ -60,7 +60,8 @@ const tools = [
 
             <!-- Security Tools Section -->
             <div
-              class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-purple-500"
+              v-if="admin.settings.security === 'enabled'"
+              class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-yellow-500"
             >
               <h2
                 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white"
@@ -68,38 +69,52 @@ const tools = [
                 Security Tools
               </h2>
               <div class="space-y-4">
-                <AdminSetting
-                  title="SBOM / Security Tool"
-                  description="Select the tool to use for SBOM generating and/or security scanning."
-                  :data="admin.settings['security.tools.name']"
-                  setting="security.tools.name"
-                  :select_current="admin.settings['security.tools.name']"
-                  :select="tools"
-                />
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <AdminSetting
+                    title="SBOM / Security Tool"
+                    description="Select the tool to use for SBOM generating and/or security scanning."
+                    :data="admin.settings['security.tools.name']"
+                    setting="security.tools.name"
+                    :select_current="admin.settings['security.tools.name']"
+                    :select="tools"
+                  />
 
-                <AdminSetting
-                  title="Tool Auto-Install"
-                  description="Enable to automatically install the selected security tool on the agent."
-                  :data="admin.settings['agent.tool.auto-install']"
-                  setting="agent.tool.auto-install"
-                  toggle
-                />
+                  <AdminSetting
+                    title="Tool Version"
+                    description="The version of the selected security tool. You can set it to 'latest'"
+                    :data="
+                      admin.settings['security.tools.version'] || 'Unknown'
+                    "
+                    setting="security.tools.version"
+                  />
+                </div>
 
-                <AdminSetting
-                  title="Tool Auto-Update"
-                  description="Enable to automatically update the selected security tool on the agent."
-                  :data="admin.settings['agent.tool.auto-update']"
-                  setting="agent.tool.auto-update"
-                  toggle
-                />
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <AdminSetting
+                    title="Tool Auto-Install"
+                    description="Enable to automatically install the selected security tool on the agent."
+                    :data="admin.settings['agent.tool.auto-install']"
+                    setting="agent.tool.auto-install"
+                    toggle
+                  />
 
-                <AdminSetting
-                  title="Allow Tool Alerts"
-                  description="Enable to receive alerts from security tools. This includes alerts from tools like Trivy, Grype, and other security scanners."
-                  :data="admin.settings['security.tools.alerts']"
-                  setting="security.tools.alerts"
-                  toggle
-                />
+                  <AdminSetting
+                    title="Tool Auto-Update"
+                    description="Enable to automatically update the selected security tool on the agent."
+                    :data="admin.settings['agent.tool.auto-update']"
+                    setting="agent.tool.auto-update"
+                    toggle
+                  />
+
+                  <AdminSetting
+                    v-if="admin.settings['agent.tool'] != 'syft'"
+                    title="Allow Tool Alerts"
+                    description="Enable to receive alerts from security tools. This includes alerts from tools like Trivy, Grype, and other security scanners."
+                    :data="admin.settings['security.tools.alerts']"
+                    setting="security.tools.alerts"
+                    toggle
+                  />
+                </div>
               </div>
             </div>
 
