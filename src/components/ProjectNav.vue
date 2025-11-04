@@ -9,6 +9,7 @@ import {
   mdiCog,
   mdiViewDashboard,
 } from "@mdi/js";
+import { useServerStore } from "@/stores/server";
 
 const props = defineProps<{
   id: number;
@@ -16,9 +17,10 @@ const props = defineProps<{
   parent?: number;
   edit?: boolean;
   active?: string;
+  projectType?: Project["type"];
 }>();
 
-// tabs now use router navigation; no local emits required
+const server = useServerStore();
 
 function tabClass(tab: string) {
   const base =
@@ -95,7 +97,7 @@ function btnClass() {
             </button>
           </router-link>
           <router-link
-            v-if="props.edit"
+            v-if="props.edit && server.isAdmin()"
             :to="{
               name: 'Project Setup',
               params: { id: props.id },
@@ -109,10 +111,10 @@ function btnClass() {
         </div>
       </div>
     </div>
-    <div v-if="props.edit" class="col-span-1 text-center">
+    <div v-if="props.edit && server.isAdmin()" class="col-span-1 text-center">
       <div class="flex justify-end">
         <router-link :to="{ name: 'Edit Project', params: { id: props.id } }">
-          <button :class="btnClass()" class="mt-2">
+          <button :class="btnClass()">
             <svg-icon type="mdi" :path="mdiPencil" class="h-5 w-5" />
             <span class="hidden sm:block">Edit</span>
           </button>
