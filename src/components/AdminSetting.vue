@@ -44,6 +44,8 @@ const props = defineProps<{
   regenerate?: boolean;
   // Select options
   select?: Array<{ value: string; label: string }>;
+  // Disabled
+  disabled?: boolean;
 }>();
 
 const enabled = ref(false);
@@ -143,7 +145,11 @@ onMounted(() => {
           <Switch
             v-if="props.toggle"
             v-model="enabled"
-            :class="enabled ? 'bg-accent-600' : 'bg-gray-400 dark:bg-gray-600'"
+            :disabled="props.disabled"
+            :class="[
+              enabled ? 'bg-accent-600' : 'bg-gray-400 dark:bg-gray-600',
+              props.disabled ? 'opacity-50 cursor-not-allowed' : '',
+            ]"
             class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2"
             @click="toggle"
           >
@@ -157,7 +163,8 @@ onMounted(() => {
           <!-- Action Button -->
           <button
             v-else-if="props.button"
-            class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-accent-600 hover:bg-accent-700 rounded-lg transition-all shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2"
+            :disabled="props.disabled"
+            class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-accent-600 hover:bg-accent-700 rounded-lg transition-all shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
             @click="props.button ? onclick : undefined"
           >
             <svg-icon type="mdi" :path="mdiPlayCircle" class="h-4 w-4" />
@@ -167,7 +174,8 @@ onMounted(() => {
           <!-- Regenerate Button -->
           <button
             v-else-if="props.hidedata"
-            class="text-gray-600 dark:text-gray-400 hover:text-accent-500 dark:hover:text-accent-400 transition-colors p-1"
+            :disabled="props.disabled"
+            class="text-gray-600 dark:text-gray-400 hover:text-accent-500 dark:hover:text-accent-400 transition-colors p-1 disabled:opacity-50 disabled:cursor-not-allowed"
             title="Regenerate"
             @click="regenerate"
           >
@@ -185,7 +193,8 @@ onMounted(() => {
             </h4>
             <button
               v-if="props.description"
-              class="text-gray-500 dark:text-gray-400 hover:text-accent-500 dark:hover:text-accent-400 transition-colors flex-shrink-0"
+              :disabled="props.disabled"
+              class="text-gray-500 dark:text-gray-400 hover:text-accent-500 dark:hover:text-accent-400 transition-colors flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
               title="More information"
               @click="toggle_help"
             >
@@ -203,7 +212,8 @@ onMounted(() => {
           class="flex items-center gap-2 flex-1 ml-1.5 mt-2"
         >
           <button
-            class="text-gray-600 dark:text-gray-400 hover:text-accent-500 dark:hover:text-accent-400 transition-colors flex-shrink-0"
+            :disabled="props.disabled"
+            class="text-gray-600 dark:text-gray-400 hover:text-accent-500 dark:hover:text-accent-400 transition-colors flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
             title="Toggle visibility"
             @click="toggleHidden"
           >
@@ -221,8 +231,9 @@ onMounted(() => {
           v-else-if="props.editable"
           v-model="inputValue"
           type="text"
+          :disabled="props.disabled"
           :placeholder="props.data || ''"
-          class="flex-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 px-3 py-2 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition-colors"
+          class="flex-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 px-3 py-2 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           @blur="saveInput"
           @keyup.enter="saveInput"
         />
@@ -230,7 +241,8 @@ onMounted(() => {
         <!-- Select Dropdown -->
         <select
           v-else-if="props.select"
-          class="ml-3.5 w-auto min-w-[200px] bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white px-3 py-2 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition-colors cursor-pointer hover:border-accent-400 dark:hover:border-accent-600"
+          :disabled="props.disabled"
+          class="ml-3.5 w-auto min-w-[200px] bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white px-3 py-2 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500 transition-colors cursor-pointer hover:border-accent-400 dark:hover:border-accent-600 disabled:opacity-50 disabled:cursor-not-allowed"
           @change="onselect(($event.target as HTMLSelectElement).value)"
         >
           <option
