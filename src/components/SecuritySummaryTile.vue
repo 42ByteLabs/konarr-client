@@ -17,14 +17,28 @@ const props = defineProps<{
 
 // Update on click
 const update = () => {
-  security.fetchAlerts(0, 24, props.name.toLowerCase());
-  router.push({
-    name: "Security",
-    query: {
-      severity: props.name.toLowerCase(),
-      snapshot: snapshot.value,
-    },
-  });
+  if (security.snapshot) {
+    security.fetchSnapshotAlerts(
+      security.snapshot,
+      24,
+      0,
+      props.name.toLowerCase(),
+    );
+    router.push({
+      query: {
+        severity: props.name.toLowerCase(),
+      },
+    });
+  } else {
+    security.fetchAlerts(0, 24, props.name.toLowerCase());
+    router.push({
+      name: "Security",
+      query: {
+        severity: props.name.toLowerCase(),
+        snapshot: snapshot.value,
+      },
+    });
+  }
 };
 
 const snapshot = computed(() => {
