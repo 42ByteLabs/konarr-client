@@ -63,7 +63,7 @@ export const useSecurityStore = defineStore("security", {
 
     async fetchAlerts(page: number = 0, limit: number = 24, severity?: string) {
       if (this.snapshot) {
-        await this.fetchSnapshotAlerts(this.snapshot, 12, page, severity);
+        await this.fetchSnapshotAlerts(this.snapshot, limit, page, severity);
       } else {
         this.loading = true;
         this.limit = limit;
