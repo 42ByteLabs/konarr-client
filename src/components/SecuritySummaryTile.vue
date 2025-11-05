@@ -21,7 +21,7 @@ const update = () => {
     security.fetchSnapshotAlerts(
       security.snapshot,
       24,
-      undefined,
+      0,
       props.name.toLowerCase(),
     );
     router.push({
