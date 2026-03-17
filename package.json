@@ -21,7 +21,7 @@
         "@mdi/js": "^7.4",
         "ag-charts-vue3": "^11.0",
         "axios": "^1.13",
-        "dompurify": "^3.1",
+        "dompurify": "^3.3",
         "markdown-it": "^14.1",
         "pinia": "^2.1",
         "vue": "^3.4",
